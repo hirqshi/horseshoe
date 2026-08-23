@@ -64,3 +64,6 @@ func _on_motor_landed(impact_speed_mps: float) -> void:
 		return
 
 	grounding_landed.emit(impact_speed_mps)
+
+func blocks_locomotion_transition() -> bool:
+	return true

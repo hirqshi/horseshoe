@@ -15,3 +15,6 @@ func physics_tick(_context: MovementContext) -> bool:
 
 func finish(_context: MovementContext) -> void:
 	pass
+
+func blocks_locomotion_transition() -> bool:
+	return false

@@ -48,3 +48,9 @@ func apply(context: MovementContext) -> void:
 
 func has_active_action() -> bool:
 	return _active_action != null
+
+func blocks_locomotion_transition() -> bool:
+	return (
+		_active_action != null
+		and _active_action.blocks_locomotion_transition()
+	)

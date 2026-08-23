@@ -19,6 +19,9 @@ signal jumped()
 @onready var _action_controller: ActionController = (
 	get_node_or_null("ActionController") as ActionController
 )
+@onready var _wallrun_state: WallrunLocomotionState = (
+	get_node_or_null("WallrunState") as WallrunLocomotionState
+)
 
 var _body: CharacterBody3D
 var _player_input: PlayerInput = PlayerInput.new()
@@ -57,8 +60,12 @@ func _ready() -> void:
 		set_physics_process(false)
 		return
 		
-	if _grounded_state == null or _airborne_state == null:
-		push_error("MovementMotor requires GroundedState and AirborneState.")
+	if _grounded_state == null \
+			or _airborne_state == null \
+			or _wallrun_state == null:
+		push_error(
+			"MovementMotor requires GroundedState, AirborneState and WallrunState."
+		)
 		set_physics_process(false)
 		return
 		
@@ -88,7 +95,6 @@ func _physics_process(delta: float) -> void:
 	var current_time_s: float = Time.get_ticks_msec() * 0.001
 	var pre_move_vertical_speed_mps: float = _body.velocity.y
 
-	sensors.update_contacts()
 	_player_input.update_from_input()
 	_context.update(delta, current_time_s)
 
@@ -102,8 +108,14 @@ func _physics_process(delta: float) -> void:
 	_body.velocity = _context.velocity
 	_body.move_and_slide()
 
+	_context.velocity = _body.velocity
+
+	sensors.update_contacts()
 	_process_post_move(pre_move_vertical_speed_mps)
+	_wallrun_state.update_reentry_cooldown(delta)
 	_update_locomotion_state()
+
+	_body.velocity = _context.velocity
 
 func _update_grounded_time(current_time_s: float) -> void:
 	if _context.is_grounded:
@@ -150,6 +162,12 @@ func _update_locomotion_state() -> void:
 
 	if _body.is_on_floor():
 		next_state = _grounded_state
+	elif _active_state == _wallrun_state \
+			and not _wallrun_state.can_continue(_context):
+		next_state = _airborne_state
+	elif not _action_controller.blocks_locomotion_transition() \
+			and _wallrun_state.can_enter(_context):
+		next_state = _wallrun_state
 	else:
 		next_state = _airborne_state
 

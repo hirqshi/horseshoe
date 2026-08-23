@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="WallrunConfig" format=3 uid="uid://je7gkx0v4tn1"]
+
+[ext_resource type="Script" uid="uid://tohot5wggfaj" path="res://player/movement/states/wallrun_config.gd" id="1_nfth0"]
+
+[resource]
+script = ExtResource("1_nfth0")
+duration_s = 2.0
+fall_delay_s = 0.08
+metadata/_custom_type_script = "uid://tohot5wggfaj"
