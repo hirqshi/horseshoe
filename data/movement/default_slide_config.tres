@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="SlideConfig" format=3 uid="uid://bpqfok3s3mrcn"]
+
+[ext_resource type="Script" uid="uid://dxrtb4kg5d4pe" path="res://player/actions/slide/slide_config.gd" id="1_si87j"]
+
+[resource]
+script = ExtResource("1_si87j")
+metadata/_custom_type_script = "uid://dxrtb4kg5d4pe"

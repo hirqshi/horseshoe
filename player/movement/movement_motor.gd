@@ -122,6 +122,13 @@ func _try_consume_jump(current_time_s: float) -> void:
 	if not has_buffered_jump or not can_coyote_jump:
 		return
 
+	if stance.is_crouching():
+		var can_exit_crouch: bool = stance.try_set_crouching(false)
+
+		if not can_exit_crouch:
+			_jump_buffer_until_s = -INF
+			return
+
 	_context.velocity.y = config.jump_speed_mps
 	_jump_buffer_until_s = -INF
 	_last_grounded_time_s = -INF
