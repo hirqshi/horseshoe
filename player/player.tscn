@@ -9,10 +9,12 @@
 [ext_resource type="Script" uid="uid://bgrcyb2s8mgwb" path="res://player/movement/states/airborne_locomotion_state.gd" id="6_rgyib"]
 [ext_resource type="Script" uid="uid://y5oaj8gqj3l8" path="res://player/actions/action_controller.gd" id="8_8t03j"]
 [ext_resource type="Script" uid="uid://dcg5etkq4idhh" path="res://player/actions/dash/dash_action.gd" id="9_2ieo8"]
+[ext_resource type="Script" uid="uid://dx1e22ufcmubo" path="res://player/actions/grounding/grounding_action.gd" id="10_32hag"]
 [ext_resource type="Resource" uid="uid://bti7l146y8ekq" path="res://data/movement/default_dash_config.tres" id="10_ebec5"]
 [ext_resource type="Script" uid="uid://cojxqomndtewn" path="res://player/actions/slide/slide_action.gd" id="10_kb6p2"]
 [ext_resource type="Script" uid="uid://g6ku284a0f23" path="res://player/actions/crouch/crouch_action.gd" id="10_yllr7"]
 [ext_resource type="Script" uid="uid://css26icnxn6px" path="res://player/stance/player_stance.gd" id="11_2ieo8"]
+[ext_resource type="Resource" uid="uid://riksolt1h4vf" path="res://data/movement/default_grounding_config.tres" id="11_tqiix"]
 [ext_resource type="Resource" uid="uid://bpqfok3s3mrcn" path="res://data/movement/default_slide_config.tres" id="11_wodsf"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
@@ -59,6 +61,10 @@ script = ExtResource("8_8t03j")
 [node name="DashAction" type="Node" parent="MovementMotor/ActionController" unique_id=290179230]
 script = ExtResource("9_2ieo8")
 config = ExtResource("10_ebec5")
+
+[node name="GroundingAction" type="Node" parent="MovementMotor/ActionController" unique_id=2089238866]
+script = ExtResource("10_32hag")
+config = ExtResource("11_tqiix")
 
 [node name="SlideAction" type="Node" parent="MovementMotor/ActionController" unique_id=902687038]
 script = ExtResource("10_kb6p2")

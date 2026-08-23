@@ -25,6 +25,9 @@ func start(_context: MovementContext) -> void:
 	_motor.stance.try_set_crouching(true)
 
 func physics_tick(context: MovementContext) -> bool:
+	if not context.is_grounded:
+		return false
+
 	if not context.player_input.is_slide_held:
 		return false
 

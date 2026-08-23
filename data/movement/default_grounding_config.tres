@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="GroundingConfig" format=3 uid="uid://riksolt1h4vf"]
+
+[ext_resource type="Script" uid="uid://cq8pn8g1tbyg4" path="res://player/actions/grounding/grounding_config.gd" id="1_yb804"]
+
+[resource]
+script = ExtResource("1_yb804")
+downward_speed_mps = 20.0
+metadata/_custom_type_script = "uid://cq8pn8g1tbyg4"
