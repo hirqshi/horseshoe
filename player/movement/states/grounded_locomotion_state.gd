@@ -2,14 +2,10 @@ class_name GroundedLocomotionState
 extends LocomotionState
 
 const ID: StringName = &"grounded"
-const AIRBORNE_STATE_ID: StringName = &"airborne"
 
 func physics_tick(context: MovementContext) -> StringName:
 	_apply_vertical_movement(context)
 	_apply_horizontal_movement(context)
-
-	if not context.is_grounded:
-		return AIRBORNE_STATE_ID
 
 	return &""
 

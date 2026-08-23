@@ -4,4 +4,5 @@
 
 [resource]
 script = ExtResource("1_cx8r7")
+coyote_time_s = 0.2
 metadata/_custom_type_script = "uid://ctru2sdieebhl"

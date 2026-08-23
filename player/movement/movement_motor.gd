@@ -1,6 +1,10 @@
 class_name MovementMotor
 extends Node
 
+signal landed(impact_speed_mps: float)
+signal left_ground()
+signal jumped()
+
 @export var config: MovementConfig
 @export var view_pivot: Node3D
 @export var sensors: PlayerSensors
@@ -11,6 +15,9 @@ extends Node
 @onready var _airborne_state: AirborneLocomotionState = (
 	get_node_or_null("AirborneState") as AirborneLocomotionState
 )
+@onready var _action_controller: ActionController = (
+	get_node_or_null("ActionController") as ActionController
+)
 
 var _body: CharacterBody3D
 var _player_input: PlayerInput = PlayerInput.new()
@@ -19,6 +26,7 @@ var _active_state: LocomotionState
 
 var _last_grounded_time_s: float = -INF
 var _jump_buffer_until_s: float = -INF
+var _was_on_floor: bool = false
 
 func _ready() -> void:
 	_body = get_parent() as CharacterBody3D
@@ -47,7 +55,12 @@ func _ready() -> void:
 		push_error("MovementMotor requires GroundedState and AirborneState.")
 		set_physics_process(false)
 		return
-
+		
+	if _action_controller == null:
+		push_error("MovementMotor requires ActionController.")
+		set_physics_process(false)
+		return
+		
 	_body.floor_max_angle = deg_to_rad(config.max_floor_angle_deg)
 
 	_context.body = _body
@@ -56,11 +69,13 @@ func _ready() -> void:
 	_context.config = config
 	_context.player_input = _player_input
 
-	_active_state = _grounded_state
+	_was_on_floor = _body.is_on_floor()
+	_active_state = _grounded_state if _was_on_floor else _airborne_state
 	_active_state.enter(_context)
 
 func _physics_process(delta: float) -> void:
 	var current_time_s: float = Time.get_ticks_msec() * 0.001
+	var pre_move_vertical_speed_mps: float = _body.velocity.y
 
 	sensors.update_contacts()
 	_player_input.update_from_input()
@@ -69,12 +84,15 @@ func _physics_process(delta: float) -> void:
 	_update_grounded_time(current_time_s)
 	_update_jump_buffer(current_time_s)
 
-	var next_state_id: StringName = _active_state.physics_tick(_context)
+	_active_state.physics_tick(_context)
+	_action_controller.apply(_context)
 	_try_consume_jump(current_time_s)
-	_switch_state(next_state_id)
 
 	_body.velocity = _context.velocity
 	_body.move_and_slide()
+
+	_process_post_move(pre_move_vertical_speed_mps)
+	_update_locomotion_state()
 
 func _update_grounded_time(current_time_s: float) -> void:
 	if _context.is_grounded:
@@ -96,25 +114,27 @@ func _try_consume_jump(current_time_s: float) -> void:
 	_context.velocity.y = config.jump_speed_mps
 	_jump_buffer_until_s = -INF
 	_last_grounded_time_s = -INF
+	jumped.emit()
 
-func _switch_state(next_state_id: StringName) -> void:
-	if next_state_id.is_empty():
-		return
+func _process_post_move(pre_move_vertical_speed_mps: float) -> void:
+	var is_on_floor_now: bool = _body.is_on_floor()
 
-	var next_state: LocomotionState = _get_state(next_state_id)
-	if next_state == null or next_state == _active_state:
+	if not _was_on_floor and is_on_floor_now:
+		landed.emit(maxf(0.0, -pre_move_vertical_speed_mps))
+
+	if _was_on_floor and not is_on_floor_now:
+		left_ground.emit()
+
+	_was_on_floor = is_on_floor_now
+
+func _update_locomotion_state() -> void:
+	var next_state: LocomotionState = (
+		_grounded_state if _body.is_on_floor() else _airborne_state
+	)
+
+	if next_state == _active_state:
 		return
 
 	_active_state.exit(_context)
 	_active_state = next_state
 	_active_state.enter(_context)
-
-func _get_state(state_id: StringName) -> LocomotionState:
-	match state_id:
-		GroundedLocomotionState.ID:
-			return _grounded_state
-		AirborneLocomotionState.ID:
-			return _airborne_state
-		_:
-			push_error("Unknown locomotion state: %s." % state_id)
-			return null

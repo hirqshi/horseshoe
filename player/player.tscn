@@ -7,6 +7,9 @@
 [ext_resource type="Script" uid="uid://bbnjlu8xn4wx3" path="res://player/movement/states/grounded_locomotion_state.gd" id="5_boad6"]
 [ext_resource type="Script" uid="uid://cpw6cl28g505q" path="res://player/sensors/player_sensors.gd" id="5_qjkh3"]
 [ext_resource type="Script" uid="uid://bgrcyb2s8mgwb" path="res://player/movement/states/airborne_locomotion_state.gd" id="6_rgyib"]
+[ext_resource type="Script" uid="uid://y5oaj8gqj3l8" path="res://player/actions/action_controller.gd" id="8_8t03j"]
+[ext_resource type="Script" uid="uid://dcg5etkq4idhh" path="res://player/actions/dash/dash_action.gd" id="9_2ieo8"]
+[ext_resource type="Resource" uid="uid://bti7l146y8ekq" path="res://data/movement/default_dash_config.tres" id="10_ebec5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
 radius = 0.205
@@ -36,6 +39,13 @@ script = ExtResource("5_boad6")
 
 [node name="AirborneState" type="Node" parent="MovementMotor" unique_id=1317175401]
 script = ExtResource("6_rgyib")
+
+[node name="ActionController" type="Node" parent="MovementMotor" unique_id=972487612]
+script = ExtResource("8_8t03j")
+
+[node name="DashAction" type="Node" parent="MovementMotor/ActionController" unique_id=290179230]
+script = ExtResource("9_2ieo8")
+config = ExtResource("10_ebec5")
 
 [node name="PlayerSensors" type="Node" parent="." unique_id=1562123672]
 script = ExtResource("5_qjkh3")
