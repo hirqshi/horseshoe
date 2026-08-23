@@ -3,21 +3,28 @@ extends Node
 
 @export var config: MovementConfig
 @export var view_pivot: Node3D
+@export var sensors: PlayerSensors
+
+@onready var _grounded_state: GroundedLocomotionState = (
+	get_node_or_null("GroundedState") as GroundedLocomotionState
+)
+@onready var _airborne_state: AirborneLocomotionState = (
+	get_node_or_null("AirborneState") as AirborneLocomotionState
+)
 
 var _body: CharacterBody3D
+var _player_input: PlayerInput = PlayerInput.new()
+var _context: MovementContext = MovementContext.new()
+var _active_state: LocomotionState
 
 var _last_grounded_time_s: float = -INF
 var _jump_buffer_until_s: float = -INF
 
 func _ready() -> void:
 	_body = get_parent() as CharacterBody3D
+
 	if _body == null:
 		push_error("MovementMotor must be a child of CharacterBody3D.")
-		set_physics_process(false)
-		return
-
-	if view_pivot == null:
-		push_error("MovementMotor requires a view pivot.")
 		set_physics_process(false)
 		return
 
@@ -26,80 +33,56 @@ func _ready() -> void:
 		set_physics_process(false)
 		return
 
+	if view_pivot == null:
+		push_error("MovementMotor requires a view pivot.")
+		set_physics_process(false)
+		return
+
+	if sensors == null:
+		push_error("MovementMotor requires PlayerSensors.")
+		set_physics_process(false)
+		return
+
+	if _grounded_state == null or _airborne_state == null:
+		push_error("MovementMotor requires GroundedState and AirborneState.")
+		set_physics_process(false)
+		return
+
 	_body.floor_max_angle = deg_to_rad(config.max_floor_angle_deg)
 
+	_context.body = _body
+	_context.view_pivot = view_pivot
+	_context.sensors = sensors
+	_context.config = config
+	_context.player_input = _player_input
+
+	_active_state = _grounded_state
+	_active_state.enter(_context)
+
 func _physics_process(delta: float) -> void:
-	var player_input: PlayerInput = PlayerInput.read()
 	var current_time_s: float = Time.get_ticks_msec() * 0.001
 
+	sensors.update_contacts()
+	_player_input.update_from_input()
+	_context.update(delta, current_time_s)
+
 	_update_grounded_time(current_time_s)
-	_update_jump_buffer(player_input, current_time_s)
+	_update_jump_buffer(current_time_s)
 
-	var wish_direction: Vector3 = _get_wish_direction(player_input.move)
-
-	_apply_vertical_movement(delta)
-	_apply_horizontal_movement(wish_direction, player_input, delta)
+	var next_state_id: StringName = _active_state.physics_tick(_context)
 	_try_consume_jump(current_time_s)
+	_switch_state(next_state_id)
 
+	_body.velocity = _context.velocity
 	_body.move_and_slide()
 
 func _update_grounded_time(current_time_s: float) -> void:
-	if _body.is_on_floor():
+	if _context.is_grounded:
 		_last_grounded_time_s = current_time_s
 
-func _update_jump_buffer(
-	player_input: PlayerInput,
-	current_time_s: float
-) -> void:
-	if player_input.is_jump_pressed:
+func _update_jump_buffer(current_time_s: float) -> void:
+	if _player_input.is_jump_pressed:
 		_jump_buffer_until_s = current_time_s + config.jump_buffer_s
-
-func _apply_vertical_movement(delta: float) -> void:
-	if _body.is_on_floor() and _body.velocity.y < 0.0:
-		_body.velocity.y = -0.1
-		return
-
-	_body.velocity.y = maxf(
-		_body.velocity.y - config.gravity_mps2 * delta,
-		-config.terminal_fall_speed_mps
-	)
-
-func _apply_horizontal_movement(
-	wish_direction: Vector3,
-	player_input: PlayerInput,
-	delta: float
-) -> void:
-	var current_horizontal: Vector3 = _get_horizontal_velocity()
-	var target_speed_mps: float = _get_target_speed(player_input)
-	var target_horizontal: Vector3 = wish_direction * target_speed_mps
-
-	var is_grounded: bool = _body.is_on_floor()
-	var has_move_input: bool = not wish_direction.is_zero_approx()
-
-	if not is_grounded:
-		target_horizontal *= config.air_control
-
-	var acceleration_mps2: float = _get_acceleration(
-		is_grounded,
-		has_move_input
-	)
-
-	current_horizontal = current_horizontal.move_toward(
-		target_horizontal,
-		acceleration_mps2 * delta
-	)
-
-	_set_horizontal_velocity(current_horizontal)
-
-func _get_acceleration(is_grounded: bool, has_move_input: bool) -> float:
-	if is_grounded:
-		if has_move_input:
-			return config.ground_acceleration_mps2
-		return config.ground_deceleration_mps2
-
-	if has_move_input:
-		return config.air_acceleration_mps2
-	return config.air_deceleration_mps2
 
 func _try_consume_jump(current_time_s: float) -> void:
 	var has_buffered_jump: bool = current_time_s <= _jump_buffer_until_s
@@ -110,48 +93,28 @@ func _try_consume_jump(current_time_s: float) -> void:
 	if not has_buffered_jump or not can_coyote_jump:
 		return
 
-	_body.velocity.y = config.jump_speed_mps
+	_context.velocity.y = config.jump_speed_mps
 	_jump_buffer_until_s = -INF
 	_last_grounded_time_s = -INF
 
-func _get_wish_direction(move_input: Vector2) -> Vector3:
-	if move_input.is_zero_approx():
-		return Vector3.ZERO
+func _switch_state(next_state_id: StringName) -> void:
+	if next_state_id.is_empty():
+		return
 
-	var forward: Vector3 = -view_pivot.global_basis.z
-	forward.y = 0.0
-	forward = forward.normalized()
+	var next_state: LocomotionState = _get_state(next_state_id)
+	if next_state == null or next_state == _active_state:
+		return
 
-	var right: Vector3 = view_pivot.global_basis.x
-	right.y = 0.0
-	right = right.normalized()
+	_active_state.exit(_context)
+	_active_state = next_state
+	_active_state.enter(_context)
 
-	var direction: Vector3 = right * move_input.x + forward * -move_input.y
-	return direction.normalized()
-
-func _get_target_speed(player_input: PlayerInput) -> float:
-	var forward_input: float = -player_input.move.y
-	var side_input: float = absf(player_input.move.x)
-	var target_speed_mps: float = 0.0
-
-	if forward_input > 0.0:
-		target_speed_mps = config.run_speed_forward_mps * forward_input
-	elif forward_input < 0.0:
-		target_speed_mps = config.run_speed_back_mps * absf(forward_input)
-
-	target_speed_mps = maxf(
-		target_speed_mps,
-		config.run_speed_side_mps * side_input
-	)
-
-	if player_input.is_walk_pressed:
-		target_speed_mps *= config.walk_speed_multiplier
-
-	return target_speed_mps
-
-func _get_horizontal_velocity() -> Vector3:
-	return Vector3(_body.velocity.x, 0.0, _body.velocity.z)
-
-func _set_horizontal_velocity(horizontal_velocity: Vector3) -> void:
-	_body.velocity.x = horizontal_velocity.x
-	_body.velocity.z = horizontal_velocity.z
+func _get_state(state_id: StringName) -> LocomotionState:
+	match state_id:
+		GroundedLocomotionState.ID:
+			return _grounded_state
+		AirborneLocomotionState.ID:
+			return _airborne_state
+		_:
+			push_error("Unknown locomotion state: %s." % state_id)
+			return null

@@ -1,19 +1,21 @@
 [gd_scene format=3 uid="uid://bgtu17lf4f73j"]
 
-[ext_resource type="Texture2D" uid="uid://dqpj01i272cuv" path="res://icon.svg" id="1_626n2"]
+[ext_resource type="Texture2D" uid="uid://1f5e2w0qf40k" path="res://assets/textures/world/concrete1_albedo.png" id="1_626n2"]
 [ext_resource type="PackedScene" uid="uid://cefvnebo88nnh" path="res://player/player.tscn" id="2_3rtru"]
 
 [sub_resource type="Environment" id="Environment_ioc36"]
 background_mode = 1
 background_color = Color(0.46, 0.46, 0.46, 1)
+background_energy_multiplier = 3.45
 ambient_light_color = Color(0.69, 0.69, 0.69, 1)
-ambient_light_energy = 3.18
 fog_enabled = true
 fog_light_color = Color(0.49, 0.49, 0.49, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6m30h"]
 albedo_texture = ExtResource("1_626n2")
+uv1_scale = Vector3(0.255, 0.255, 0.255)
 uv1_triplanar = true
+texture_filter = 2
 
 [node name="MovementTest" type="Node3D" unique_id=46126002]
 
@@ -24,6 +26,24 @@ environment = SubResource("Environment_ioc36")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16461182, 0.951416)
 use_collision = true
 size = Vector3(80, 0.671, 80)
+material = SubResource("StandardMaterial3D_6m30h")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=2097932927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9639282, -3.3754904, 0.951416)
+use_collision = true
+size = Vector3(4.0721436, 10, 10)
+material = SubResource("StandardMaterial3D_6m30h")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=165814567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.410672, -3.036135, -0.3322754)
+use_collision = true
+size = Vector3(4.0721436, 10.678711, 7.432617)
+material = SubResource("StandardMaterial3D_6m30h")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=1776682055]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.114499, -3.036135, 9.737734)
+use_collision = true
+size = Vector3(6.6644897, 10.678711, 7.432617)
 material = SubResource("StandardMaterial3D_6m30h")
 
 [node name="Player" parent="." unique_id=361433541 instance=ExtResource("2_3rtru")]
