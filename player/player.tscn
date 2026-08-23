@@ -10,29 +10,40 @@
 [ext_resource type="Script" uid="uid://y5oaj8gqj3l8" path="res://player/actions/action_controller.gd" id="8_8t03j"]
 [ext_resource type="Script" uid="uid://dcg5etkq4idhh" path="res://player/actions/dash/dash_action.gd" id="9_2ieo8"]
 [ext_resource type="Resource" uid="uid://bti7l146y8ekq" path="res://data/movement/default_dash_config.tres" id="10_ebec5"]
+[ext_resource type="Script" uid="uid://g6ku284a0f23" path="res://player/actions/crouch/crouch_action.gd" id="10_yllr7"]
+[ext_resource type="Script" uid="uid://css26icnxn6px" path="res://player/stance/player_stance.gd" id="11_2ieo8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
 radius = 0.205
 height = 1.6
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8t03j"]
+radius = 0.205
+height = 0.6434082
+
 [node name="Player" type="CharacterBody3D" unique_id=361433541]
 script = ExtResource("1_g1dw6")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1632523810]
+[node name="StandingCollider" type="CollisionShape3D" parent="." unique_id=1632523810]
 shape = SubResource("CapsuleShape3D_6m30h")
 
+[node name="CrouchingCollider" type="CollisionShape3D" parent="." unique_id=629685485]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47829592, 0)
+shape = SubResource("CapsuleShape3D_8t03j")
+
 [node name="Head" type="Node3D" parent="." unique_id=1139077187]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5164577, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("2_yw30f")
 body_path = NodePath("..")
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=2116220637]
 
-[node name="MovementMotor" type="Node" parent="." unique_id=2105785744 node_paths=PackedStringArray("view_pivot", "sensors")]
+[node name="MovementMotor" type="Node" parent="." unique_id=2105785744 node_paths=PackedStringArray("view_pivot", "sensors", "stance")]
 script = ExtResource("3_qjkh3")
 config = ExtResource("4_yw30f")
 view_pivot = NodePath("../Head")
 sensors = NodePath("../PlayerSensors")
+stance = NodePath("../PlayerStance")
 
 [node name="GroundedState" type="Node" parent="MovementMotor" unique_id=524861878]
 script = ExtResource("5_boad6")
@@ -47,5 +58,16 @@ script = ExtResource("8_8t03j")
 script = ExtResource("9_2ieo8")
 config = ExtResource("10_ebec5")
 
+[node name="CrouchAction" type="Node" parent="MovementMotor/ActionController" unique_id=1004303175]
+script = ExtResource("10_yllr7")
+
 [node name="PlayerSensors" type="Node" parent="." unique_id=1562123672]
 script = ExtResource("5_qjkh3")
+
+[node name="PlayerStance" type="Node" parent="." unique_id=855263564 node_paths=PackedStringArray("standing_collider", "crouching_collider", "head")]
+script = ExtResource("11_2ieo8")
+standing_collider = NodePath("../StandingCollider")
+crouching_collider = NodePath("../CrouchingCollider")
+head = NodePath("../Head")
+standing_head_height_m = 0.5
+crouching_head_height_m = 0.2

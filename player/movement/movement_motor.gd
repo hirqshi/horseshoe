@@ -8,6 +8,7 @@ signal jumped()
 @export var config: MovementConfig
 @export var view_pivot: Node3D
 @export var sensors: PlayerSensors
+@export var stance: PlayerStance
 
 @onready var _grounded_state: GroundedLocomotionState = (
 	get_node_or_null("GroundedState") as GroundedLocomotionState
@@ -50,7 +51,12 @@ func _ready() -> void:
 		push_error("MovementMotor requires PlayerSensors.")
 		set_physics_process(false)
 		return
-
+		
+	if stance == null:
+		push_error("MovementMotor requires PlayerStance.")
+		set_physics_process(false)
+		return
+		
 	if _grounded_state == null or _airborne_state == null:
 		push_error("MovementMotor requires GroundedState and AirborneState.")
 		set_physics_process(false)
@@ -70,7 +76,12 @@ func _ready() -> void:
 	_context.player_input = _player_input
 
 	_was_on_floor = _body.is_on_floor()
-	_active_state = _grounded_state if _was_on_floor else _airborne_state
+
+	if _was_on_floor:
+		_active_state = _grounded_state
+	else:
+		_active_state = _airborne_state
+
 	_active_state.enter(_context)
 
 func _physics_process(delta: float) -> void:
@@ -128,9 +139,12 @@ func _process_post_move(pre_move_vertical_speed_mps: float) -> void:
 	_was_on_floor = is_on_floor_now
 
 func _update_locomotion_state() -> void:
-	var next_state: LocomotionState = (
-		_grounded_state if _body.is_on_floor() else _airborne_state
-	)
+	var next_state: LocomotionState
+
+	if _body.is_on_floor():
+		next_state = _grounded_state
+	else:
+		next_state = _airborne_state
 
 	if next_state == _active_state:
 		return
