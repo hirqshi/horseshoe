@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cefvnebo88nnh"]
+
+[ext_resource type="Script" uid="uid://b7v0xbiatdxek" path="res://player/player.gd" id="1_g1dw6"]
+[ext_resource type="Script" uid="uid://bifr5rt0g3jtu" path="res://player/camera/camera_controller.gd" id="2_yw30f"]
+[ext_resource type="Script" uid="uid://c6s6xtq3w3xs3" path="res://player/movement/movement_motor.gd" id="3_qjkh3"]
+[ext_resource type="Resource" uid="uid://bsfssmv454j38" path="res://data/movement/default_movement_config.tres" id="4_yw30f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
+radius = 0.205
+height = 1.6
+
+[node name="Player" type="CharacterBody3D" unique_id=361433541]
+script = ExtResource("1_g1dw6")
+
+[node name="Head" type="Node3D" parent="." unique_id=1139077187]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5164577, 0)
+script = ExtResource("2_yw30f")
+body_path = NodePath("..")
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=2116220637]
+
+[node name="MovementMotor" type="Node" parent="." unique_id=2105785744 node_paths=PackedStringArray("view_pivot")]
+script = ExtResource("3_qjkh3")
+config = ExtResource("4_yw30f")
+view_pivot = NodePath("../Head")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1632523810]
+shape = SubResource("CapsuleShape3D_6m30h")
