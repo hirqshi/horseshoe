@@ -1,0 +1,20 @@
+# godot 4+
+.godot/
+
+# imported assets
+.import/
+
+# exports
+export/
+exports/
+build/
+builds/
+
+# local editor files
+.vscode/
+.idea/
+
+# os junk
+.DS_Store
+Thumbs.db
+desktop.ini
