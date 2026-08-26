@@ -7,6 +7,9 @@ func setup(_motor: MovementMotor) -> void:
 func can_start(_context: MovementContext) -> bool:
 	return false
 
+func try_buffer(_context: MovementContext) -> bool:
+	return false
+
 func start(_context: MovementContext) -> void:
 	pass
 

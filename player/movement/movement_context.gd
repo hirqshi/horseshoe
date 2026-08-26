@@ -3,6 +3,7 @@ extends RefCounted
 
 var body: CharacterBody3D
 var view_pivot: Node3D
+var movement_yaw_pivot: Node3D
 var sensors: PlayerSensors
 var config: MovementConfig
 var player_input: PlayerInput
@@ -25,12 +26,24 @@ func get_wish_direction() -> Vector3:
 	if player_input.move.is_zero_approx():
 		return Vector3.ZERO
 
-	var forward: Vector3 = -view_pivot.global_basis.z
+	var forward: Vector3 = (
+		-movement_yaw_pivot.global_basis.z
+	)
 	forward.y = 0.0
+
+	if forward.length_squared() <= 0.0001:
+		return Vector3.ZERO
+
 	forward = forward.normalized()
 
-	var right: Vector3 = view_pivot.global_basis.x
+	var right: Vector3 = (
+		movement_yaw_pivot.global_basis.x
+	)
 	right.y = 0.0
+
+	if right.length_squared() <= 0.0001:
+		return Vector3.ZERO
+
 	right = right.normalized()
 
 	var direction: Vector3 = (
@@ -41,18 +54,38 @@ func get_wish_direction() -> Vector3:
 	return direction.normalized()
 
 func get_target_speed_mps() -> float:
-	var forward_input: float = -player_input.move.y
-	var side_input: float = absf(player_input.move.x)
-	var target_speed_mps: float = 0.0
+	if player_input.move.is_zero_approx():
+		return 0.0
 
-	if forward_input > 0.0:
-		target_speed_mps = config.run_speed_forward_mps * forward_input
-	elif forward_input < 0.0:
-		target_speed_mps = config.run_speed_back_mps * absf(forward_input)
+	var input_strength: float = player_input.move.length()
+	var normalized_input: Vector2 = (
+		player_input.move / input_strength
+	)
 
-	target_speed_mps = maxf(
-		target_speed_mps,
-		config.run_speed_side_mps * side_input
+	var forward_multiplier: float = 1.0
+
+	if normalized_input.y > 0.0:
+		forward_multiplier = config.run_speed_back_multiplier
+
+	var scaled_side: float = (
+		normalized_input.x
+		* config.run_speed_side_multiplier
+	)
+
+	var scaled_forward: float = (
+		normalized_input.y
+		* forward_multiplier
+	)
+
+	var directional_multiplier: float = Vector2(
+		scaled_side,
+		scaled_forward
+	).length()
+
+	var target_speed_mps: float = (
+		config.run_speed_forward_mps
+		* directional_multiplier
+		* input_strength
 	)
 
 	if player_input.is_walk_pressed:

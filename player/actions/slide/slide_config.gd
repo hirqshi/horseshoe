@@ -12,3 +12,7 @@ extends Resource
 @export var downhill_acceleration_mps2: float = 20.0
 @export var steering_lerp_per_second: float = 2.5
 @export var end_speed_mps: float = 2.0
+
+@export_category("landing queue")
+@export var landing_queue_window_s: float = 0.25
+@export var landing_queue_distance_m: float = 1.1

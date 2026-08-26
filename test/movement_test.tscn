@@ -100,5 +100,17 @@ use_collision = true
 size = Vector3(5.74028, 24.39627, 12.181213)
 material = SubResource("StandardMaterial3D_6m30h")
 
+[node name="CSGBox3D13" type="CSGBox3D" parent="TestWorld" unique_id=1745251251]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.932365, 3.8226452, 12.107536)
+use_collision = true
+size = Vector3(9.393089, 24.39627, 2.0886536)
+material = SubResource("StandardMaterial3D_6m30h")
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="TestWorld" unique_id=138058975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.74426, 3.8226452, 15.9879)
+use_collision = true
+size = Vector3(17.769299, 24.39627, 2.0886536)
+material = SubResource("StandardMaterial3D_6m30h")
+
 [node name="Player" parent="." unique_id=361433541 instance=ExtResource("2_3rtru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6292188, 1.4805316, -0.14548302)

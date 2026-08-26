@@ -4,9 +4,17 @@ extends Node
 signal landed(impact_speed_mps: float)
 signal left_ground()
 signal jumped()
+signal wall_touched()
+signal wallrun_started(wall_normal: Vector3)
+signal wallrun_finished()
+signal dash_started()
+signal dash_finished()
+signal slide_started()
+signal slide_finished()
 
 @export var config: MovementConfig
 @export var view_pivot: Node3D
+@export var movement_yaw_pivot: Node3D
 @export var sensors: PlayerSensors
 @export var stance: PlayerStance
 
@@ -30,7 +38,9 @@ var _active_state: LocomotionState
 
 var _last_grounded_time_s: float = -INF
 var _jump_buffer_until_s: float = -INF
+var _jump_hold_remaining_s: float = 0.0
 var _was_on_floor: bool = false
+var _was_touching_wall: bool = false
 
 func _ready() -> void:
 	_body = get_parent() as CharacterBody3D
@@ -49,7 +59,12 @@ func _ready() -> void:
 		push_error("MovementMotor requires a view pivot.")
 		set_physics_process(false)
 		return
-
+		
+	if movement_yaw_pivot == null:
+		push_error("MovementMotor requires a movement yaw pivot.")
+		set_physics_process(false)
+		return
+		
 	if sensors == null:
 		push_error("MovementMotor requires PlayerSensors.")
 		set_physics_process(false)
@@ -78,6 +93,7 @@ func _ready() -> void:
 
 	_context.body = _body
 	_context.view_pivot = view_pivot
+	_context.movement_yaw_pivot = movement_yaw_pivot
 	_context.sensors = sensors
 	_context.config = config
 	_context.player_input = _player_input
@@ -104,6 +120,7 @@ func _physics_process(delta: float) -> void:
 	_active_state.physics_tick(_context)
 	_action_controller.apply(_context)
 	_try_consume_jump(current_time_s)
+	_apply_variable_jump(delta)
 
 	_body.velocity = _context.velocity
 	_body.move_and_slide()
@@ -111,6 +128,7 @@ func _physics_process(delta: float) -> void:
 	_context.velocity = _body.velocity
 
 	sensors.update_contacts()
+	_update_wall_touch_event()
 	_process_post_move(pre_move_vertical_speed_mps)
 	_wallrun_state.update_reentry_cooldown(delta)
 	_update_locomotion_state()
@@ -126,12 +144,28 @@ func _update_jump_buffer(current_time_s: float) -> void:
 		_jump_buffer_until_s = current_time_s + config.jump_buffer_s
 
 func _try_consume_jump(current_time_s: float) -> void:
-	var has_buffered_jump: bool = current_time_s <= _jump_buffer_until_s
+	var has_buffered_jump: bool = (
+		current_time_s <= _jump_buffer_until_s
+	)
+
+	if not has_buffered_jump:
+		return
+
+	if _wallrun_state.try_wall_jump(_context):
+		_jump_hold_remaining_s = 0.0
+		_jump_buffer_until_s = -INF
+		_last_grounded_time_s = -INF
+		jumped.emit()
+
+		_set_locomotion_state(_airborne_state)
+
+		return
+
 	var can_coyote_jump: bool = (
 		current_time_s <= _last_grounded_time_s + config.coyote_time_s
 	)
 
-	if not has_buffered_jump or not can_coyote_jump:
+	if not can_coyote_jump:
 		return
 
 	if stance.is_crouching():
@@ -142,6 +176,7 @@ func _try_consume_jump(current_time_s: float) -> void:
 			return
 
 	_context.velocity.y = config.jump_speed_mps
+	_jump_hold_remaining_s = config.jump_hold_duration_s
 	_jump_buffer_until_s = -INF
 	_last_grounded_time_s = -INF
 	jumped.emit()
@@ -150,12 +185,38 @@ func _process_post_move(pre_move_vertical_speed_mps: float) -> void:
 	var is_on_floor_now: bool = _body.is_on_floor()
 
 	if not _was_on_floor and is_on_floor_now:
+		_wallrun_state.restore_wall_jump_charges()
 		landed.emit(maxf(0.0, -pre_move_vertical_speed_mps))
 
 	if _was_on_floor and not is_on_floor_now:
 		left_ground.emit()
 
 	_was_on_floor = is_on_floor_now
+
+func _set_locomotion_state(
+	next_state: LocomotionState
+) -> void:
+	if next_state == _active_state:
+		return
+
+	var was_wallrunning: bool = (
+		_active_state == _wallrun_state
+	)
+
+	_active_state.exit(_context)
+	_active_state = next_state
+	_active_state.enter(_context)
+
+	var is_wallrunning: bool = (
+		_active_state == _wallrun_state
+	)
+
+	if not was_wallrunning and is_wallrunning:
+		wallrun_started.emit(
+			_wallrun_state.get_wall_normal()
+		)
+	elif was_wallrunning and not is_wallrunning:
+		wallrun_finished.emit()
 
 func _update_locomotion_state() -> void:
 	var next_state: LocomotionState
@@ -171,9 +232,58 @@ func _update_locomotion_state() -> void:
 	else:
 		next_state = _airborne_state
 
-	if next_state == _active_state:
+	_set_locomotion_state(next_state)
+
+func _apply_variable_jump(delta: float) -> void:
+	if _jump_hold_remaining_s <= 0.0:
 		return
 
-	_active_state.exit(_context)
-	_active_state = next_state
-	_active_state.enter(_context)
+	if _context.velocity.y <= 0.0:
+		_jump_hold_remaining_s = 0.0
+		return
+
+	if not _player_input.is_jump_held:
+		_context.velocity.y *= (
+			config.jump_release_velocity_multiplier
+		)
+		_jump_hold_remaining_s = 0.0
+		return
+
+	_context.velocity.y += (
+		config.gravity_mps2
+		* (
+			1.0
+			- config.jump_hold_gravity_multiplier
+		)
+		* delta
+	)
+
+	_jump_hold_remaining_s = maxf(
+		_jump_hold_remaining_s - delta,
+		0.0
+	)
+
+func _update_wall_touch_event() -> void:
+	var is_touching_wall: bool = (
+		sensors.get_best_wall().is_valid()
+	)
+
+	if not _was_touching_wall and is_touching_wall:
+		wall_touched.emit()
+
+	_was_touching_wall = is_touching_wall
+
+func get_move_input() -> Vector2:
+	return _player_input.move
+
+func notify_dash_started() -> void:
+	dash_started.emit()
+
+func notify_dash_finished() -> void:
+	dash_finished.emit()
+
+func notify_slide_started() -> void:
+	slide_started.emit()
+
+func notify_slide_finished() -> void:
+	slide_finished.emit()

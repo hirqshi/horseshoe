@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://cefvnebo88nnh"]
 
 [ext_resource type="Script" uid="uid://b7v0xbiatdxek" path="res://player/player.gd" id="1_g1dw6"]
-[ext_resource type="Script" uid="uid://bifr5rt0g3jtu" path="res://player/camera/camera_controller.gd" id="2_yw30f"]
+[ext_resource type="Script" uid="uid://bcnhmsy5ralgr" path="res://player/camera/camera_visual_rig.gd" id="2_65viv"]
 [ext_resource type="Script" uid="uid://c6s6xtq3w3xs3" path="res://player/movement/movement_motor.gd" id="3_qjkh3"]
+[ext_resource type="Resource" uid="uid://cj83mg5feq8sh" path="res://data/camera/default_camera_visual_config.tres" id="3_x7c3f"]
 [ext_resource type="Resource" uid="uid://bsfssmv454j38" path="res://data/movement/default_movement_config.tres" id="4_yw30f"]
 [ext_resource type="Script" uid="uid://bbnjlu8xn4wx3" path="res://player/movement/states/grounded_locomotion_state.gd" id="5_boad6"]
 [ext_resource type="Script" uid="uid://cpw6cl28g505q" path="res://player/sensors/player_sensors.gd" id="5_qjkh3"]
@@ -18,9 +19,10 @@
 [ext_resource type="Script" uid="uid://css26icnxn6px" path="res://player/stance/player_stance.gd" id="11_2ieo8"]
 [ext_resource type="Resource" uid="uid://riksolt1h4vf" path="res://data/movement/default_grounding_config.tres" id="11_tqiix"]
 [ext_resource type="Resource" uid="uid://bpqfok3s3mrcn" path="res://data/movement/default_slide_config.tres" id="11_wodsf"]
+[ext_resource type="Script" uid="uid://bqwyx4nl8awsr" path="res://player/camera/player_look_controller.gd" id="19_c35mf"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
-radius = 0.205
+radius = 0.3
 height = 1.6
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8t03j"]
@@ -39,15 +41,23 @@ shape = SubResource("CapsuleShape3D_8t03j")
 
 [node name="Head" type="Node3D" parent="." unique_id=1139077187]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-script = ExtResource("2_yw30f")
-body_path = NodePath("..")
 
-[node name="Camera3D" type="Camera3D" parent="Head" unique_id=2116220637]
+[node name="CameraVisualRig" type="Node3D" parent="Head" unique_id=1080138415 node_paths=PackedStringArray("body", "camera", "movement_motor", "stance")]
+script = ExtResource("2_65viv")
+config = ExtResource("3_x7c3f")
+body = NodePath("../..")
+camera = NodePath("Camera3D")
+movement_motor = NodePath("../../MovementMotor")
+stance = NodePath("../../PlayerStance")
 
-[node name="MovementMotor" type="Node" parent="." unique_id=2105785744 node_paths=PackedStringArray("view_pivot", "sensors", "stance")]
+[node name="Camera3D" type="Camera3D" parent="Head/CameraVisualRig" unique_id=2116220637]
+fov = 80.0
+
+[node name="MovementMotor" type="Node" parent="." unique_id=2105785744 node_paths=PackedStringArray("view_pivot", "movement_yaw_pivot", "sensors", "stance")]
 script = ExtResource("3_qjkh3")
 config = ExtResource("4_yw30f")
 view_pivot = NodePath("../Head")
+movement_yaw_pivot = NodePath("..")
 sensors = NodePath("../PlayerSensors")
 stance = NodePath("../PlayerStance")
 
@@ -79,10 +89,15 @@ config = ExtResource("11_wodsf")
 [node name="CrouchAction" type="Node" parent="MovementMotor/ActionController" unique_id=1004303175]
 script = ExtResource("10_yllr7")
 
-[node name="PlayerSensors" type="Node3D" parent="." unique_id=1942310472 node_paths=PackedStringArray("wall_probe_left", "wall_probe_right")]
+[node name="PlayerSensors" type="Node3D" parent="." unique_id=1942310472 node_paths=PackedStringArray("wall_probe_left", "wall_probe_right", "wall_probe_forward", "ground_probe")]
 script = ExtResource("5_qjkh3")
 wall_probe_left = NodePath("WallProbeLeft")
 wall_probe_right = NodePath("WallProbeRight")
+wall_probe_forward = NodePath("WallProbeForward")
+ground_probe = NodePath("GroundProbe")
+ground_probe_start_height_m = 0.0
+ground_probe_distance_m = 12.0
+wall_probe_height_m = 0.0
 
 [node name="WallProbeRight" type="RayCast3D" parent="PlayerSensors" unique_id=38116208]
 target_position = Vector3(0.5, 0, 0)
@@ -90,10 +105,23 @@ target_position = Vector3(0.5, 0, 0)
 [node name="WallProbeLeft" type="RayCast3D" parent="PlayerSensors" unique_id=1736438328]
 target_position = Vector3(-0.5, 0, 0)
 
+[node name="WallProbeForward" type="RayCast3D" parent="PlayerSensors" unique_id=1019398514]
+target_position = Vector3(0, 0, -0.5)
+
+[node name="GroundProbe" type="RayCast3D" parent="PlayerSensors" unique_id=1842487763]
+target_position = Vector3(0, -5, 0)
+
 [node name="PlayerStance" type="Node" parent="." unique_id=855263564 node_paths=PackedStringArray("standing_collider", "crouching_collider", "head")]
 script = ExtResource("11_2ieo8")
 standing_collider = NodePath("../StandingCollider")
 crouching_collider = NodePath("../CrouchingCollider")
 head = NodePath("../Head")
 standing_head_height_m = 0.5
-crouching_head_height_m = 0.2
+crouching_head_height_m = 0.0
+sliding_head_height_m = 0.0
+
+[node name="PlayerLookController" type="Node" parent="." unique_id=1056643040 node_paths=PackedStringArray("body", "head", "visual_rig")]
+script = ExtResource("19_c35mf")
+body = NodePath("..")
+head = NodePath("../Head")
+visual_rig = NodePath("../Head/CameraVisualRig")

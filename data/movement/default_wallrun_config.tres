@@ -6,4 +6,8 @@
 script = ExtResource("1_nfth0")
 duration_s = 2.0
 fall_delay_s = 0.08
+max_wall_jump_charges = 3
+wall_jump_toward_outward_speed_mps = 5.0
+minimum_tangential_entry_speed_mps = 2.0
+wall_jump_perpendicular_outward_speed_mps = 4.0
 metadata/_custom_type_script = "uid://tohot5wggfaj"

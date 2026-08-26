@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CameraVisualConfig" format=3 uid="uid://cj83mg5feq8sh"]
+
+[ext_resource type="Script" uid="uid://etbfbhx1fg5o" path="res://player/camera/camera_visual_config.gd" id="1_qja0m"]
+
+[resource]
+script = ExtResource("1_qja0m")
+speed_fov_bonus_deg = 14.0
+speed_fov_cap_mps = 20.0
+fov_response_speed = 13.0
+breathing_frequency_hz = 0.3
+bob_horizontal_m = 0.16
+bob_vertical_m = 0.16
+bob_base_frequency_hz = 0.69
+bob_speed_frequency_hz = 1.8
+wallrun_lean_deg = 11.5
+wallrun_lean_response_speed = 12.3
+mouse_delta_to_inertia = 0.012
+look_inertia_response_speed = 7.0
+landing_max_offset_m = 0.805
+landing_max_speed_mps = 9.0
+landing_spring_strength = 261.4
+landing_spring_damping = 13.1
+slide_fov_pulse_bonus_deg = 6.8
+metadata/_custom_type_script = "uid://etbfbhx1fg5o"

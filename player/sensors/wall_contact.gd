@@ -5,6 +5,7 @@ enum Side {
 	NONE,
 	LEFT,
 	RIGHT,
+	FORWARD,
 }
 
 var side: int = Side.NONE

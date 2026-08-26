@@ -18,6 +18,7 @@ func setup(motor: MovementMotor) -> void:
 
 	_charges = config.max_charges
 	_motor.landed.connect(_on_motor_landed)
+	_motor.wall_touched.connect(_on_motor_wall_touched)
 
 func can_start(context: MovementContext) -> bool:
 	return (
@@ -44,6 +45,7 @@ func start(context: MovementContext) -> void:
 
 	_dash_velocity = dash_direction * dash_speed_mps
 	context.velocity = _dash_velocity
+	_motor.dash_started.emit()
 
 func physics_tick(context: MovementContext) -> bool:
 	_remaining_time_s -= context.delta
@@ -55,4 +57,7 @@ func finish(_context: MovementContext) -> void:
 	_remaining_time_s = 0.0
 
 func _on_motor_landed(_impact_speed_mps: float) -> void:
+	_charges = config.max_charges
+
+func _on_motor_wall_touched() -> void:
 	_charges = config.max_charges

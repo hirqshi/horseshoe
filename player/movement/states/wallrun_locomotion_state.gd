@@ -3,16 +3,24 @@ extends LocomotionState
 
 const ID: StringName = &"wallrun"
 
+signal wall_jump_charges_changed(
+	current_charges: int,
+	max_charges: int
+)
+
 @export var config: WallrunConfig
 
 var _wall_normal: Vector3 = Vector3.ZERO
 var _elapsed_time_s: float = 0.0
 var _reentry_cooldown_remaining_s: float = 0.0
+var _wall_jump_charges: int = 0
+var _last_debug_time_s: float = -INF
 
 func _ready() -> void:
 	if config == null:
 		push_error("WallrunLocomotionState requires WallrunConfig.")
 		set_process(false)
+	restore_wall_jump_charges()
 
 func enter(context: MovementContext) -> void:
 	var wall_contact: WallContact = context.sensors.get_best_wall()
@@ -28,6 +36,18 @@ func enter(context: MovementContext) -> void:
 		* config.entry_upward_velocity_retention,
 		config.max_entry_upward_speed_mps
 	)
+	var horizontal_velocity: Vector3 = (
+		context.get_horizontal_velocity()
+	)
+
+	var tangential_velocity: Vector3 = (
+		_project_onto_wall(horizontal_velocity)
+	)
+
+	if tangential_velocity.length() <= (
+		config.tangential_entry_deadzone_mps
+	):
+		context.set_horizontal_velocity(Vector3.ZERO)
 
 func exit(_context: MovementContext) -> void:
 	if _elapsed_time_s >= config.duration_s:
@@ -37,15 +57,140 @@ func exit(_context: MovementContext) -> void:
 	_elapsed_time_s = 0.0
 
 func can_enter(context: MovementContext) -> bool:
-	
 	if _reentry_cooldown_remaining_s > 0.0:
+		_debug(
+			context,
+			"WR_ENTER reject | reason: cooldown"
+		)
 		return false
 
 	if context.body.is_on_floor():
 		return false
 
-	var wall_contact: WallContact = context.sensors.get_best_wall()
-	return wall_contact.is_valid()
+	var forward_wall: WallContact = (
+		context.sensors.get_forward_wall()
+	)
+
+	if forward_wall.is_valid():
+		_debug(
+			context,
+			"WR_ENTER reject | reason: front wall contact"
+		)
+		return false
+
+	var wall_contact: WallContact = (
+		context.sensors.get_best_wall()
+	)
+
+	if not wall_contact.is_valid():
+		return false
+
+	var camera_forward: Vector3 = (
+		-context.view_pivot.global_basis.z
+	)
+	camera_forward.y = 0.0
+
+	if camera_forward.is_zero_approx():
+		return false
+
+	camera_forward = camera_forward.normalized()
+
+	var look_dot: float = (
+		camera_forward.dot(-wall_contact.normal)
+	)
+
+	var horizontal_velocity: Vector3 = (
+		context.get_horizontal_velocity()
+	)
+
+	var tangential_velocity: Vector3 = (
+		_project_onto_normal(
+			horizontal_velocity,
+			wall_contact.normal
+		)
+	)
+
+	var input_direction: Vector3 = (
+		context.get_wish_direction()
+	)
+
+	var tangential_input: Vector3 = (
+		_project_onto_normal(
+			input_direction,
+			wall_contact.normal
+		)
+	)
+
+	var is_looking_into_wall: bool = (
+		look_dot >= config.perpendicular_look_normal_dot
+	)
+
+	var has_tangential_speed: bool = (
+		tangential_velocity.length()
+		>= config.minimum_tangential_entry_speed_mps
+	)
+
+	var has_tangential_input: bool = (
+		tangential_input.length()
+		>= config.minimum_tangential_input
+	)
+
+	_debug(
+		context,
+		(
+			"WR_ENTER | look_dot: %.3f / %.3f"
+			% [
+				look_dot,
+				config.perpendicular_look_normal_dot,
+			]
+		)
+		+ (
+			" | tangent_speed: %.3f / %.3f"
+			% [
+				tangential_velocity.length(),
+				config.minimum_tangential_entry_speed_mps,
+			]
+		)
+		+ (
+			" | tangent_input: %.3f / %.3f"
+			% [
+				tangential_input.length(),
+				config.minimum_tangential_input,
+			]
+		)
+		+ (
+			" | normal: %s"
+			% [wall_contact.normal]
+		)
+	)
+
+	if is_looking_into_wall:
+		_debug(
+			context,
+			"WR_ENTER reject | reason: looking into wall"
+		)
+		return false
+
+	if has_tangential_speed:
+		_debug(
+			context,
+			"WR_ENTER accept | reason: tangential speed"
+		)
+		return true
+
+	if has_tangential_input:
+		_debug(
+			context,
+			"WR_ENTER accept | reason: tangential input"
+		)
+		return true
+
+	_debug(
+		context,
+		"WR_ENTER reject | reason: no tangent"
+	)
+
+	return false
 
 func can_continue(context: MovementContext) -> bool:
 	if context.body.is_on_floor():
@@ -54,12 +199,32 @@ func can_continue(context: MovementContext) -> bool:
 	if _elapsed_time_s >= config.duration_s:
 		return false
 
-	var wall_contact: WallContact = context.sensors.get_best_wall()
+	var forward_wall: WallContact = (
+		context.sensors.get_forward_wall()
+	)
+
+	if forward_wall.is_valid():
+		_debug(
+			context,
+			(
+				"WR_EXIT | reason: front wall contact"
+				+ " | normal: %s"
+				% [forward_wall.normal]
+			),
+			true
+		)
+		return false
+
+	var wall_contact: WallContact = (
+		context.sensors.get_best_wall()
+	)
 
 	if not wall_contact.is_valid():
 		return false
 
-	var normal_alignment: float = wall_contact.normal.dot(_wall_normal)
+	var normal_alignment: float = (
+		wall_contact.normal.dot(_wall_normal)
+	)
 
 	return normal_alignment >= config.minimum_normal_alignment
 
@@ -156,3 +321,210 @@ func _apply_vertical_movement(context: MovementContext) -> void:
 		* context.delta,
 		-config.max_fall_speed_mps
 	)
+
+func try_wall_jump(context: MovementContext) -> bool:
+	var debug_contact: WallContact = (
+		context.sensors.get_wall_jump_contact()
+	)
+
+	_debug(
+		context,
+		(
+			"WR_JUMP attempt"
+			+ " | charges: %d"
+			% [_wall_jump_charges]
+		)
+		+ (
+			" | grounded: %s"
+			% [context.body.is_on_floor()]
+		)
+		+ (
+			" | sensor_valid: %s"
+			% [debug_contact.is_valid()]
+		)
+		+ (
+			" | sensor_normal: %s"
+			% [debug_contact.normal]
+		),
+		true
+	)
+
+	if _wall_jump_charges <= 0:
+		_debug(
+			context,
+			"WR_JUMP reject | reason: no charges",
+			true
+		)
+		return false
+
+	if context.body.is_on_floor():
+		_debug(
+			context,
+			"WR_JUMP reject | reason: grounded",
+			true
+		)
+		return false
+
+	var jump_normal: Vector3 = _get_wall_jump_normal(context)
+
+	if jump_normal.is_zero_approx():
+		_debug(
+			context,
+			"WR_JUMP reject | reason: no wall normal",
+			true
+		)
+		return false
+
+	var input_direction: Vector3 = (
+		context.get_wish_direction()
+	)
+
+	var is_holding_toward_wall: bool = (
+		not input_direction.is_zero_approx()
+		and input_direction.dot(-jump_normal)
+		>= config.toward_wall_threshold
+	)
+
+	var input_tangent: Vector3 = (
+		_project_onto_normal(
+			input_direction,
+			jump_normal
+		)
+	)
+
+	var has_tangential_input: bool = (
+		input_tangent.length()
+		>= config.wall_jump_tangent_input_threshold
+	)
+
+	var jump_tangent: Vector3 = Vector3.ZERO
+
+	if has_tangential_input:
+		jump_tangent = input_tangent.normalized()
+
+	var outward_speed_mps: float = (
+		config.wall_jump_away_outward_speed_mps
+	)
+
+	var forward_speed_mps: float = (
+		config.wall_jump_away_forward_speed_mps
+	)
+
+	var upward_speed_mps: float = (
+		config.wall_jump_upward_speed_mps
+	)
+
+	if not has_tangential_input:
+		outward_speed_mps = (
+			config.wall_jump_perpendicular_outward_speed_mps
+		)
+		forward_speed_mps = 0.0
+		upward_speed_mps = (
+			config.wall_jump_perpendicular_upward_speed_mps
+		)
+	elif is_holding_toward_wall:
+		outward_speed_mps = (
+			config.wall_jump_toward_outward_speed_mps
+		)
+		forward_speed_mps = (
+			config.wall_jump_toward_forward_speed_mps
+		)
+		upward_speed_mps *= (
+			config.wall_jump_toward_upward_multiplier
+		)
+
+	context.velocity = (
+		jump_normal * outward_speed_mps
+		+ jump_tangent * forward_speed_mps
+	)
+	context.velocity.y = upward_speed_mps
+
+	_wall_jump_charges -= 1
+	_reentry_cooldown_remaining_s = maxf(
+		_reentry_cooldown_remaining_s,
+		config.reentry_cooldown_s
+	)
+
+	wall_jump_charges_changed.emit(
+		_wall_jump_charges,
+		config.max_wall_jump_charges
+	)
+
+	_debug(
+		context,
+		(
+			"WR_JUMP success"
+			+ " | normal: %s"
+			% [jump_normal]
+		)
+		+ (
+			" | tangent: %s"
+			% [jump_tangent]
+		)
+		+ (
+			" | has_tangent: %s"
+			% [has_tangential_input]
+		)
+		+ (
+			" | velocity: %s"
+			% [context.velocity]
+		),
+		true
+	)
+
+	return true
+
+func _get_wall_jump_normal(
+	context: MovementContext
+) -> Vector3:
+	var wall_contact: WallContact = (
+		context.sensors.get_wall_jump_contact()
+	)
+
+	if wall_contact.is_valid():
+		return wall_contact.normal.normalized()
+
+	if not _wall_normal.is_zero_approx():
+		return _wall_normal
+
+	return Vector3.ZERO
+
+func restore_wall_jump_charges() -> void:
+	if _wall_jump_charges == config.max_wall_jump_charges:
+		return
+
+	_wall_jump_charges = config.max_wall_jump_charges
+
+	wall_jump_charges_changed.emit(
+		_wall_jump_charges,
+		config.max_wall_jump_charges
+	)
+
+func get_wall_jump_charges() -> int:
+	return _wall_jump_charges
+
+func _project_onto_wall(direction: Vector3) -> Vector3:
+	return direction - _wall_normal * direction.dot(_wall_normal)
+
+func _project_onto_normal(
+	direction: Vector3,
+	normal: Vector3
+) -> Vector3:
+	return direction - normal * direction.dot(normal)
+
+func _debug(
+	context: MovementContext,
+	message: String,
+	force: bool = false
+) -> void:
+	if not config.is_debug_enabled:
+		return
+
+	if not force and (
+		context.time_s
+		< _last_debug_time_s + config.debug_interval_s
+	):
+		return
+
+	_last_debug_time_s = context.time_s
+	print(message)

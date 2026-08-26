@@ -12,14 +12,21 @@ signal stance_changed(is_crouching: bool)
 @export var clearance_collision_mask: int = 1
 @export_range(0.0, 0.1, 0.005) var clearance_margin_m: float = 0.02
 
-@export_category("camera")
+@export_category("camera heights")
 @export var standing_head_height_m: float = 1.6
 @export var crouching_head_height_m: float = 0.95
-@export var camera_transition_speed_mps: float = 8.0
+@export var sliding_head_height_m: float = 0.72
+
+@export_category("camera transition")
+@export var crouch_lower_speed_mps: float = 8.0
+@export var crouch_raise_speed_mps: float = 10.0
+@export var slide_lower_speed_mps: float = 16.0
+@export var slide_raise_speed_mps: float = 12.0
 
 var _body: CharacterBody3D
 var _is_crouching: bool = false
 var _wants_to_stand: bool = false
+var _is_sliding_visual: bool = false
 
 func _ready() -> void:
 	_body = get_parent() as CharacterBody3D
@@ -118,12 +125,33 @@ func can_stand() -> bool:
 
 	return overlaps.is_empty()
 
-func _apply_head_height(is_immediate: bool, delta: float = 0.0) -> void:
-	var target_height_m: float = (
-		crouching_head_height_m
-		if _is_crouching
-		else standing_head_height_m
-	)
+func set_is_sliding(value: bool) -> void:
+	if _is_sliding_visual == value:
+		return
+
+	_is_sliding_visual = value
+
+func _apply_head_height(
+	is_immediate: bool,
+	delta: float = 0.0
+) -> void:
+	var target_height_m: float = standing_head_height_m
+	var transition_speed_mps: float = crouch_raise_speed_mps
+
+	if _is_sliding_visual:
+		target_height_m = sliding_head_height_m
+
+		if head.position.y > target_height_m:
+			transition_speed_mps = slide_lower_speed_mps
+		else:
+			transition_speed_mps = slide_raise_speed_mps
+	elif _is_crouching:
+		target_height_m = crouching_head_height_m
+
+		if head.position.y > target_height_m:
+			transition_speed_mps = crouch_lower_speed_mps
+		else:
+			transition_speed_mps = crouch_raise_speed_mps
 
 	if is_immediate:
 		head.position.y = target_height_m
@@ -132,7 +160,7 @@ func _apply_head_height(is_immediate: bool, delta: float = 0.0) -> void:
 	head.position.y = move_toward(
 		head.position.y,
 		target_height_m,
-		camera_transition_speed_mps * delta
+		transition_speed_mps * delta
 	)
 
 func _set_crouching(value: bool) -> void:

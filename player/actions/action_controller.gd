@@ -33,6 +33,10 @@ func apply(context: MovementContext) -> void:
 		return
 
 	for action: MovementAction in _actions:
+		if action.try_buffer(context):
+			return
+
+	for action: MovementAction in _actions:
 		if not action.can_start(context):
 			continue
 

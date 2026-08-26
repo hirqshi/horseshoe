@@ -7,6 +7,10 @@ extends Node3D
 @export_category("wall probes")
 @export var wall_probe_left: RayCast3D
 @export var wall_probe_right: RayCast3D
+@export var wall_probe_forward: RayCast3D
+@export var ground_probe: RayCast3D
+@export var ground_probe_start_height_m: float = 0.08
+@export var ground_probe_distance_m: float = 1.5
 @export var wall_probe_height_m: float = 1.1
 @export var wall_probe_distance_m: float = 0.7
 @export_range(0.0, 1.0, 0.01) var max_wall_normal_y: float = 0.2
@@ -16,6 +20,7 @@ extends Node3D
 var _body: CharacterBody3D
 var _left_wall: WallContact = WallContact.new()
 var _right_wall: WallContact = WallContact.new()
+var _forward_wall: WallContact = WallContact.new()
 
 func _ready() -> void:
 	_body = get_parent() as CharacterBody3D
@@ -25,8 +30,13 @@ func _ready() -> void:
 		set_process(false)
 		return
 
-	if wall_probe_left == null or wall_probe_right == null:
-		push_error("PlayerSensors requires left and right wall probes.")
+	if wall_probe_left == null \
+			or wall_probe_right == null \
+			or wall_probe_forward == null \
+			or ground_probe == null:
+		push_error(
+			"PlayerSensors requires wall probes and GroundProbe."
+		)
 		set_process(false)
 		return
 
@@ -38,11 +48,17 @@ func _ready() -> void:
 		wall_probe_right,
 		Vector3.RIGHT * wall_probe_distance_m
 	)
+	_setup_wall_probe(
+		wall_probe_forward,
+		Vector3.FORWARD * wall_probe_distance_m
+	)
+	_setup_ground_probe(ground_probe)
 
 func update_contacts() -> void:
 	wall_probe_left.force_raycast_update()
 	wall_probe_right.force_raycast_update()
-
+	wall_probe_forward.force_raycast_update()
+	
 	_left_wall = _read_wall_probe(
 		wall_probe_left,
 		WallContact.Side.LEFT
@@ -51,6 +67,11 @@ func update_contacts() -> void:
 		wall_probe_right,
 		WallContact.Side.RIGHT
 	)
+	_forward_wall = _read_wall_probe(
+		wall_probe_forward,
+		WallContact.Side.FORWARD
+	)
+	
 	if is_wall_probe_debug_enabled:
 		_debug_wall_probe(wall_probe_left, "left")
 		_debug_wall_probe(wall_probe_right, "right")
@@ -60,6 +81,9 @@ func get_left_wall() -> WallContact:
 
 func get_right_wall() -> WallContact:
 	return _right_wall
+
+func get_forward_wall() -> WallContact:
+	return _forward_wall
 
 func get_best_wall() -> WallContact:
 	if _left_wall.is_valid() and _right_wall.is_valid():
@@ -72,6 +96,20 @@ func get_best_wall() -> WallContact:
 		return _left_wall
 
 	return _right_wall
+
+func get_wall_jump_contact() -> WallContact:
+	var best_side_contact: WallContact = get_best_wall()
+
+	if not _forward_wall.is_valid():
+		return best_side_contact
+
+	if not best_side_contact.is_valid():
+		return _forward_wall
+
+	if _forward_wall.distance_m < best_side_contact.distance_m:
+		return _forward_wall
+
+	return best_side_contact
 
 func _setup_wall_probe(
 	probe: RayCast3D,
@@ -140,3 +178,30 @@ func _debug_wall_probe(
 			probe.get_collision_normal(),
 		]
 	)
+
+func is_ground_near(max_distance_m: float) -> bool:
+	if ground_probe == null:
+		return false
+
+	ground_probe.force_raycast_update()
+
+	if not ground_probe.is_colliding():
+		return false
+
+	var distance_m: float = ground_probe.global_position.distance_to(
+		ground_probe.get_collision_point()
+	)
+
+	return distance_m <= max_distance_m
+
+func _setup_ground_probe(probe: RayCast3D) -> void:
+	probe.position = Vector3.UP * ground_probe_start_height_m
+	probe.target_position = (
+		Vector3.DOWN
+		* ground_probe_distance_m
+	)
+	probe.collision_mask = traversal_collision_mask
+	probe.collide_with_areas = false
+	probe.collide_with_bodies = true
+	probe.enabled = true
+	probe.add_exception(_body)

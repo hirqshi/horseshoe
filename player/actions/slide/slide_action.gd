@@ -5,6 +5,7 @@ extends MovementAction
 
 var _motor: MovementMotor
 var _slide_velocity: Vector3 = Vector3.ZERO
+var _landing_queue_until_s: float = -INF
 
 func setup(motor: MovementMotor) -> void:
 	_motor = motor
@@ -13,18 +14,48 @@ func setup(motor: MovementMotor) -> void:
 		push_error("SlideAction requires SlideConfig.")
 		set_process(false)
 
+func try_buffer(context: MovementContext) -> bool:
+	if context.is_grounded:
+		return false
+
+	if not context.player_input.is_slide_pressed:
+		return false
+
+	if not context.sensors.is_ground_near(
+		config.landing_queue_distance_m
+	):
+		return false
+
+	_landing_queue_until_s = (
+		context.time_s
+		+ config.landing_queue_window_s
+	)
+
+	return true
+
 func can_start(context: MovementContext) -> bool:
+	if not context.is_grounded:
+		return false
+
+	if not context.player_input.is_slide_held:
+		return false
+
+	var has_queued_slide: bool = (
+		context.time_s <= _landing_queue_until_s
+	)
+
+	if has_queued_slide:
+		return true
+
 	var horizontal_speed_mps: float = (
 		context.get_horizontal_velocity().length()
 	)
 
-	return (
-		context.is_grounded
-		and context.player_input.is_slide_held
-		and horizontal_speed_mps >= config.minimum_start_speed_mps
-	)
+	return horizontal_speed_mps >= config.minimum_start_speed_mps
 
 func start(context: MovementContext) -> void:
+	_landing_queue_until_s = -INF
+
 	var current_horizontal: Vector3 = context.get_horizontal_velocity()
 	var input_direction: Vector3 = context.get_wish_direction()
 	var slide_direction: Vector3 = _get_slide_direction(
@@ -42,6 +73,7 @@ func start(context: MovementContext) -> void:
 
 	_slide_velocity = slide_direction * start_speed_mps
 	_motor.stance.force_crouching()
+	_motor.slide_started.emit()
 
 func physics_tick(context: MovementContext) -> bool:
 	if not context.player_input.is_slide_held:
@@ -61,6 +93,8 @@ func physics_tick(context: MovementContext) -> bool:
 	return _slide_velocity.length() > config.end_speed_mps
 
 func finish(context: MovementContext) -> void:
+	_motor.slide_finished.emit()
+
 	_slide_velocity = Vector3.ZERO
 
 	if context.player_input.is_slide_held:
