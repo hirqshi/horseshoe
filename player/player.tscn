@@ -51,7 +51,7 @@ movement_motor = NodePath("../../MovementMotor")
 stance = NodePath("../../PlayerStance")
 
 [node name="Camera3D" type="Camera3D" parent="Head/CameraVisualRig" unique_id=2116220637]
-fov = 80.0
+fov = 130.0
 
 [node name="MovementMotor" type="Node" parent="." unique_id=2105785744 node_paths=PackedStringArray("view_pivot", "movement_yaw_pivot", "sensors", "stance")]
 script = ExtResource("3_qjkh3")

@@ -114,3 +114,6 @@ material = SubResource("StandardMaterial3D_6m30h")
 
 [node name="Player" parent="." unique_id=361433541 instance=ExtResource("2_3rtru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6292188, 1.4805316, -0.14548302)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=867268483]
+transform = Transform3D(-0.7882903, 0.57912844, 0.20786753, 0.22653782, -0.040935617, 0.97314173, 0.57208323, 0.81420803, -0.09892534, 0, 0, 0)

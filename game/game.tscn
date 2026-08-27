@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://bklilr7pp6kf6"]
+
+[ext_resource type="Script" uid="uid://d06w6qvkqm62r" path="res://screenspace_projection/screenspace_projection.gd" id="1_4fuuu"]
+[ext_resource type="PackedScene" uid="uid://bgtu17lf4f73j" path="res://test/movement_test.tscn" id="1_vasa2"]
+[ext_resource type="Shader" uid="uid://d3q7ed1bj00d4" path="res://screenspace_projection/screenspace_projection.gdshader" id="2_dxrkv"]
+[ext_resource type="PackedScene" uid="uid://cefvnebo88nnh" path="res://player/player.tscn" id="2_h7iqs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
+render_priority = 0
+shader = ExtResource("2_dxrkv")
+shader_parameter/enabled = true
+shader_parameter/projection_mode = 1
+shader_parameter/strength = 0.5
+shader_parameter/fill = 1.0
+shader_parameter/panini_s = 1.0
+shader_parameter/max_major_radius = 5
+shader_parameter/max_minor_radius = 3
+shader_parameter/fov_is_vertical = true
+shader_parameter/fov_deg = 150.0000070775
+shader_parameter/ca_amount = 0.0
+shader_parameter/ca_amount_spread = 0.5
+shader_parameter/ca_reference_wavelength = 540.0
+shader_parameter/ca_enable_start = 0.5
+shader_parameter/ca_jitter = true
+shader_parameter/ca_max_samples = 16
+shader_parameter/ca_samples_per_ca = 0.5
+shader_parameter/vignette_strength = 0.0
+shader_parameter/vignette_spread = 0.5
+
+[sub_resource type="QuadMesh" id="QuadMesh_ycdy4"]
+
+[node name="Game" type="Node" unique_id=1690887929]
+
+[node name="ScreenSpaceProjection" type="Camera3D" parent="." unique_id=2131587968]
+projection = 1
+current = true
+near = 0.5
+far = 2.0
+script = ExtResource("1_4fuuu")
+strength = 0.2
+
+[node name="_ProjectionOutput" type="MeshInstance3D" parent="ScreenSpaceProjection" unique_id=387850907]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+material_override = SubResource("ShaderMaterial_noarx")
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("QuadMesh_ycdy4")
+
+[node name="ProjectionContainer" type="SubViewportContainer" parent="ScreenSpaceProjection" unique_id=545014633]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProjectionInput" type="SubViewport" parent="ScreenSpaceProjection/ProjectionContainer" unique_id=1493971111]
+own_world_3d = true
+handle_input_locally = false
+use_hdr_2d = true
+scaling_3d_mode = 5
+anisotropic_filtering_level = 0
+size = Vector2i(1152, 648)
+render_target_update_mode = 0
+
+[node name="World" type="Node3D" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput" unique_id=1596189794]
+
+[node name="MovementTest" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World" unique_id=46126002 instance=ExtResource("1_vasa2")]
+
+[node name="Player" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World" unique_id=361433541 instance=ExtResource("2_h7iqs")]
