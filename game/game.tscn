@@ -1,9 +1,21 @@
 [gd_scene format=3 uid="uid://bklilr7pp6kf6"]
 
 [ext_resource type="Script" uid="uid://d06w6qvkqm62r" path="res://screenspace_projection/screenspace_projection.gd" id="1_4fuuu"]
+[ext_resource type="Script" uid="uid://ceqpqkk7vcrwj" path="res://game/game.gd" id="1_l8g03"]
 [ext_resource type="PackedScene" uid="uid://bgtu17lf4f73j" path="res://test/movement_test.tscn" id="1_vasa2"]
 [ext_resource type="Shader" uid="uid://d3q7ed1bj00d4" path="res://screenspace_projection/screenspace_projection.gdshader" id="2_dxrkv"]
 [ext_resource type="PackedScene" uid="uid://cefvnebo88nnh" path="res://player/player.tscn" id="2_h7iqs"]
+[ext_resource type="Texture2D" uid="uid://csg0mb81t6mw" path="res://assets/textures/ui/crosshairdot.png" id="5_dxrkv"]
+[ext_resource type="Script" uid="uid://b77y0jbt63g2m" path="res://ui/hud/crosshair_hud_element.gd" id="5_u5opy"]
+[ext_resource type="Script" uid="uid://cjjneqc3d8gjx" path="res://ui/hud/in_game_hud.gd" id="6_j8tme"]
+[ext_resource type="Script" uid="uid://bfef1slmh7ex7" path="res://ui/hud/hud_element.gd" id="6_y36n6"]
+[ext_resource type="Texture2D" uid="uid://rcw85p34vmfn" path="res://assets/textures/ui/crosshairatlas.png" id="7_y36n6"]
+[ext_resource type="Script" uid="uid://bmffdvssuqee0" path="res://ui/hud/speed_hud_element.gd" id="11_3vho3"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="12_qf6n1"]
+[ext_resource type="Texture2D" uid="uid://c70o4nckx7y5o" path="res://assets/textures/ui/Union.png" id="12_vsp63"]
+[ext_resource type="Script" uid="uid://fj52ts8fjlcn" path="res://ui/hud/fall_danger_hud.gd" id="14_b686c"]
+[ext_resource type="Texture2D" uid="uid://ltknr6gb83xg" path="res://assets/textures/ui/falldanger.png" id="15_hb504"]
+[ext_resource type="Texture2D" uid="uid://dv87hpoc1q30p" path="res://assets/textures/ui/playertracker.png" id="16_ee6o4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
 render_priority = 0
@@ -29,7 +41,26 @@ shader_parameter/vignette_spread = 0.5
 
 [sub_resource type="QuadMesh" id="QuadMesh_ycdy4"]
 
-[node name="Game" type="Node" unique_id=1690887929]
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8g03"]
+atlas = ExtResource("7_y36n6")
+region = Rect2(41.929222, 0, 44.106155, 47.856865)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j8tme"]
+atlas = ExtResource("7_y36n6")
+region = Rect2(76.19631, 63.463654, 53.803688, 49.5346)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vho3"]
+atlas = ExtResource("7_y36n6")
+region = Rect2(0, 62.445824, 52.446846, 51.909546)
+
+[sub_resource type="LabelSettings" id="LabelSettings_3vho3"]
+font = ExtResource("12_qf6n1")
+font_size = 38
+
+[node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("player", "in_game_hud")]
+script = ExtResource("1_l8g03")
+player = NodePath("ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World/Player")
+in_game_hud = NodePath("InGameHud")
 
 [node name="ScreenSpaceProjection" type="Camera3D" parent="." unique_id=2131587968]
 projection = 1
@@ -69,3 +100,226 @@ render_target_update_mode = 0
 [node name="MovementTest" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World" unique_id=46126002 instance=ExtResource("1_vasa2")]
 
 [node name="Player" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World" unique_id=361433541 instance=ExtResource("2_h7iqs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33338058, 0)
+
+[node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud")]
+script = ExtResource("6_j8tme")
+crosshair = NodePath("HudRoot/Crosshair")
+speed_hud = NodePath("HudRoot/SpeedHud")
+fall_danger_hud = NodePath("HudRoot/FallDangerHud")
+
+[node name="HudRoot" type="Control" parent="InGameHud" unique_id=1715384193]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+
+[node name="Crosshair" type="Control" parent="InGameHud/HudRoot" unique_id=903694561 node_paths=PackedStringArray("center_dot_group", "primary_crosshair_group", "upper_segment", "right_segment", "left_segment")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+script = ExtResource("5_u5opy")
+center_dot_group = NodePath("CenterDotGroup")
+primary_crosshair_group = NodePath("PrimaryCrosshairGroup")
+upper_segment = NodePath("PrimaryCrosshairGroup/UpperSegment")
+right_segment = NodePath("PrimaryCrosshairGroup/RightSegment")
+left_segment = NodePath("PrimaryCrosshairGroup/LeftSegment")
+
+[node name="CenterDotGroup" type="Control" parent="InGameHud/HudRoot/Crosshair" unique_id=245050047]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("6_y36n6")
+element_color = Color(0.0333333, 1, 0, 1)
+is_lag_enabled = false
+
+[node name="CrosshairDot" type="TextureRect" parent="InGameHud/HudRoot/Crosshair/CenterDotGroup" unique_id=327126489]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("5_dxrkv")
+
+[node name="PrimaryCrosshairGroup" type="Control" parent="InGameHud/HudRoot/Crosshair" unique_id=185062504]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("6_y36n6")
+element_color = Color(0.0333333, 1, 0, 1)
+element_alpha = 0.26
+
+[node name="UpperSegment" type="TextureRect" parent="InGameHud/HudRoot/Crosshair/PrimaryCrosshairGroup" unique_id=564724087]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -57.0
+offset_right = 21.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_l8g03")
+
+[node name="RightSegment" type="TextureRect" parent="InGameHud/HudRoot/Crosshair/PrimaryCrosshairGroup" unique_id=412637765]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -1.0
+offset_right = 61.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_j8tme")
+
+[node name="LeftSegment" type="TextureRect" parent="InGameHud/HudRoot/Crosshair/PrimaryCrosshairGroup" unique_id=128249996]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -61.0
+offset_top = -3.0
+offset_right = -9.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("AtlasTexture_3vho3")
+
+[node name="SpeedHud" type="Control" parent="InGameHud/HudRoot" unique_id=771391193 node_paths=PackedStringArray("speed_label")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("11_3vho3")
+speed_label = NodePath("SpeedLabel")
+use_total_speed_in_air = false
+label_prefix = "speed: "
+element_color = Color(0.0333333, 1, 0, 1)
+element_alpha = 0.37
+
+[node name="SpeedIcon" type="TextureRect" parent="InGameHud/HudRoot/SpeedHud" unique_id=958240130]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = 156.99998
+offset_right = 100.0
+offset_bottom = 196.99998
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.21, 0.72)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("12_vsp63")
+
+[node name="SpeedLabel" type="Label" parent="InGameHud/HudRoot/SpeedHud" unique_id=1522808455]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -143.0
+offset_top = 136.0
+offset_right = 143.0
+offset_bottom = 195.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "speed:16.109"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
+
+[node name="FallDangerHud" type="Control" parent="InGameHud/HudRoot" unique_id=426426204 node_paths=PackedStringArray("content", "height_bar", "player_marker")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("14_b686c")
+content = NodePath("Content")
+height_bar = NodePath("Content/HeightBar")
+player_marker = NodePath("Content/PlayerMarker")
+danger_color = Color(1.6095817, 0.11066928, 0, 1)
+element_alpha = 0.47
+
+[node name="Content" type="Control" parent="InGameHud/HudRoot/FallDangerHud" unique_id=74653954]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="HeightBar" type="TextureRect" parent="InGameHud/HudRoot/FallDangerHud/Content" unique_id=1419234547]
+modulate = Color(0.0333333, 1, 0, 1)
+layout_mode = 0
+offset_left = 151.0
+offset_top = -66.0
+offset_right = 191.0
+offset_bottom = 108.0
+mouse_filter = 2
+texture = ExtResource("15_hb504")
+
+[node name="PlayerMarker" type="TextureRect" parent="InGameHud/HudRoot/FallDangerHud/Content" unique_id=814381601]
+modulate = Color(0.0333333, 1, 0, 1)
+layout_mode = 0
+offset_left = 202.0
+offset_top = -66.0
+offset_right = 234.0
+offset_bottom = -46.0
+mouse_filter = 2
+texture = ExtResource("16_ee6o4")

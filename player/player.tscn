@@ -20,6 +20,8 @@
 [ext_resource type="Resource" uid="uid://riksolt1h4vf" path="res://data/movement/default_grounding_config.tres" id="11_tqiix"]
 [ext_resource type="Resource" uid="uid://bpqfok3s3mrcn" path="res://data/movement/default_slide_config.tres" id="11_wodsf"]
 [ext_resource type="Script" uid="uid://bqwyx4nl8awsr" path="res://player/camera/player_look_controller.gd" id="19_c35mf"]
+[ext_resource type="Script" uid="uid://c550e20npurxm" path="res://player/fall/fall_tracker.gd" id="21_bjvpn"]
+[ext_resource type="Resource" uid="uid://dceteb6iuy0pc" path="res://player/fall/player_fall_config.tres" id="22_s7qer"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
 radius = 0.3
@@ -29,8 +31,9 @@ height = 1.6
 radius = 0.205
 height = 0.6434082
 
-[node name="Player" type="CharacterBody3D" unique_id=361433541]
+[node name="Player" type="CharacterBody3D" unique_id=361433541 node_paths=PackedStringArray("look_controller")]
 script = ExtResource("1_g1dw6")
+look_controller = NodePath("PlayerLookController")
 
 [node name="StandingCollider" type="CollisionShape3D" parent="." unique_id=1632523810]
 shape = SubResource("CapsuleShape3D_6m30h")
@@ -125,3 +128,8 @@ script = ExtResource("19_c35mf")
 body = NodePath("..")
 head = NodePath("../Head")
 visual_rig = NodePath("../Head/CameraVisualRig")
+
+[node name="FallTracker" type="Node" parent="." unique_id=1990466530 node_paths=PackedStringArray("movement_motor")]
+script = ExtResource("21_bjvpn")
+config = ExtResource("22_s7qer")
+movement_motor = NodePath("../MovementMotor")

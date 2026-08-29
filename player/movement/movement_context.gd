@@ -53,11 +53,14 @@ func get_wish_direction() -> Vector3:
 
 	return direction.normalized()
 
-func get_target_speed_mps() -> float:
+func get_target_speed_mps(
+	ignore_walk_input: bool = false
+) -> float:
 	if player_input.move.is_zero_approx():
 		return 0.0
 
 	var input_strength: float = player_input.move.length()
+
 	var normalized_input: Vector2 = (
 		player_input.move / input_strength
 	)
@@ -88,7 +91,8 @@ func get_target_speed_mps() -> float:
 		* input_strength
 	)
 
-	if player_input.is_walk_pressed:
+	if player_input.is_walk_pressed \
+			and not ignore_walk_input:
 		target_speed_mps *= config.walk_speed_multiplier
 
 	return target_speed_mps

@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bgtu17lf4f73j"]
 
 [ext_resource type="Texture2D" uid="uid://1f5e2w0qf40k" path="res://assets/textures/world/concrete1_albedo.png" id="1_626n2"]
-[ext_resource type="PackedScene" uid="uid://cefvnebo88nnh" path="res://player/player.tscn" id="2_3rtru"]
 
 [sub_resource type="Environment" id="Environment_ioc36"]
 background_mode = 1
@@ -14,6 +13,9 @@ fog_light_color = Color(0.64, 0.64, 0.64, 1)
 fog_density = 1.0
 fog_depth_begin = 1.0
 fog_depth_end = 52.0
+adjustment_enabled = true
+adjustment_brightness = 0.67
+adjustment_contrast = 1.245
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6m30h"]
 albedo_texture = ExtResource("1_626n2")
@@ -111,9 +113,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.74426, 3.8226452, 15.9879)
 use_collision = true
 size = Vector3(17.769299, 24.39627, 2.0886536)
 material = SubResource("StandardMaterial3D_6m30h")
-
-[node name="Player" parent="." unique_id=361433541 instance=ExtResource("2_3rtru")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6292188, 1.4805316, -0.14548302)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=867268483]
 transform = Transform3D(-0.7882903, 0.57912844, 0.20786753, 0.22653782, -0.040935617, 0.97314173, 0.57208323, 0.81420803, -0.09892534, 0, 0, 0)

@@ -1,6 +1,8 @@
 class_name PlayerLookController
 extends Node
 
+signal look_delta_received(mouse_delta: Vector2)
+
 @export_category("references")
 @export var body: CharacterBody3D
 @export var head: Node3D
@@ -10,10 +12,12 @@ extends Node
 @export_range(0.0001, 0.05, 0.0001) var mouse_sensitivity: float = 0.0025
 @export_range(1.0, 89.0, 1.0, "suffix:deg") var max_ground_pitch_deg: float = 85.0
 @export_range(1.0, 1440.0, 1.0, "suffix:deg/s") var ground_pitch_recovery_speed_deg_s: float = 420.0
+@export_range(0.0, 1.0, 0.01) var upside_down_switch_threshold: float = 0.15
 
 
 var _pitch_rad: float = 0.0
 var _is_enabled: bool = true
+var _is_camera_upside_down: bool = false
 
 func _ready() -> void:
 	if body == null:
@@ -69,23 +73,33 @@ func set_is_enabled(value: bool) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _apply_mouse_look(mouse_delta: Vector2) -> void:
-	
+	look_delta_received.emit(mouse_delta)
 	visual_rig.register_look_delta(mouse_delta)
-	
+
+	var yaw_multiplier: float = (
+		-1.0
+		if _is_camera_upside_down
+		else 1.0
+	)
+
 	var yaw_delta_rad: float = (
-		-mouse_delta.x * mouse_sensitivity
+		-mouse_delta.x
+		* mouse_sensitivity
+		* yaw_multiplier
 	)
+
 	var pitch_delta_rad: float = (
-		-mouse_delta.y * mouse_sensitivity
+		-mouse_delta.y
+		* mouse_sensitivity
 	)
-	
-	
+
 	body.rotate_y(yaw_delta_rad)
 
 	if body.is_on_floor() and _is_ground_pitch_valid(_pitch_rad):
 		var ground_center_rad: float = (
 			_get_nearest_ground_pitch(_pitch_rad)
 		)
+
 		var max_pitch_rad: float = deg_to_rad(
 			max_ground_pitch_deg
 		)
@@ -99,6 +113,21 @@ func _apply_mouse_look(mouse_delta: Vector2) -> void:
 		_pitch_rad += pitch_delta_rad
 
 	head.rotation.x = _pitch_rad
+
+	_update_upside_down_state()
+
+func _update_upside_down_state() -> void:
+	var head_up_dot: float = (
+		head.global_transform.basis.y.dot(Vector3.UP)
+	)
+
+	if _is_camera_upside_down:
+		if head_up_dot > upside_down_switch_threshold:
+			_is_camera_upside_down = false
+		return
+
+	if head_up_dot < -upside_down_switch_threshold:
+		_is_camera_upside_down = true
 
 func _recover_ground_pitch(delta: float) -> void:
 	var target_pitch_rad: float = (

@@ -11,6 +11,7 @@ signal dash_started()
 signal dash_finished()
 signal slide_started()
 signal slide_finished()
+signal wall_jumped()
 
 @export var config: MovementConfig
 @export var view_pivot: Node3D
@@ -155,6 +156,8 @@ func _try_consume_jump(current_time_s: float) -> void:
 		_jump_hold_remaining_s = 0.0
 		_jump_buffer_until_s = -INF
 		_last_grounded_time_s = -INF
+
+		wall_jumped.emit()
 		jumped.emit()
 
 		_set_locomotion_state(_airborne_state)

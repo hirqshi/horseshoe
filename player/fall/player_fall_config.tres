@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="FallConfig" format=3 uid="uid://dceteb6iuy0pc"]
+
+[ext_resource type="Script" uid="uid://5l7kxglm8yag" path="res://player/fall/fall_config.gd" id="1_rdfx8"]
+
+[resource]
+script = ExtResource("1_rdfx8")
+metadata/_custom_type_script = "uid://5l7kxglm8yag"

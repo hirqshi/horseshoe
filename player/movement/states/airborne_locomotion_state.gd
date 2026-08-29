@@ -26,7 +26,7 @@ func _apply_horizontal_movement(context: MovementContext) -> void:
 	)
 
 	var target_speed_mps: float = (
-		context.get_target_speed_mps()
+		context.get_target_speed_mps(true)
 	)
 
 	var target_velocity: Vector3 = (

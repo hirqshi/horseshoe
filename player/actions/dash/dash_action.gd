@@ -17,8 +17,13 @@ func setup(motor: MovementMotor) -> void:
 		return
 
 	_charges = config.max_charges
+
 	_motor.landed.connect(_on_motor_landed)
 	_motor.wall_touched.connect(_on_motor_wall_touched)
+	_motor.wall_jumped.connect(_on_motor_wall_jumped)
+
+func _on_motor_wall_jumped() -> void:
+	_charges = config.max_charges
 
 func can_start(context: MovementContext) -> bool:
 	return (
