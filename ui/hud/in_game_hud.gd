@@ -5,6 +5,10 @@ extends CanvasLayer
 @export var hud_toggle_action: StringName = &"toggle_hud"
 @export var speed_hud: SpeedHudElement
 @export var fall_danger_hud: FallDangerHud
+@export_category("viewport composite")
+@export var ui_viewport: SubViewport
+@export var hud_root: Control
+@export var ui_composite: TextureRect
 
 var _is_hud_visible: bool = true
 
@@ -24,6 +28,44 @@ func _ready() -> void:
 		set_process_input(false)
 		return
 		
+	if ui_viewport == null:
+		push_error("InGameHud requires UiViewport.")
+		set_process_input(false)
+		return
+
+	if ui_composite == null:
+		push_error("InGameHud requires UiComposite.")
+		set_process_input(false)
+		return
+
+	ui_viewport.transparent_bg = true
+
+	ui_viewport.render_target_update_mode = (
+		SubViewport.UPDATE_ALWAYS
+	)
+
+	ui_viewport.render_target_clear_mode = (
+		SubViewport.CLEAR_MODE_ALWAYS
+	)
+
+	ui_composite.texture = ui_viewport.get_texture()
+
+	var composite_material: ShaderMaterial = (
+		ui_composite.material as ShaderMaterial
+	)
+
+	if composite_material == null:
+		push_error("UiComposite requires ShaderMaterial.")
+		set_process_input(false)
+		return
+
+	composite_material.set_shader_parameter(
+		&"ui_texture",
+		ui_viewport.get_texture()
+	)
+
+	_sync_ui_viewport_size()
+	
 	visible = _is_hud_visible
 
 func _on_player_dash_started() -> void:
@@ -31,6 +73,38 @@ func _on_player_dash_started() -> void:
 
 func _on_player_slide_started() -> void:
 	crosshair.play_slide_impulse()
+
+func _on_viewport_size_changed() -> void:
+	_sync_ui_viewport_size()
+
+func _sync_ui_viewport_size() -> void:
+	if ui_viewport == null:
+		return
+
+	if hud_root == null:
+		return
+
+	var visible_size: Vector2 = (
+		get_viewport()
+		.get_visible_rect()
+		.size
+	)
+
+	var target_viewport_size: Vector2i = Vector2i(
+		maxi(
+			1,
+			roundi(visible_size.x)
+		),
+		maxi(
+			1,
+			roundi(visible_size.y)
+		)
+	)
+
+	ui_viewport.size = target_viewport_size
+
+	hud_root.position = Vector2.ZERO
+	hud_root.size = visible_size
 
 func set_player(player: Player) -> void:
 	if player == null:
