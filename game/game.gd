@@ -3,15 +3,29 @@ extends Node
 
 @export var player: Player
 @export var in_game_hud: InGameHud
+@export var world: World
+
 
 func _ready() -> void:
 	if player == null:
-		push_error("Game requires Player.")
+		push_error(
+			"Game requires a Player."
+		)
+		return
+
+	if world == null:
+		push_error(
+			"Game requires a World."
+		)
 		return
 
 	if in_game_hud == null:
-		push_error("Game requires InGameHud.")
+		push_error(
+			"Game requires an InGameHud."
+		)
 		return
+
+	world.setup(player)
 
 	in_game_hud.set_player(player)
 

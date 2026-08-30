@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://d1bwowv777l68"]
+
+[ext_resource type="Script" uid="uid://dyhafnhb2vqey" path="res://gameplay/checkpoints/checkpoint.gd" id="1_d8gsu"]
+[ext_resource type="Material" uid="uid://wyskf45b6irr" path="res://gameplay/checkpoints/checkpoint_material.tres" id="2_scmly"]
+[ext_resource type="Script" uid="uid://bpo2tposf4y87" path="res://gameplay/checkpoints/checkpoint_visual.gd" id="3_scmly"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lfved"]
+height = 3.0
+radius = 1.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mv1y6"]
+top_radius = 0.685
+bottom_radius = 1.3
+height = 3.0
+
+[node name="Checkpoint" type="Area3D" unique_id=598772743 node_paths=PackedStringArray("spawn_anchor", "visual")]
+script = ExtResource("1_d8gsu")
+spawn_anchor = NodePath("SpawnAnchor")
+visual = NodePath("VisualMesh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1679394843]
+shape = SubResource("CylinderShape3D_lfved")
+
+[node name="SpawnAnchor" type="Marker3D" parent="." unique_id=1464786674]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="VisualMesh" type="MeshInstance3D" parent="." unique_id=1825542506 node_paths=PackedStringArray("visual_mesh")]
+mesh = SubResource("CylinderMesh_mv1y6")
+surface_material_override/0 = ExtResource("2_scmly")
+script = ExtResource("3_scmly")
+visual_mesh = NodePath(".")
+inactive_primary_color = Color(0.83333325, 1, 0, 1)
+inactive_secondary_color = Color(1, 0, 0.5, 1)
+active_primary_color = Color(1, 0, 0.3333335, 1)
+active_secondary_color = Color(0.099999905, 0, 1, 1)
