@@ -16,10 +16,11 @@
 [ext_resource type="Script" uid="uid://fj52ts8fjlcn" path="res://ui/hud/fall_danger_hud.gd" id="14_b686c"]
 [ext_resource type="Texture2D" uid="uid://ltknr6gb83xg" path="res://assets/textures/ui/falldanger.png" id="15_hb504"]
 [ext_resource type="Texture2D" uid="uid://dv87hpoc1q30p" path="res://assets/textures/ui/playertracker.png" id="16_ee6o4"]
-[ext_resource type="Shader" uid="uid://2jlcf4m2kvpy" path="res://assets/shaders/myshader.gdshader" id="17_4cobl"]
+[ext_resource type="Shader" uid="uid://2jlcf4m2kvpy" path="res://assets/shaders/world_composite.gdshader" id="17_4cobl"]
 [ext_resource type="Shader" uid="uid://j21qohey0due" path="res://assets/shaders/ui_composite.gdshader" id="17_ln7ps"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
+resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_dxrkv")
 shader_parameter/enabled = true
@@ -43,13 +44,13 @@ shader_parameter/vignette_spread = 0.5
 
 [sub_resource type="QuadMesh" id="QuadMesh_ycdy4"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_u8s88"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ln7ps"]
 viewport_path = NodePath("InGameHud/UiViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pxxsx"]
 resource_local_to_scene = true
 shader = ExtResource("17_ln7ps")
-shader_parameter/ui_texture = SubResource("ViewportTexture_u8s88")
+shader_parameter/ui_texture = SubResource("ViewportTexture_ln7ps")
 shader_parameter/effect_intensity = 1.0
 shader_parameter/side_pinch_amount = 0.12999999709424
 shader_parameter/bloom_strength = 1.30999997071888
@@ -66,7 +67,7 @@ shader_parameter/noise_density = 900.0
 shader_parameter/chromatic_offset_px = 4.249999905004
 shader_parameter/brightness = 1.06
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pxxsx"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_u8s88"]
 viewport_path = NodePath("InGameHud/UiViewport")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l8g03"]
@@ -84,41 +85,55 @@ region = Rect2(0, 62.445824, 52.446846, 51.909546)
 [sub_resource type="LabelSettings" id="LabelSettings_3vho3"]
 font = ExtResource("12_qf6n1")
 font_size = 38
-font_color = Color(0.95000005, 1, 0, 1)
+font_color = Color(0.85, 1, 0, 1)
 
-[sub_resource type="Gradient" id="Gradient_4cobl"]
+[sub_resource type="Gradient" id="Gradient_ln7ps"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.072183095, 0.19894366, 0.34330985, 0.5299296, 0.72711265, 0.87852114)
+colors = PackedColorArray(0.21, 0, 0.17500003, 1, 0.65, 0, 0.3141668, 1, 0.36799997, 0.48, 0, 1, 0.50166667, 0.7, 0, 1, 0.19, 1, 0.48699993, 1, 0.66999996, 1, 0.85150003, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ln7ps"]
-gradient = SubResource("Gradient_4cobl")
+gradient = SubResource("Gradient_ln7ps")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4cobl"]
 shader = ExtResource("17_4cobl")
 shader_parameter/color_palette = SubResource("GradientTexture1D_ln7ps")
-shader_parameter/chromatic_aberration_separation = 0.0
-shader_parameter/chromatic_aberration_intensity = 1.5
-shader_parameter/chromatic_aberration_blur = 0.1910000090725
-shader_parameter/edges_enabled = false
-shader_parameter/edge_thickness = 1.0
-shader_parameter/edge_brightness_factor = 1.0
-shader_parameter/edge_contrast_boost = 2.0
-shader_parameter/palette_strength_dark = 0.9
-shader_parameter/palette_strength_light = 0.2
+shader_parameter/effect_intensity = 0.749999983236
+shader_parameter/pixelization_enabled = false
+shader_parameter/pixel_size_px = 1.0
+shader_parameter/chromatic_aberration_px = 1.51999996602496
+shader_parameter/chromatic_edge_start = 0.23999999463552
+shader_parameter/chromatic_edge_end = 0.85
+shader_parameter/chromatic_edge_power = 3.48999992571684
+shader_parameter/sharpness = 2.25999994948448
+shader_parameter/palette_enabled = true
+shader_parameter/palette_strength_dark = 0.05999999865888
+shader_parameter/palette_strength_light = 0.0499999988824
 shader_parameter/dark_levels = 3
 shader_parameter/light_levels = 8
 shader_parameter/darkness_threshold = 0.3
-shader_parameter/dither_amount = 0.02
-shader_parameter/dithering_enabled = true
-shader_parameter/dither_strength = 0.11600000551
-shader_parameter/dither_gamma = 1.8710000413725
+shader_parameter/posterization_dither_amount = 0.0
+shader_parameter/bayer_dithering_enabled = true
+shader_parameter/bayer_dither_strength = 0.05999999865888
+shader_parameter/bayer_dither_gamma = 1.27999999374144
 shader_parameter/glitch_intensity = 0.0
-shader_parameter/scan_line_intensity = 0.0
+shader_parameter/brightness = 1.11999997496576
+shader_parameter/scanline_strength = 0.0
+shader_parameter/scanline_density = 129.0
+shader_parameter/scanline_width = 0.1499999966472
+shader_parameter/grille_strength = 0.06999999843536
+shader_parameter/grille_density = 384.0
+shader_parameter/static_noise_strength = 0.0
+shader_parameter/grain_strength = 0.0
+shader_parameter/discoloration_strength = 0.23999999463552
+shader_parameter/discoloration_contrast = 1.12
 shader_parameter/vignette_intensity = 0.0770000036575
 shader_parameter/vignette_smoothness = 0.5
-shader_parameter/grain_amount = 0.05
+shader_parameter/final_gamma = 1.20999998413008
 
 [node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("player", "in_game_hud")]
 script = ExtResource("1_l8g03")
-player = NodePath("ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World/Player")
+player = NodePath("ScreenSpaceProjection/ProjectionInput/World/Player")
 in_game_hud = NodePath("InGameHud")
 
 [node name="ScreenSpaceProjection" type="Camera3D" parent="." unique_id=2131587968]
@@ -137,28 +152,20 @@ cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("QuadMesh_ycdy4")
 
-[node name="ProjectionContainer" type="SubViewportContainer" parent="ScreenSpaceProjection" unique_id=545014633]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ProjectionInput" type="SubViewport" parent="ScreenSpaceProjection/ProjectionContainer" unique_id=1493971111]
+[node name="ProjectionInput" type="SubViewport" parent="ScreenSpaceProjection" unique_id=1493971111]
 own_world_3d = true
 handle_input_locally = false
 use_hdr_2d = true
 scaling_3d_mode = 5
 anisotropic_filtering_level = 0
-size = Vector2i(1152, 648)
-render_target_update_mode = 0
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
 
-[node name="World" type="Node3D" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput" unique_id=1596189794]
+[node name="World" type="Node3D" parent="ScreenSpaceProjection/ProjectionInput" unique_id=1596189794]
 
-[node name="MovementTest" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World" unique_id=46126002 instance=ExtResource("1_vasa2")]
+[node name="MovementTest" parent="ScreenSpaceProjection/ProjectionInput/World" unique_id=46126002 instance=ExtResource("1_vasa2")]
 
-[node name="Player" parent="ScreenSpaceProjection/ProjectionContainer/ProjectionInput/World" unique_id=361433541 instance=ExtResource("2_h7iqs")]
+[node name="Player" parent="ScreenSpaceProjection/ProjectionInput/World" unique_id=361433541 instance=ExtResource("2_h7iqs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33338058, 0)
 
 [node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud", "ui_viewport", "hud_root", "ui_composite")]
@@ -178,7 +185,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("ViewportTexture_pxxsx")
+texture = SubResource("ViewportTexture_u8s88")
 
 [node name="UiViewport" type="SubViewport" parent="InGameHud" unique_id=1509436007]
 transparent_bg = true
@@ -222,7 +229,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_y36n6")
-element_color = Color(0.0333333, 1, 0, 1)
+element_color = Color(1, 0, 0.016666412, 1)
 is_lag_enabled = false
 
 [node name="CrosshairDot" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/CenterDotGroup" unique_id=327126489]
@@ -247,7 +254,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_y36n6")
-element_color = Color(0.0333333, 1, 0, 1)
+element_color = Color(0.16666675, 1, 0, 1)
 element_alpha = 0.26
 
 [node name="UpperSegment" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/PrimaryCrosshairGroup" unique_id=564724087]
@@ -319,7 +326,7 @@ label_prefix = "speed: "
 element_alpha = 0.37
 
 [node name="SpeedIcon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=958240130]
-modulate = Color(0.016666412, 0, 1, 1)
+modulate = Color(0.116666794, 0, 1, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -333,82 +340,6 @@ offset_bottom = 196.99998
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.21, 0.72)
-pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("12_vsp63")
-
-[node name="SpeedIcon2" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=580527020]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -896.0
-offset_top = -36.0
-offset_right = -697.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 1.5707964
-scale = Vector2(5.02, 6.355)
-pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("12_vsp63")
-
-[node name="SpeedIcon4" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=1925471867]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -896.0
-offset_top = -36.0
-offset_right = -697.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 1.5707964
-scale = Vector2(2.0199993, 6.355)
-pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("12_vsp63")
-
-[node name="SpeedIcon5" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=579739311]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 698.0
-offset_top = -44.0
-offset_right = 897.0
-offset_bottom = -4.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 1.5707964
-scale = Vector2(2.0199993, 6.355)
-pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("12_vsp63")
-
-[node name="SpeedIcon3" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=461325175]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 698.0
-offset_top = -26.0
-offset_right = 897.0
-offset_bottom = 14.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = -1.5707964
-scale = Vector2(5.02, 6.355)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 texture = ExtResource("12_vsp63")
@@ -458,7 +389,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="HeightBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/FallDangerHud/Content" unique_id=1419234547]
-modulate = Color(1, 1, 0, 1)
+modulate = Color(0.5833334, 1, 0, 1)
 layout_mode = 0
 offset_left = 151.0
 offset_top = -66.0
@@ -481,7 +412,6 @@ texture = ExtResource("16_ee6o4")
 layer = 10
 
 [node name="WorldPost" type="ColorRect" parent="WorldPostLayer" unique_id=453079248]
-visible = false
 material = SubResource("ShaderMaterial_4cobl")
 anchors_preset = 15
 anchor_right = 1.0
@@ -489,3 +419,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+metadata/_edit_use_anchors_ = true

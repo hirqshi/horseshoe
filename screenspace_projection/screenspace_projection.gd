@@ -1,9 +1,8 @@
 extends Camera3D
 
 ## Viewport used to render the 3D scene. Its texture is sampled by the projection shader.
-@onready var viewport: Viewport = $ProjectionContainer/ProjectionInput
-@onready var projection_container: SubViewportContainer = (
-	$ProjectionContainer
+@onready var viewport: SubViewport = (
+	get_node_or_null("ProjectionInput") as SubViewport
 )
 
 ## Fullscreen mesh that displays the post-processed result (projection + CA + vignette).
@@ -96,18 +95,11 @@ extends Camera3D
 
 
 func _ready() -> void:
-	var output_camera: Camera3D = self as Camera3D
-
-	if output_camera == null:
-		push_error(
-			"ScreenSpaceProjection root must be Camera3D."
-		)
-		set_process(false)
-		return
+	var output_camera: Camera3D = self
 
 	if viewport == null:
 		push_error(
-			"ScreenSpaceProjection requires ProjectionInput."
+			"ScreenSpaceProjection requires ProjectionInput SubViewport."
 		)
 		set_process(false)
 		return
@@ -119,23 +111,33 @@ func _ready() -> void:
 		set_process(false)
 		return
 
-	var subviewport: SubViewport = viewport as SubViewport
+	var projection_material: ShaderMaterial = (
+		out_mesh.material_override as ShaderMaterial
+	)
 
-	if subviewport != null:
-		subviewport.render_target_update_mode = (
-			SubViewport.UPDATE_ALWAYS
+	if projection_material == null:
+		push_error(
+			"_ProjectionOutput requires ShaderMaterial."
 		)
+		set_process(false)
+		return
 
-	if projection_container != null:
-		projection_container.visible = false
+	viewport.render_target_update_mode = (
+		SubViewport.UPDATE_ALWAYS
+	)
+
+	viewport.render_target_clear_mode = (
+		SubViewport.CLEAR_MODE_ALWAYS
+	)
+
+	out_mesh.visible = true
 
 	output_camera.make_current()
 
-	if out_mesh.material_override != null:
-		out_mesh.material_override.set_shader_parameter(
-			"screen_tex",
-			viewport.get_texture()
-		)
+	projection_material.set_shader_parameter(
+		&"screen_tex",
+		viewport.get_texture()
+	)
 
 	_apply_shader_params()
 
@@ -146,42 +148,91 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _process(_delta: float) -> void:
-	if out_mesh:
-		out_mesh.visible = not Engine.is_editor_hint()
+	if viewport == null:
+		return
 
-		var actual_upscale: float = upscale if enabled else 1.0
-		var new_size: Vector2 = DisplayServer.window_get_size() * actual_upscale
+	if out_mesh == null:
+		return
 
-		const MIN_VIEWPORT_SIZE := 64
-		if min(new_size.x, new_size.y) < MIN_VIEWPORT_SIZE:
-			new_size = Vector2.ONE * MIN_VIEWPORT_SIZE
-			actual_upscale = 1.0
+	var actual_upscale: float = (
+		upscale
+		if enabled
+		else 1.0
+	)
 
-		if viewport:
-			if viewport.size != Vector2i(new_size):
-				viewport.size = Vector2i(new_size)
+	var requested_size: Vector2 = (
+		Vector2(
+			DisplayServer.window_get_size()
+		)
+		* actual_upscale
+	)
 
-			if viewport.scaling_3d_mode == Viewport.SCALING_3D_MODE_BILINEAR:
-				viewport.scaling_3d_scale = 1.0
-			else:
-				viewport.scaling_3d_scale = min(
-					1.0 / lerp(actual_upscale, 1.0, sqrt(supersample_upscale_amount)),
-					1.0
-				)
+	const MIN_VIEWPORT_SIZE_PX: int = 64
 
-			if out_mesh.material_override:
-				out_mesh.material_override.set_shader_parameter("enabled", enabled)
-				_apply_shader_params()
+	var target_viewport_size: Vector2i = Vector2i(
+		maxi(
+			MIN_VIEWPORT_SIZE_PX,
+			roundi(requested_size.x)
+		),
+		maxi(
+			MIN_VIEWPORT_SIZE_PX,
+			roundi(requested_size.y)
+		)
+	)
 
-				var camera := viewport.get_camera_3d() as Camera3D
-				if camera \
-				and camera.projection == Camera3D.PROJECTION_PERSPECTIVE \
-				and out_mesh.material_override is ShaderMaterial:
-					out_mesh.material_override.set_shader_parameter("fov_deg", camera.fov)
-					out_mesh.material_override.set_shader_parameter(
-						"fov_is_vertical",
-						camera.keep_aspect == Camera3D.KeepAspect.KEEP_HEIGHT
-					)
+	if viewport.size != target_viewport_size:
+		viewport.size = target_viewport_size
+
+	if viewport.scaling_3d_mode == (
+		Viewport.SCALING_3D_MODE_BILINEAR
+	):
+		viewport.scaling_3d_scale = 1.0
+	else:
+		viewport.scaling_3d_scale = minf(
+			1.0 / lerpf(
+				actual_upscale,
+				1.0,
+				sqrt(supersample_upscale_amount)
+			),
+			1.0
+		)
+
+	var projection_material: ShaderMaterial = (
+		out_mesh.material_override as ShaderMaterial
+	)
+
+	if projection_material == null:
+		return
+
+	projection_material.set_shader_parameter(
+		&"enabled",
+		enabled
+	)
+
+	_apply_shader_params()
+
+	var source_camera: Camera3D = (
+		viewport.get_camera_3d()
+	)
+
+	if source_camera == null:
+		return
+
+	if source_camera.projection != (
+		Camera3D.PROJECTION_PERSPECTIVE
+	):
+		return
+
+	projection_material.set_shader_parameter(
+		&"fov_deg",
+		source_camera.fov
+	)
+
+	projection_material.set_shader_parameter(
+		&"fov_is_vertical",
+		source_camera.keep_aspect
+		== Camera3D.KEEP_HEIGHT
+	)
 
 
 func _apply_shader_params() -> void:

@@ -64,8 +64,17 @@ func _ready() -> void:
 		ui_viewport.get_texture()
 	)
 
+	var main_viewport: Viewport = get_viewport()
+
+	if not main_viewport.size_changed.is_connected(
+		_on_viewport_size_changed
+	):
+		main_viewport.size_changed.connect(
+			_on_viewport_size_changed
+		)
+
 	_sync_ui_viewport_size()
-	
+
 	visible = _is_hud_visible
 
 func _on_player_dash_started() -> void:

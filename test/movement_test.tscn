@@ -1,12 +1,17 @@
 [gd_scene format=3 uid="uid://bgtu17lf4f73j"]
 
 [ext_resource type="Texture2D" uid="uid://1f5e2w0qf40k" path="res://assets/textures/world/concrete1_albedo.png" id="1_626n2"]
+[ext_resource type="Shader" uid="uid://6jollo2116hu" path="res://assets/shaders/outlines.gdshader" id="2_626n2"]
 
 [sub_resource type="Environment" id="Environment_ioc36"]
 background_mode = 1
 background_color = Color(0.46, 0.46, 0.46, 1)
 background_energy_multiplier = 3.45
 ambient_light_color = Color(0.69, 0.69, 0.69, 1)
+glow_enabled = true
+glow_intensity = 0.81
+glow_strength = 0.99
+glow_bloom = 0.35
 fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.64, 0.64, 0.64, 1)
@@ -17,7 +22,16 @@ adjustment_enabled = true
 adjustment_brightness = 0.67
 adjustment_contrast = 1.245
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ln7ps"]
+render_priority = 0
+shader = ExtResource("2_626n2")
+shader_parameter/sensitivity = 0.71999998390656
+shader_parameter/outline_thickness = 0.499999988824
+shader_parameter/step_threshold = 1.5799999646838399
+shader_parameter/outline_color = Color(0.103833444, 0, 0.89, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6m30h"]
+next_pass = SubResource("ShaderMaterial_ln7ps")
 albedo_texture = ExtResource("1_626n2")
 uv1_scale = Vector3(0.255, 0.255, 0.255)
 uv1_triplanar = true
