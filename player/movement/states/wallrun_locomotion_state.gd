@@ -503,6 +503,12 @@ func restore_wall_jump_charges() -> void:
 func get_wall_jump_charges() -> int:
 	return _wall_jump_charges
 
+func get_max_wall_jump_charges() -> int:
+	if config == null:
+		return 0
+
+	return config.max_wall_jump_charges
+
 func _project_onto_wall(direction: Vector3) -> Vector3:
 	return direction - _wall_normal * direction.dot(_wall_normal)
 

@@ -22,7 +22,7 @@ visual = NodePath("VisualMesh")
 shape = SubResource("CylinderShape3D_lfved")
 
 [node name="SpawnAnchor" type="Marker3D" parent="." unique_id=1464786674]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.32, 0)
 
 [node name="VisualMesh" type="MeshInstance3D" parent="." unique_id=1825542506 node_paths=PackedStringArray("visual_mesh")]
 mesh = SubResource("CylinderMesh_mv1y6")

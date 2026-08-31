@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dve1ji7iuvh0t"]
+
+[ext_resource type="Script" uid="uid://u2r4e41qv7jl" path="res://gameplay/zones/rest_zone.gd" id="1_4gcdy"]
+[ext_resource type="Script" uid="uid://cab67w04wfjbn" path="res://gameplay/zones/zone_visual.gd" id="2_74bx6"]
+[ext_resource type="Material" uid="uid://c6brciwxa6tl1" path="res://gameplay/checkpoints/rest_zone_material.tres" id="3_pjfb6"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0ooeg"]
+height = 8.0
+radius = 4.0
+
+[node name="RestZone" type="Area3D" unique_id=1402271665]
+script = ExtResource("1_4gcdy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1053975395]
+shape = SubResource("CylinderShape3D_0ooeg")
+
+[node name="ZoneVisual" type="MeshInstance3D" parent="." unique_id=161866835 node_paths=PackedStringArray("collision_shape")]
+script = ExtResource("2_74bx6")
+collision_shape = NodePath("../CollisionShape3D")
+base_material = ExtResource("3_pjfb6")

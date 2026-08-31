@@ -4,4 +4,6 @@
 
 [resource]
 script = ExtResource("1_rdfx8")
+lethal_distance_m = 15.0
+minimum_downward_speed_mps = 3.0
 metadata/_custom_type_script = "uid://5l7kxglm8yag"

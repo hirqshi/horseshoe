@@ -1,16 +1,21 @@
 class_name InGameHud
 extends CanvasLayer
 
-@export var crosshair: CrosshairHudElement
 @export var hud_toggle_action: StringName = &"toggle_hud"
+@export var crosshair: CrosshairHudElement
 @export var speed_hud: SpeedHudElement
 @export var fall_danger_hud: FallDangerHud
+@export var reverse_stamina_hud: ReverseStaminaHud
+@export var dash_charges_hud: ChargeFrameHud
+@export var wall_jump_charges_hud: ChargeFrameHud
+
 @export_category("viewport composite")
 @export var ui_viewport: SubViewport
 @export var hud_root: Control
 @export var ui_composite: TextureRect
 
 var _is_hud_visible: bool = true
+var _movement_motor: MovementMotor
 
 func _ready() -> void:
 	if crosshair == null:
@@ -25,6 +30,27 @@ func _ready() -> void:
 		
 	if fall_danger_hud == null:
 		push_error("InGameHud requires FallDangerHud.")
+		set_process_input(false)
+		return
+		
+	if reverse_stamina_hud == null:
+		push_error(
+			"InGameHud requires ReverseStaminaHud."
+		)
+		set_process_input(false)
+		return
+		
+	if dash_charges_hud == null:
+		push_error(
+			"InGameHud requires DashChargesHud."
+		)
+		set_process_input(false)
+		return
+
+	if wall_jump_charges_hud == null:
+		push_error(
+			"InGameHud requires WallJumpChargesHud."
+		)
 		set_process_input(false)
 		return
 		
@@ -130,6 +156,52 @@ func set_player(player: Player) -> void:
 		return
 
 	fall_danger_hud.set_fall_tracker(fall_tracker)
+	var reverse_stamina: ReverseStamina = (
+		player.get_reverse_stamina()
+	)
+
+	if reverse_stamina == null:
+		push_error(
+			"InGameHud could not get ReverseStamina from Player."
+		)
+		return
+
+	reverse_stamina_hud.set_reverse_stamina(
+		reverse_stamina
+	)
+	_movement_motor = player.get_movement_motor()
+
+	if _movement_motor == null:
+		push_error(
+			"InGameHud could not get MovementMotor from Player."
+		)
+		return
+
+	dash_charges_hud.set_charge_state(
+		_movement_motor.get_dash_charges(),
+		_movement_motor.can_dash()
+	)
+
+	wall_jump_charges_hud.set_charge_state(
+		_movement_motor.get_wall_jump_charges(),
+		_movement_motor.can_wall_jump()
+	)
+
+	_movement_motor.dash_charges_changed.connect(
+		_on_dash_charges_changed
+	)
+
+	_movement_motor.dash_availability_changed.connect(
+		_on_dash_availability_changed
+	)
+
+	_movement_motor.wall_jump_charges_changed.connect(
+		_on_wall_jump_charges_changed
+	)
+
+	_movement_motor.wall_jump_availability_changed.connect(
+		_on_wall_jump_availability_changed
+	)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(hud_toggle_action):
@@ -145,14 +217,29 @@ func _unhandled_input(event: InputEvent) -> void:
 			event.screen_relative
 		)
 
-func register_look_delta(mouse_delta: Vector2) -> void:
+func register_look_delta(
+	mouse_delta: Vector2
+) -> void:
 	if not _is_hud_visible:
 		return
 
 	crosshair.register_look_delta(mouse_delta)
+
 	speed_hud.register_look_delta(mouse_delta)
+
 	fall_danger_hud.register_look_delta(mouse_delta)
-	
+
+	reverse_stamina_hud.register_look_delta(
+		mouse_delta
+	)
+
+	dash_charges_hud.register_look_delta(
+		mouse_delta
+	)
+
+	wall_jump_charges_hud.register_look_delta(
+		mouse_delta
+	)
 
 func set_hud_visible(value: bool) -> void:
 	_is_hud_visible = value
@@ -160,3 +247,52 @@ func set_hud_visible(value: bool) -> void:
 
 func is_hud_visible() -> bool:
 	return _is_hud_visible
+
+func _on_dash_charges_changed(
+	current_charges: int,
+	_max_charges: int
+) -> void:
+	if _movement_motor == null:
+		return
+
+	dash_charges_hud.set_charge_state(
+		current_charges,
+		_movement_motor.can_dash()
+	)
+
+
+func _on_dash_availability_changed(
+	is_available: bool
+) -> void:
+	if _movement_motor == null:
+		return
+
+	dash_charges_hud.set_charge_state(
+		_movement_motor.get_dash_charges(),
+		is_available
+	)
+
+
+func _on_wall_jump_charges_changed(
+	current_charges: int,
+	_max_charges: int
+) -> void:
+	if _movement_motor == null:
+		return
+
+	wall_jump_charges_hud.set_charge_state(
+		current_charges,
+		_movement_motor.can_wall_jump()
+	)
+
+
+func _on_wall_jump_availability_changed(
+	is_available: bool
+) -> void:
+	if _movement_motor == null:
+		return
+
+	wall_jump_charges_hud.set_charge_state(
+		_movement_motor.get_wall_jump_charges(),
+		is_available
+	)

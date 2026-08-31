@@ -4,6 +4,7 @@ extends Node
 var _motor: MovementMotor
 var _actions: Array[MovementAction] = []
 var _active_action: MovementAction
+var _dash_action: DashAction
 
 func _ready() -> void:
 	_motor = get_parent() as MovementMotor
@@ -21,6 +22,11 @@ func _ready() -> void:
 
 		_actions.append(action)
 		action.setup(_motor)
+
+		var dash_action: DashAction = action as DashAction
+
+		if dash_action != null:
+			_dash_action = dash_action
 
 func apply(context: MovementContext) -> void:
 	if _active_action != null:
@@ -58,3 +64,6 @@ func blocks_locomotion_transition() -> bool:
 		_active_action != null
 		and _active_action.blocks_locomotion_transition()
 	)
+
+func get_dash_action() -> DashAction:
+	return _dash_action

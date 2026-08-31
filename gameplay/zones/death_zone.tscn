@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ckyba64x5q6ip"]
+
+[ext_resource type="Script" uid="uid://djlp2mxasx42y" path="res://gameplay/zones/death_zone.gd" id="1_12ota"]
+[ext_resource type="Script" uid="uid://cab67w04wfjbn" path="res://gameplay/zones/zone_visual.gd" id="2_r3nqn"]
+[ext_resource type="Material" uid="uid://4eyri3kne26y" path="res://gameplay/checkpoints/death_zone_material.tres" id="3_r3nqn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uppji"]
+size = Vector3(4, 4, 4)
+
+[node name="DeathZone" type="Area3D" unique_id=1402271665]
+script = ExtResource("1_12ota")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1053975395]
+shape = SubResource("BoxShape3D_uppji")
+
+[node name="ZoneVisual" type="MeshInstance3D" parent="." unique_id=66693322 node_paths=PackedStringArray("collision_shape")]
+script = ExtResource("2_r3nqn")
+collision_shape = NodePath("../CollisionShape3D")
+base_material = ExtResource("3_r3nqn")

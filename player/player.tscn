@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://bqwyx4nl8awsr" path="res://player/camera/player_look_controller.gd" id="19_c35mf"]
 [ext_resource type="Script" uid="uid://c550e20npurxm" path="res://player/fall/fall_tracker.gd" id="21_bjvpn"]
 [ext_resource type="Resource" uid="uid://dceteb6iuy0pc" path="res://player/fall/player_fall_config.tres" id="22_s7qer"]
+[ext_resource type="Script" uid="uid://d3j64um1at5r1" path="res://gameplay/reverse_stamina/reverse_stamina.gd" id="23_s7qer"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
 radius = 0.3
@@ -133,3 +134,9 @@ visual_rig = NodePath("../Head/CameraVisualRig")
 script = ExtResource("21_bjvpn")
 config = ExtResource("22_s7qer")
 movement_motor = NodePath("../MovementMotor")
+
+[node name="ReverseStamina" type="Node" parent="." unique_id=67301805]
+script = ExtResource("23_s7qer")
+max_recovery_speed_mps = 18.0
+slow_movement_drain_per_second = 10.0
+slowdown_grace_duration = 1.0
