@@ -5,6 +5,9 @@ signal body_reached(
 	checkpoint: Checkpoint,
 	body: Node3D
 )
+signal active_changed(
+	is_active: bool
+)
 
 @export var spawn_anchor: Marker3D
 @export var visual: CheckpointVisual
@@ -33,6 +36,8 @@ func set_active(value: bool) -> void:
 
 	if visual != null:
 		visual.set_active(is_active)
+
+	active_changed.emit(is_active)
 
 
 func get_spawn_transform() -> Transform3D:

@@ -25,6 +25,11 @@ var entry_upward_velocity_retention: float = 0.35
 @export_range(1, 4, 1) var max_wall_jump_charges: int = 1
 @export_range(0.0, 1.0, 0.01) var toward_wall_threshold: float = 0.35
 @export var wall_jump_upward_speed_mps: float = 8.0
+@export_range(0.0, 1.5, 0.01)
+var wall_jump_tangential_momentum_retention: float = 1.0
+
+@export_range(0.0, 1.5, 0.01)
+var wall_jump_outward_momentum_retention: float = 0.0
 
 @export_category("wall jump away")
 @export var wall_jump_away_outward_speed_mps: float = 9.0
@@ -39,6 +44,11 @@ var entry_upward_velocity_retention: float = 0.35
 @export var minimum_tangential_entry_speed_mps: float = 1.0
 @export_range(0.0, 1.0, 0.01)
 var minimum_tangential_input: float = 0.15
+
+@export_category("entry momentum")
+
+@export_range(0.0, 1.5, 0.01)
+var entry_horizontal_momentum_retention: float = 1.0
 
 @export_category("wall jump perpendicular")
 @export var wall_jump_contact_distance_m: float = 0.48

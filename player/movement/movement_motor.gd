@@ -29,6 +29,8 @@ signal wall_jump_charges_changed(
 signal wall_jump_availability_changed(
 	is_available: bool
 )
+signal dash_failed()
+signal wall_jump_failed()
 
 @export var config: MovementConfig
 @export var view_pivot: Node3D
@@ -53,8 +55,18 @@ var _body: CharacterBody3D
 var _player_input: PlayerInput = PlayerInput.new()
 var _context: MovementContext = MovementContext.new()
 var _active_state: LocomotionState
+var _momentum_grace: MomentumGrace = MomentumGrace.new()
 
 var _dash_action: DashAction
+var _wave_dash_until_s: float = -INF
+var _wave_dash_velocity: Vector3 = Vector3.ZERO
+
+var _walk_input_suppressed_until_s: float = -INF
+var _grounding_action: GroundingAction
+var _slide_action: SlideAction
+
+var _ground_boost_until_s: float = -INF
+var _ground_boost_jump_speed_mps: float = 0.0
 
 var _is_dash_available: bool = false
 var _is_wall_jump_available: bool = false
@@ -121,6 +133,34 @@ func _ready() -> void:
 		set_physics_process(false)
 		return
 
+	_dash_action.dash_landed.connect(
+		_on_dash_landed
+	)
+	_dash_action.dash_failed.connect(
+		_on_dash_failed
+	)
+	
+	_grounding_action = _action_controller.get_grounding_action()
+	_slide_action = _action_controller.get_slide_action()
+
+	if _grounding_action == null:
+		push_error(
+			"MovementMotor requires GroundingAction inside ActionController."
+		)
+		set_physics_process(false)
+		return
+
+	if _slide_action == null:
+		push_error(
+			"MovementMotor requires SlideAction inside ActionController."
+		)
+		set_physics_process(false)
+		return
+
+	_grounding_action.grounding_landed.connect(
+		_on_grounding_landed
+	)
+	
 	_dash_action.charges_changed.connect(
 		_on_dash_charges_changed
 	)
@@ -128,7 +168,9 @@ func _ready() -> void:
 	_wallrun_state.wall_jump_charges_changed.connect(
 		_on_wall_jump_charges_changed
 	)
-	
+	_wallrun_state.wall_jump_failed.connect(
+		_on_wall_jump_failed
+	)
 	_body.floor_max_angle = deg_to_rad(config.max_floor_angle_deg)
 
 	_context.body = _body
@@ -149,11 +191,34 @@ func _ready() -> void:
 	_update_charge_availability()
 
 func _physics_process(delta: float) -> void:
-	var current_time_s: float = Time.get_ticks_msec() * 0.001
-	var pre_move_vertical_speed_mps: float = _body.velocity.y
+	var current_time_s: float = (
+		Time.get_ticks_msec() * 0.001
+	)
+
+	var pre_move_vertical_speed_mps: float = (
+		_body.velocity.y
+	)
+
+	var pre_move_horizontal_speed_mps: float = Vector2(
+		_body.velocity.x,
+		_body.velocity.z
+	).length()
 
 	_player_input.update_from_input()
-	_context.update(delta, current_time_s)
+
+	_context.update(
+		delta,
+		current_time_s
+	)
+
+	_context.is_walk_input_suppressed = (
+		current_time_s
+		< _walk_input_suppressed_until_s
+	)
+
+	_momentum_grace.update_before_locomotion(
+		_context
+	)
 
 	_update_grounded_time(current_time_s)
 	_update_jump_buffer(current_time_s)
@@ -171,6 +236,13 @@ func _physics_process(delta: float) -> void:
 	sensors.update_contacts()
 	_update_wall_touch_event()
 	_process_post_move(pre_move_vertical_speed_mps)
+
+	_momentum_grace.update_after_move(
+		_context,
+		pre_move_horizontal_speed_mps,
+		_body.get_slide_collision_count() > 0
+	)
+
 	_wallrun_state.update_reentry_cooldown(delta)
 	_update_locomotion_state()
 	_update_charge_availability()
@@ -204,6 +276,30 @@ func _try_consume_jump(current_time_s: float) -> void:
 		_set_locomotion_state(_airborne_state)
 
 		return
+		
+	if current_time_s <= _wave_dash_until_s:
+		_action_controller.cancel_active_action(
+			_context
+		)
+
+		_context.velocity = _wave_dash_velocity
+
+		_jump_hold_remaining_s = 0.0
+
+		if _context.velocity.y > 0.0:
+			_jump_hold_remaining_s = (
+				config.jump_hold_duration_s
+			)
+
+		_jump_buffer_until_s = -INF
+		_last_grounded_time_s = -INF
+		_wave_dash_until_s = -INF
+
+		_set_locomotion_state(
+			_airborne_state
+		)
+
+		return
 
 	var can_coyote_jump: bool = (
 		current_time_s <= _last_grounded_time_s + config.coyote_time_s
@@ -219,10 +315,23 @@ func _try_consume_jump(current_time_s: float) -> void:
 			_jump_buffer_until_s = -INF
 			return
 
-	_context.velocity.y = config.jump_speed_mps
+	var jump_speed_mps: float = (
+		config.jump_speed_mps
+	)
+
+	if current_time_s <= _ground_boost_until_s:
+		jump_speed_mps = maxf(
+			jump_speed_mps,
+			_ground_boost_jump_speed_mps
+		)
+
+		_ground_boost_until_s = -INF
+
+	_context.velocity.y = jump_speed_mps
 	_jump_hold_remaining_s = config.jump_hold_duration_s
 	_jump_buffer_until_s = -INF
 	_last_grounded_time_s = -INF
+
 	jumped.emit()
 
 func _process_post_move(pre_move_vertical_speed_mps: float) -> void:
@@ -431,3 +540,86 @@ func _on_wall_jump_charges_changed(
 		current_charges,
 		max_charges
 	)
+
+func get_body() -> CharacterBody3D:
+	return _body
+
+func _on_grounding_landed(
+	grounding_drop_distance_m: float,
+	entry_horizontal_velocity: Vector3
+) -> void:
+	if _grounding_action == null:
+		return
+
+	_ground_boost_until_s = (
+		_context.time_s
+		+ _grounding_action.get_ground_boost_window_s()
+	)
+
+	_ground_boost_jump_speed_mps = (
+		_grounding_action.get_ground_boost_jump_speed_mps(
+			config,
+			grounding_drop_distance_m
+		)
+	)
+
+	if _player_input.is_slide_held:
+		_slide_action.queue_grounding_slide(
+			entry_horizontal_velocity,
+			_context.time_s,
+			_grounding_action.get_grounding_slide_window_s()
+		)
+
+func _on_dash_landed(
+	dash_velocity: Vector3
+) -> void:
+	if _dash_action == null:
+		return
+
+	if not _body.is_on_floor():
+		return
+
+	var floor_normal: Vector3 = (
+		_body.get_floor_normal().normalized()
+	)
+
+	if floor_normal.is_zero_approx():
+		return
+
+	var normal_impact_speed_mps: float = -(
+		dash_velocity.dot(
+			floor_normal
+		)
+	)
+
+	if normal_impact_speed_mps < (
+		_dash_action
+		.get_wave_dash_minimum_normal_impact_speed_mps()
+	):
+		return
+
+	_wave_dash_velocity = (
+		dash_velocity.bounce(
+			floor_normal
+		)
+		* _dash_action.get_wave_dash_velocity_retention()
+	)
+
+	_wave_dash_until_s = (
+		_context.time_s
+		+ _dash_action.get_wave_dash_window_s()
+	)
+
+	_walk_input_suppressed_until_s = maxf(
+		_walk_input_suppressed_until_s,
+		_context.time_s
+		+ _dash_action
+		.get_walk_input_suppression_after_landing_s()
+	)
+
+func _on_dash_failed() -> void:
+	dash_failed.emit()
+
+
+func _on_wall_jump_failed() -> void:
+	wall_jump_failed.emit()

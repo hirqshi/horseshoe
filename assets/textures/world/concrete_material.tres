@@ -1,0 +1,25 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cgxaqibhsy48o"]
+
+[ext_resource type="Texture2D" uid="uid://baampdhh0j6ya" path="res://assets/textures/world/concrete/albedo/Concrete031_4K_Color.jpg" id="1_44b2n"]
+[ext_resource type="Shader" uid="uid://6jollo2116hu" path="res://assets/shaders/outlines.gdshader" id="2_u2kl3"]
+[ext_resource type="Texture2D" uid="uid://cwqs6m4wfajm5" path="res://assets/textures/world/concrete/normal/Concrete031_4K_NormalGL.png" id="3_xx841"]
+[ext_resource type="Texture2D" uid="uid://ckfniba6t6hf3" path="res://assets/textures/world/concrete/roughness/Concrete031_4K_Roughness.png" id="4_hvuob"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ln7ps"]
+render_priority = 0
+shader = ExtResource("2_u2kl3")
+shader_parameter/sensitivity = 0.71999998390656
+shader_parameter/outline_thickness = 0.499999988824
+shader_parameter/step_threshold = 1.57999996468384
+shader_parameter/outline_color = Color(0.116666794, 0, 1, 1)
+
+[resource]
+next_pass = SubResource("ShaderMaterial_ln7ps")
+albedo_color = Color(1.4190066, 1.4190066, 1.4190066, 1)
+albedo_texture = ExtResource("1_44b2n")
+roughness_texture = ExtResource("4_hvuob")
+normal_enabled = true
+normal_texture = ExtResource("3_xx841")
+uv1_scale = Vector3(0.149, 0.149, 0.149)
+uv1_triplanar = true
+texture_filter = 2

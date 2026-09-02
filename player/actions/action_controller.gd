@@ -5,6 +5,8 @@ var _motor: MovementMotor
 var _actions: Array[MovementAction] = []
 var _active_action: MovementAction
 var _dash_action: DashAction
+var _grounding_action: GroundingAction
+var _slide_action: SlideAction
 
 func _ready() -> void:
 	_motor = get_parent() as MovementMotor
@@ -27,6 +29,21 @@ func _ready() -> void:
 
 		if dash_action != null:
 			_dash_action = dash_action
+			
+		var grounding_action: GroundingAction = (
+			action as GroundingAction
+		)
+
+		if grounding_action != null:
+			_grounding_action = grounding_action
+
+		var slide_action: SlideAction = (
+			action as SlideAction
+		)
+
+		if slide_action != null:
+			_slide_action = slide_action
+
 
 func apply(context: MovementContext) -> void:
 	if _active_action != null:
@@ -67,3 +84,19 @@ func blocks_locomotion_transition() -> bool:
 
 func get_dash_action() -> DashAction:
 	return _dash_action
+
+func get_grounding_action() -> GroundingAction:
+	return _grounding_action
+
+
+func get_slide_action() -> SlideAction:
+	return _slide_action
+
+func cancel_active_action(
+	context: MovementContext
+) -> void:
+	if _active_action == null:
+		return
+
+	_active_action.finish(context)
+	_active_action = null

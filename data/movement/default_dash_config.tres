@@ -5,4 +5,7 @@
 [resource]
 script = ExtResource("1_ciltg")
 max_charges = 4
+minimum_speed_mps = 7.0
+cooldown_s = 1.2
+reset_cooldown_on_charge_restore = false
 metadata/_custom_type_script = "uid://d0068ays7tlgr"

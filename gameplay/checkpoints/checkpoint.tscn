@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://dyhafnhb2vqey" path="res://gameplay/checkpoints/checkpoint.gd" id="1_d8gsu"]
 [ext_resource type="Material" uid="uid://wyskf45b6irr" path="res://gameplay/checkpoints/checkpoint_material.tres" id="2_scmly"]
 [ext_resource type="Script" uid="uid://bpo2tposf4y87" path="res://gameplay/checkpoints/checkpoint_visual.gd" id="3_scmly"]
+[ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="4_dtj1p"]
+[ext_resource type="Script" uid="uid://bp1ofatp42q1a" path="res://gameplay/checkpoints/checkpoint_audio.gd" id="4_q5aef"]
+[ext_resource type="AudioStream" uid="uid://bas0njc5y5dvv" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Apply.wav" id="5_4bk82"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_lfved"]
 height = 3.0
@@ -31,5 +34,24 @@ script = ExtResource("3_scmly")
 visual_mesh = NodePath(".")
 inactive_primary_color = Color(0.83333325, 1, 0, 1)
 inactive_secondary_color = Color(1, 0, 0.5, 1)
-active_primary_color = Color(1, 0, 0.3333335, 1)
-active_secondary_color = Color(0.099999905, 0, 1, 1)
+active_primary_color = Color(0, 0.10000014, 1, 1)
+active_secondary_color = Color(0, 0.10000014, 1, 1)
+
+[node name="CheckpointAudio" type="Node3D" parent="." unique_id=1025582917 node_paths=PackedStringArray("activation_player", "hum_player")]
+script = ExtResource("4_q5aef")
+activation_player = NodePath("ActivationPlayer")
+hum_player = NodePath("HumPlayer")
+activation_streams = Array[AudioStream]([ExtResource("5_4bk82")])
+activation_pitch_min = 1.0
+activation_pitch_max = 1.0
+
+[node name="HumPlayer" type="AudioStreamPlayer3D" parent="CheckpointAudio" unique_id=325643860]
+stream = ExtResource("4_dtj1p")
+max_db = 1.0
+autoplay = true
+max_distance = 7.0
+bus = &"WorldSfx"
+
+[node name="ActivationPlayer" type="AudioStreamPlayer3D" parent="CheckpointAudio" unique_id=288599747]
+max_distance = 35.83
+bus = &"Sfx"

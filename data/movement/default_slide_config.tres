@@ -4,5 +4,8 @@
 
 [resource]
 script = ExtResource("1_si87j")
+minimum_slide_speed_mps = 3.5
+start_speed_bonus_mps = 2.2
 landing_queue_distance_m = 2.1
+ground_cooldown_s = 0.5
 metadata/_custom_type_script = "uid://dxrtb4kg5d4pe"

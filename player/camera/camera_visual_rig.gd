@@ -1,11 +1,16 @@
 class_name CameraVisualRig
 extends Node3D
 
+signal bob_step()
+
 @export var config: CameraVisualConfig
 @export var body: CharacterBody3D
 @export var camera: Camera3D
 @export var movement_motor: MovementMotor
 @export var stance: PlayerStance
+
+@export_category("audio sync")
+@export_range(0.25, 1.0, 0.01) var bob_step_rate_scale: float = 0.5
 
 var _base_position: Vector3 = Vector3.ZERO
 var _base_fov_deg: float = 75.0
@@ -35,6 +40,7 @@ var _shake_rotation_target_rad: Vector3 = Vector3.ZERO
 var _breathing_phase: float = 0.0
 var _bob_phase: float = 0.0
 var _bob_weight: float = 0.0
+var _bob_step_phase: float = 0.0
 
 var _is_sliding: bool = false
 var _is_wallrunning: bool = false
@@ -221,7 +227,9 @@ func _update_bob(
 	horizontal_speed_mps: float
 ) -> void:
 	_breathing_phase += (
-		TAU * config.breathing_frequency_hz * delta
+		TAU
+		* config.breathing_frequency_hz
+		* delta
 	)
 
 	var speed_ratio: float = clampf(
@@ -231,17 +239,45 @@ func _update_bob(
 	)
 
 	var can_bob: bool = (
-	(body.is_on_floor() and not _is_sliding)
-	or _is_wallrunning
+		(
+			body.is_on_floor()
+			and not _is_sliding
+		)
+		or _is_wallrunning
 	)
 
-	if can_bob and speed_ratio >= config.bob_min_speed_ratio:
+	var can_emit_bob_step: bool = (
+		can_bob
+		and speed_ratio >= config.bob_min_speed_ratio
+	)
+
+	if can_emit_bob_step:
 		var bob_frequency_hz: float = (
 			config.bob_base_frequency_hz
-			+ config.bob_speed_frequency_hz * speed_ratio
+			+ config.bob_speed_frequency_hz
+			* speed_ratio
 		)
 
-		_bob_phase += TAU * bob_frequency_hz * delta
+		var bob_phase_delta: float = (
+			TAU
+			* bob_frequency_hz
+			* delta
+		)
+
+		_bob_phase += bob_phase_delta
+
+		_bob_step_phase += (
+			bob_phase_delta
+			* bob_step_rate_scale
+		)
+
+		if _bob_step_phase >= PI:
+			_bob_step_phase = fposmod(
+				_bob_step_phase,
+				PI
+			)
+
+			bob_step.emit()
 
 	var target_bob_weight: float = 0.0
 

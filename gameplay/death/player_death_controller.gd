@@ -4,6 +4,9 @@ extends Node
 @export_group("Death Overlay")
 @export var death_overlay: DeathOverlay
 
+@export_group("Audio")
+@export var death_audio: DeathAudio
+
 @export_group("Timing")
 @export_range(0.0, 3.0, 0.01) var blackout_hold_duration: float = 0.12
 @export_range(0.0, 5.0, 0.01) var reveal_duration: float = 0.55
@@ -84,7 +87,10 @@ func request_death() -> void:
 		return
 
 	is_dying = true
-
+	
+	if death_audio != null:
+		death_audio.play_death()
+		
 	_previous_player_process_mode = _player.process_mode
 	_player.process_mode = Node.PROCESS_MODE_DISABLED
 

@@ -7,6 +7,7 @@ signal wall_jump_charges_changed(
 	current_charges: int,
 	max_charges: int
 )
+signal wall_jump_failed()
 
 @export var config: WallrunConfig
 
@@ -36,18 +37,72 @@ func enter(context: MovementContext) -> void:
 		* config.entry_upward_velocity_retention,
 		config.max_entry_upward_speed_mps
 	)
+	
 	var horizontal_velocity: Vector3 = (
 		context.get_horizontal_velocity()
 	)
 
-	var tangential_velocity: Vector3 = (
-		_project_onto_wall(horizontal_velocity)
+	var horizontal_speed_mps: float = (
+		horizontal_velocity.length()
 	)
 
-	if tangential_velocity.length() <= (
+	if horizontal_speed_mps <= 0.001:
+		return
+
+	var tangential_velocity: Vector3 = (
+		_project_onto_wall(
+			horizontal_velocity
+		)
+	)
+
+	var tangential_direction: Vector3 = Vector3.ZERO
+
+	if tangential_velocity.length() > (
 		config.tangential_entry_deadzone_mps
 	):
-		context.set_horizontal_velocity(Vector3.ZERO)
+		tangential_direction = tangential_velocity.normalized()
+	else:
+		var input_direction: Vector3 = (
+			context.get_wish_direction()
+		)
+
+		var tangential_input: Vector3 = (
+			_project_onto_wall(
+				input_direction
+			)
+		)
+
+		if not tangential_input.is_zero_approx():
+			tangential_direction = tangential_input.normalized()
+		else:
+			var camera_forward: Vector3 = (
+				-context.view_pivot.global_basis.z
+			)
+
+			camera_forward.y = 0.0
+
+			var tangential_camera_forward: Vector3 = (
+				_project_onto_wall(
+					camera_forward
+				)
+			)
+
+			if tangential_camera_forward.is_zero_approx():
+				return
+
+			tangential_direction = (
+				tangential_camera_forward.normalized()
+			)
+
+		var retained_speed_mps: float = (
+			horizontal_speed_mps
+			* config.entry_horizontal_momentum_retention
+		)
+
+		context.set_horizontal_velocity(
+			tangential_direction
+			* retained_speed_mps
+		)
 
 func exit(_context: MovementContext) -> void:
 	if _elapsed_time_s >= config.duration_s:
@@ -248,17 +303,27 @@ func update_reentry_cooldown(delta: float) -> void:
 func get_wall_normal() -> Vector3:
 	return _wall_normal
 
-func _apply_horizontal_movement(context: MovementContext) -> void:
-	var current_horizontal: Vector3 = context.get_horizontal_velocity()
+func _apply_horizontal_movement(
+	context: MovementContext
+) -> void:
+	var current_horizontal: Vector3 = (
+		context.get_horizontal_velocity()
+	)
 
-	var normal_speed_mps: float = current_horizontal.dot(_wall_normal)
+	var normal_speed_mps: float = (
+		current_horizontal.dot(_wall_normal)
+	)
 
 	var wall_parallel_velocity: Vector3 = (
 		current_horizontal
-		- _wall_normal * normal_speed_mps
+		- _wall_normal
+		* normal_speed_mps
 	)
 
-	var world_input_direction: Vector3 = context.get_wish_direction()
+	var world_input_direction: Vector3 = (
+		context.get_wish_direction()
+	)
+
 	var wall_input_direction: Vector3 = (
 		world_input_direction
 		- _wall_normal
@@ -266,30 +331,70 @@ func _apply_horizontal_movement(context: MovementContext) -> void:
 	)
 
 	if wall_input_direction.is_zero_approx():
-		context.set_horizontal_velocity(wall_parallel_velocity)
+		context.set_horizontal_velocity(
+			wall_parallel_velocity
+		)
 		return
 
 	wall_input_direction = wall_input_direction.normalized()
 
+	var current_speed_mps: float = (
+		wall_parallel_velocity.length()
+	)
+
 	var target_speed_mps: float = maxf(
-		wall_parallel_velocity.length(),
+		current_speed_mps,
 		maxf(
 			context.get_target_speed_mps(),
 			config.minimum_control_speed_mps
 		)
 	)
 
-	var target_velocity: Vector3 = (
-		wall_input_direction
-		* target_speed_mps
+	if current_speed_mps < target_speed_mps:
+		var target_velocity: Vector3 = (
+			wall_input_direction
+			* target_speed_mps
+		)
+
+		wall_parallel_velocity = (
+			wall_parallel_velocity.move_toward(
+				target_velocity,
+				config.steering_acceleration_mps2
+				* context.delta
+			)
+		)
+
+		context.set_horizontal_velocity(
+			wall_parallel_velocity
+		)
+		return
+
+	if wall_parallel_velocity.is_zero_approx():
+		return
+
+	var steering_weight: float = minf(
+		(
+			config.steering_acceleration_mps2
+			/ maxf(
+				current_speed_mps,
+				0.001
+			)
+		)
+		* context.delta,
+		1.0
 	)
 
-	wall_parallel_velocity = wall_parallel_velocity.move_toward(
-		target_velocity,
-		config.steering_acceleration_mps2 * context.delta
-	)
+	var steered_direction: Vector3 = (
+		wall_parallel_velocity.normalized().slerp(
+			wall_input_direction,
+			steering_weight
+		)
+	).normalized()
 
-	context.set_horizontal_velocity(wall_parallel_velocity)
+	context.set_horizontal_velocity(
+		steered_direction
+		* current_speed_mps
+	)
 
 func _apply_vertical_movement(context: MovementContext) -> void:
 	var fall_elapsed_s: float = maxf(
@@ -350,6 +455,10 @@ func try_wall_jump(context: MovementContext) -> bool:
 	)
 
 	if _wall_jump_charges <= 0:
+		if not context.body.is_on_floor() \
+		and debug_contact.is_valid():
+			wall_jump_failed.emit()
+
 		_debug(
 			context,
 			"WR_JUMP reject | reason: no charges",
@@ -433,10 +542,58 @@ func try_wall_jump(context: MovementContext) -> bool:
 			config.wall_jump_toward_upward_multiplier
 		)
 
-	context.velocity = (
-		jump_normal * outward_speed_mps
-		+ jump_tangent * forward_speed_mps
+	var current_horizontal: Vector3 = (
+		context.get_horizontal_velocity()
 	)
+
+	var current_outward_speed_mps: float = maxf(
+		current_horizontal.dot(jump_normal),
+		0.0
+	)
+
+	var preserved_tangential_velocity: Vector3 = (
+		_project_onto_normal(
+			current_horizontal,
+			jump_normal
+		)
+		* config.wall_jump_tangential_momentum_retention
+	)
+
+	if has_tangential_input:
+		var preserved_tangential_speed_mps: float = (
+			preserved_tangential_velocity.length()
+		)
+
+		preserved_tangential_velocity = (
+			jump_tangent
+			* preserved_tangential_speed_mps
+		)
+
+		preserved_tangential_velocity += (
+			jump_tangent
+			* forward_speed_mps
+		)
+
+	var preserved_outward_speed_mps: float = (
+		current_outward_speed_mps
+		* config.wall_jump_outward_momentum_retention
+	)
+
+	var final_outward_speed_mps: float = (
+		preserved_outward_speed_mps
+		+ outward_speed_mps
+	)
+
+	var wall_jump_horizontal_velocity: Vector3 = (
+		preserved_tangential_velocity
+		+ jump_normal
+		* final_outward_speed_mps
+	)
+
+	context.set_horizontal_velocity(
+		wall_jump_horizontal_velocity
+	)
+
 	context.velocity.y = upward_speed_mps
 
 	_wall_jump_charges -= 1

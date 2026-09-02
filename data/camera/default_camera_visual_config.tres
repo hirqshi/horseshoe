@@ -21,4 +21,6 @@ landing_max_speed_mps = 9.0
 landing_spring_strength = 261.4
 landing_spring_damping = 13.1
 slide_fov_pulse_bonus_deg = 6.8
+dash_shake_position_m = 0.0114
+slide_shake_position_m = 0.0068
 metadata/_custom_type_script = "uid://etbfbhx1fg5o"

@@ -23,6 +23,18 @@
 [ext_resource type="Script" uid="uid://c550e20npurxm" path="res://player/fall/fall_tracker.gd" id="21_bjvpn"]
 [ext_resource type="Resource" uid="uid://dceteb6iuy0pc" path="res://player/fall/player_fall_config.tres" id="22_s7qer"]
 [ext_resource type="Script" uid="uid://d3j64um1at5r1" path="res://gameplay/reverse_stamina/reverse_stamina.gd" id="23_s7qer"]
+[ext_resource type="Script" uid="uid://b0ktgchg4a4h5" path="res://audio/movement_audio.gd" id="24_knn7v"]
+[ext_resource type="AudioStream" uid="uid://b75w4vdpplfnu" path="res://assets/sound/sfx/Sounds_Packet_First/Step1.wav" id="25_8pxes"]
+[ext_resource type="AudioStream" uid="uid://48l8cuglcfrm" path="res://assets/sound/sfx/Sounds_Packet_First/Slide_Open.wav" id="25_uw77l"]
+[ext_resource type="AudioStream" uid="uid://bn6xpiri8imxs" path="res://assets/sound/sfx/Sounds_Packet_First/Slide_Close.wav" id="27_rptt4"]
+[ext_resource type="AudioStream" uid="uid://d0m5uqkb13jbw" path="res://assets/sound/sfx/Sounds_Packet_First/Wings_Open.wav" id="28_b8hi5"]
+[ext_resource type="AudioStream" uid="uid://dlsy4hkx3k5jp" path="res://assets/sound/sfx/Sounds_Packet_First/Step4.wav" id="28_n0b8q"]
+[ext_resource type="AudioStream" uid="uid://ck3juq7i8xoy" path="res://audio/slide_loop.tres" id="28_pnw6m"]
+[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="29_2uvqg"]
+[ext_resource type="AudioStream" uid="uid://bas0njc5y5dvv" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Apply.wav" id="32_5ejfk"]
+[ext_resource type="AudioStream" uid="uid://mukc3hjif5rx" path="res://assets/sound/sfx/Sounds_Packet_First/Heavy_Step1.wav" id="33_jd2rm"]
+[ext_resource type="AudioStream" uid="uid://ba4snfor6ftn2" path="res://assets/sound/sfx/Sounds_Packet_First/Little_step1.wav" id="34_a1u5o"]
+[ext_resource type="AudioStream" uid="uid://bhdm3f8m7g1t2" path="res://audio/wind_loop.tres" id="37_1so5t"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
 radius = 0.3
@@ -53,6 +65,7 @@ body = NodePath("../..")
 camera = NodePath("Camera3D")
 movement_motor = NodePath("../../MovementMotor")
 stance = NodePath("../../PlayerStance")
+bob_step_rate_scale = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="Head/CameraVisualRig" unique_id=2116220637]
 fov = 130.0
@@ -140,3 +153,97 @@ script = ExtResource("23_s7qer")
 max_recovery_speed_mps = 18.0
 slow_movement_drain_per_second = 10.0
 slowdown_grace_duration = 1.0
+
+[node name="MovementAudio" type="Node" parent="." unique_id=1465264965 node_paths=PackedStringArray("footstep_player", "crouch_footstep_player", "slide_start_player", "slide_loop_player", "slide_end_player", "dash_player", "dash_fail_player", "ground_jump_player", "wall_jump_player", "wall_jump_fail_player", "light_landing_player", "heavy_landing_player", "wind_player", "camera_visual_rig")]
+script = ExtResource("24_knn7v")
+footstep_player = NodePath("FootstepPlayer")
+crouch_footstep_player = NodePath("CrouchFootstepPlayer")
+slide_start_player = NodePath("SlideStartPlayer")
+slide_loop_player = NodePath("SlideLoopPlayer")
+slide_end_player = NodePath("SlideEndPlayer")
+dash_player = NodePath("DashPlayer")
+dash_fail_player = NodePath("DashFailPlayer")
+ground_jump_player = NodePath("GroundJumpPlayer")
+wall_jump_player = NodePath("WallJumpPlayer")
+wall_jump_fail_player = NodePath("WallJumpFailPlayer")
+light_landing_player = NodePath("LightLandingPlayer")
+heavy_landing_player = NodePath("HeavyLandingPlayer")
+wind_player = NodePath("WindPlayer")
+footstep_max_polyphony = 16
+one_shot_max_polyphony = 16
+walk_run_streams = Array[AudioStream]([ExtResource("28_n0b8q")])
+crouch_streams = Array[AudioStream]([ExtResource("34_a1u5o")])
+slide_start_streams = Array[AudioStream]([ExtResource("25_uw77l")])
+slide_loop_stream = ExtResource("28_pnw6m")
+slide_end_streams = Array[AudioStream]([ExtResource("27_rptt4")])
+dash_streams = Array[AudioStream]([ExtResource("28_b8hi5")])
+dash_fail_streams = Array[AudioStream]([ExtResource("29_2uvqg")])
+ground_jump_streams = Array[AudioStream]([ExtResource("25_8pxes")])
+wall_jump_streams = Array[AudioStream]([ExtResource("25_8pxes")])
+wall_jump_fail_streams = Array[AudioStream]([ExtResource("32_5ejfk")])
+light_landing_streams = Array[AudioStream]([ExtResource("33_jd2rm")])
+heavy_landing_streams = Array[AudioStream]([ExtResource("33_jd2rm")])
+wind_stream = ExtResource("37_1so5t")
+walk_step_interval_s = 0.38
+run_step_interval_s = 0.12
+crouch_step_interval_s = 0.43
+wallrun_step_interval_s = 0.22
+speed_pitch_min = 0.84
+speed_pitch_max = 1.5
+movement_pitch_min = 0.9
+action_pitch_min = 0.89
+action_pitch_max = 1.2000000000000002
+slide_loop_min_speed_mps = 0.46
+slide_loop_speed_cap_mps = 11.65
+slide_loop_silent_volume_db = -11.5
+slide_loop_max_volume_db = 0.0
+slide_loop_pitch_min = 1.0
+slide_loop_pitch_max = 1.4000000000000001
+slide_loop_follow_speed = 20.0
+wind_start_speed_mps = 11.68
+wind_speed_cap_mps = 19.3
+wind_silent_volume_db = -25.0
+wind_max_volume_db = -5.299999999999997
+wind_pitch_min = 0.72
+wind_pitch_max = 1.52
+wind_follow_speed = 15.5
+camera_visual_rig = NodePath("../Head/CameraVisualRig")
+uses_bob_synced_footsteps = true
+
+[node name="FootstepPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=111789030]
+
+[node name="CrouchFootstepPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1706522127]
+
+[node name="SlideStartPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1476086110]
+volume_db = -9.949
+
+[node name="SlideLoopPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=408057163]
+stream = ExtResource("28_pnw6m")
+volume_db = -9.018
+bus = &"PlayerSfx"
+
+[node name="SlideEndPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=564428030]
+volume_db = -9.949
+
+[node name="DashPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=137381260]
+volume_db = -8.083
+
+[node name="DashFailPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1356049659]
+
+[node name="GroundJumpPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=967456656]
+volume_db = -1.983
+
+[node name="WallJumpPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1052476886]
+
+[node name="WallJumpFailPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=700376235]
+
+[node name="LightLandingPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1455899320]
+volume_db = -5.385
+
+[node name="HeavyLandingPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1360647810]
+volume_db = -3.0
+
+[node name="WindPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1968365916]
+stream = ExtResource("37_1so5t")
+volume_db = -6.614
+bus = &"PlayerSfx"
