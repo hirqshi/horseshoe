@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dyb3deg1ebaa3"]
+
+[ext_resource type="Texture2D" uid="uid://bjw3ydcsr5lpm" path="res://assets/textures/particles/DustCloud3_100_.png" id="1_ebtt7"]
+
+[sub_resource type="Gradient" id="Gradient_o4sym"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1so5t"]
+gradient = SubResource("Gradient_o4sym")
+
+[sub_resource type="Curve" id="Curve_s0hxt"]
+_data = [Vector2(0, 1), 0.0, -3.1324992, 0, 0, Vector2(0.9494949, 0), 0.10033823, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_55jnj"]
+curve = SubResource("Curve_s0hxt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pnw6m"]
+emission_shape = 1
+emission_sphere_radius = 0.1
+angle_min = 1.0728835e-05
+angle_max = 63.10001
+use_rotation_3d = true
+rotation_3d_min = Vector3(0, 0, 0)
+rotation_3d_max = Vector3(33, 33, 33)
+direction = Vector3(0, 0, 0)
+spread = 34.444
+gravity = Vector3(0, 0.23, 0)
+tangential_accel_min = -0.5600022
+tangential_accel_max = 0.52999777
+damping_max = 0.595
+use_scale_3d = true
+scale_3d_min = Vector3(1, 1, 1)
+scale_3d_max = Vector3(1, 1, 1)
+scale_min = 0.0
+scale_max = 1.3
+scale_curve = SubResource("CurveTexture_55jnj")
+color_ramp = SubResource("GradientTexture1D_1so5t")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dx5ib"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.37254903)
+albedo_texture = ExtResource("1_ebtt7")
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_55jnj"]
+material = SubResource("StandardMaterial3D_dx5ib")
+orientation = 1
+
+[node name="GroundJumpBurstPool" type="GPUParticles3D" unique_id=2145708416]
+amount = 4
+lifetime = 1.28
+explosiveness = 1.0
+collision_base_size = 0.0
+process_material = SubResource("ParticleProcessMaterial_pnw6m")
+draw_pass_1 = SubResource("QuadMesh_55jnj")

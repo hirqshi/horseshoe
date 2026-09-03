@@ -17,7 +17,7 @@ hum_stream = ExtResource("2_ottyp")
 metadata/_custom_type_script = "uid://clpdgyaaeu8a"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_v1qwu"]
-radius = 2.5
+radius = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2qhre"]
 render_priority = 10

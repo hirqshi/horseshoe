@@ -34,7 +34,16 @@
 [ext_resource type="AudioStream" uid="uid://bas0njc5y5dvv" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Apply.wav" id="32_5ejfk"]
 [ext_resource type="AudioStream" uid="uid://mukc3hjif5rx" path="res://assets/sound/sfx/Sounds_Packet_First/Heavy_Step1.wav" id="33_jd2rm"]
 [ext_resource type="AudioStream" uid="uid://ba4snfor6ftn2" path="res://assets/sound/sfx/Sounds_Packet_First/Little_step1.wav" id="34_a1u5o"]
+[ext_resource type="Script" uid="uid://dpirrcjgvfj4a" path="res://gameplay/particles/player_movement_particles.gd" id="36_pnw6m"]
 [ext_resource type="AudioStream" uid="uid://bhdm3f8m7g1t2" path="res://audio/wind_loop.tres" id="37_1so5t"]
+[ext_resource type="Script" uid="uid://x3xndvx0krmm" path="res://gameplay/particles/particle_burst_pool_3d.gd" id="37_55jnj"]
+[ext_resource type="PackedScene" uid="uid://cr6vckkd0xma8" path="res://player/particles/ground_jump_burst_pool.tscn" id="37_pnw6m"]
+[ext_resource type="PackedScene" uid="uid://bpu8h0bp63okg" path="res://player/particles/wall_jump_burst_pool.tscn" id="39_55jnj"]
+[ext_resource type="PackedScene" uid="uid://dre6w3vf874gu" path="res://player/particles/light_landing_burst_pool.tscn" id="40_dx5ib"]
+[ext_resource type="PackedScene" uid="uid://ck5u03uputdco" path="res://player/particles/heavy_landing_burst_pool.tscn" id="41_a2xo5"]
+[ext_resource type="Texture2D" uid="uid://cfgpwbvj07w2v" path="res://assets/textures/particles/DustCloud2.png" id="42_art4l"]
+[ext_resource type="PackedScene" uid="uid://bhr0u0msaf8v4" path="res://player/particles/slide_start_burst_pool.tscn" id="42_fjxoa"]
+[ext_resource type="PackedScene" uid="uid://dyb3deg1ebaa3" path="res://player/particles/walk_step_burst_pool.tscn" id="43_gswnw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
 radius = 0.3
@@ -43,6 +52,52 @@ height = 1.6
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8t03j"]
 radius = 0.205
 height = 0.6434082
+
+[sub_resource type="Gradient" id="Gradient_o4sym"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1so5t"]
+gradient = SubResource("Gradient_o4sym")
+
+[sub_resource type="Curve" id="Curve_s0hxt"]
+_data = [Vector2(0, 1), 0.0, -0.065795556, 0, 0, Vector2(0.989899, 0.0067566633), -2.0595663, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_55jnj"]
+curve = SubResource("Curve_s0hxt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pnw6m"]
+emission_shape = 1
+emission_sphere_radius = 0.1
+angle_min = 1.0728835e-05
+angle_max = 26.30001
+use_rotation_3d = true
+rotation_3d_min = Vector3(0, 0, 0)
+rotation_3d_max = Vector3(0.225, 0.375, 0.375)
+direction = Vector3(0, 0, 0)
+spread = 34.444
+gravity = Vector3(0, 0.23, 0.75)
+tangential_accel_min = -0.5600022
+tangential_accel_max = 0.52999777
+damping_max = 0.595
+use_scale_3d = true
+scale_3d_min = Vector3(1, 1, 1)
+scale_3d_max = Vector3(1, 1, 1)
+scale_min = 0.0
+scale_max = 1.3
+scale_curve = SubResource("CurveTexture_55jnj")
+color_ramp = SubResource("GradientTexture1D_1so5t")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dx5ib"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1.2112623, 1.2112623, 1.2112623, 1)
+albedo_texture = ExtResource("42_art4l")
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_55jnj"]
+material = SubResource("StandardMaterial3D_dx5ib")
+orientation = 1
 
 [node name="Player" type="CharacterBody3D" unique_id=361433541 node_paths=PackedStringArray("look_controller")]
 script = ExtResource("1_g1dw6")
@@ -247,3 +302,56 @@ volume_db = -3.0
 stream = ExtResource("37_1so5t")
 volume_db = -6.614
 bus = &"PlayerSfx"
+
+[node name="PlayerMovementParticles" type="Node3D" parent="." unique_id=1803029965 node_paths=PackedStringArray("movement_motor", "camera_visual_rig", "ground_jump_burst_pool", "wall_jump_burst_pool", "light_landing_burst_pool", "heavy_landing_burst_pool", "slide_start_burst_pool", "walk_step_burst_pool", "slide_trail_particles")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.48415533, 0)
+script = ExtResource("36_pnw6m")
+movement_motor = NodePath("../MovementMotor")
+camera_visual_rig = NodePath("../Head/CameraVisualRig")
+ground_jump_burst_pool = NodePath("GroundJumpBurstPool")
+wall_jump_burst_pool = NodePath("WallJumpBurstPool")
+light_landing_burst_pool = NodePath("LightLandingBurstPool")
+heavy_landing_burst_pool = NodePath("HeavyLandingBurstPool")
+slide_start_burst_pool = NodePath("SlideStartBurstPool")
+walk_step_burst_pool = NodePath("WalkStepBurstPool")
+slide_trail_particles = NodePath("SlideTrailParticles")
+light_landing_threshold_mps = 1.15
+walk_foot_lateral_offset_m = 0.24
+walk_foot_forward_offset_m = 0.32000000000000006
+is_debug_enabled = true
+
+[node name="GroundJumpBurstPool" type="Node3D" parent="PlayerMovementParticles" unique_id=510326570]
+script = ExtResource("37_55jnj")
+particle_scene = ExtResource("37_pnw6m")
+
+[node name="WallJumpBurstPool" type="Node3D" parent="PlayerMovementParticles" unique_id=437688306]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5372283, 0)
+script = ExtResource("37_55jnj")
+particle_scene = ExtResource("39_55jnj")
+
+[node name="LightLandingBurstPool" type="Node3D" parent="PlayerMovementParticles" unique_id=1190119431]
+script = ExtResource("37_55jnj")
+particle_scene = ExtResource("40_dx5ib")
+
+[node name="HeavyLandingBurstPool" type="Node3D" parent="PlayerMovementParticles" unique_id=876471757]
+script = ExtResource("37_55jnj")
+particle_scene = ExtResource("41_a2xo5")
+
+[node name="SlideStartBurstPool" type="Node3D" parent="PlayerMovementParticles" unique_id=215258964]
+script = ExtResource("37_55jnj")
+particle_scene = ExtResource("42_fjxoa")
+
+[node name="WalkStepBurstPool" type="Node3D" parent="PlayerMovementParticles" unique_id=237778737]
+script = ExtResource("37_55jnj")
+particle_scene = ExtResource("43_gswnw")
+pool_size = 12
+
+[node name="SlideTrailParticles" type="GPUParticles3D" parent="PlayerMovementParticles" unique_id=2145708416]
+emitting = false
+amount = 4
+lifetime = 3.26
+speed_scale = 6.63
+collision_base_size = 0.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_pnw6m")
+draw_pass_1 = SubResource("QuadMesh_55jnj")
