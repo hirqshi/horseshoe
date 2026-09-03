@@ -69,6 +69,28 @@ extends Resource
 @export_range(0.01, 1.0, 0.01, "suffix:s") var slide_shake_duration_s: float = 0.08
 @export_range(1.0, 120.0, 1.0, "suffix:hz") var slide_shake_frequency_hz: float = 22.0
 
+@export_category("grapple fov")
+@export_range(
+	0.0,
+	30.0,
+	0.1,
+	"suffix:deg"
+) var grapple_outgoing_fov_bonus_deg: float = 8.0
+
+@export_range(
+	0.0,
+	30.0,
+	0.1,
+	"suffix:deg"
+) var grapple_returning_fov_bonus_deg: float = 6.0
+
+@export_range(
+	0.1,
+	50.0,
+	0.1,
+	"suffix:1/s"
+) var grapple_fov_response_speed: float = 12.0
+
 func is_valid() -> bool:
 	return (
 		speed_fov_cap_mps > 0.0
@@ -87,4 +109,5 @@ func is_valid() -> bool:
 		and dash_fov_release_s > 0.0
 		and slide_fov_attack_s > 0.0
 		and slide_fov_release_s > 0.0
+		and grapple_fov_response_speed > 0.0
 	)

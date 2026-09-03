@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6m6magrvnmou"
-path.s3tc="res://.godot/imported/Concrete017_4K_Roughness.png-2fcf6d472cfebde0d82bf78229833cc3.s3tc.ctex"
+uid="uid://onf1vxhhldlo"
+path.s3tc="res://.godot/imported/Rope002_1K-JPG_Color.jpg-85cb7fc67c29b9e796cc1265e4371e33.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/world/concrete/roughness/Concrete017_4K_Roughness.png"
-dest_files=["res://.godot/imported/Concrete017_4K_Roughness.png-2fcf6d472cfebde0d82bf78229833cc3.s3tc.ctex"]
+source_file="res://assets/textures/grapple/Rope002_1K-JPG_Color.jpg"
+dest_files=["res://.godot/imported/Rope002_1K-JPG_Color.jpg-85cb7fc67c29b9e796cc1265e4371e33.s3tc.ctex"]
 
 [params]
 

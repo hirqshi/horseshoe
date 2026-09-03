@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dkljra6eonr1"]
+
+[ext_resource type="Shader" uid="uid://pafoqulhyrbj" path="res://player/actions/grapple/grapple_rope.gdshader" id="1_ibkmp"]
+[ext_resource type="Texture2D" uid="uid://onf1vxhhldlo" path="res://assets/textures/grapple/Rope002_1K-JPG_Color.jpg" id="2_xkwqb"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ibkmp")
+shader_parameter/rope_texture = ExtResource("2_xkwqb")
+shader_parameter/rope_color = Color(0.76, 0.76, 0.76, 1)
+shader_parameter/texture_scale = 2.0
+shader_parameter/triplanar_sharpness = 4.0
+shader_parameter/roughness_value = 0.83

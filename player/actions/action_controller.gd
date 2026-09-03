@@ -7,6 +7,7 @@ var _active_action: MovementAction
 var _dash_action: DashAction
 var _grounding_action: GroundingAction
 var _slide_action: SlideAction
+var _grapple_action: GrappleAction
 
 func _ready() -> void:
 	_motor = get_parent() as MovementMotor
@@ -43,14 +44,40 @@ func _ready() -> void:
 
 		if slide_action != null:
 			_slide_action = slide_action
+			
+		var grapple_action: GrappleAction = (
+			action as GrappleAction
+		)
+
+		if grapple_action != null:
+			_grapple_action = grapple_action
 
 
-func apply(context: MovementContext) -> void:
+func apply(
+	context: MovementContext
+) -> void:
+	for action: MovementAction in _actions:
+		action.update(
+			context
+		)
+
 	if _active_action != null:
-		var is_still_active: bool = _active_action.physics_tick(context)
+		if _try_interrupt_active_grapple(
+			context
+		):
+			return
+
+		var is_still_active: bool = (
+			_active_action.physics_tick(
+				context
+			)
+		)
 
 		if not is_still_active:
-			_active_action.finish(context)
+			_active_action.finish(
+				context
+			)
+
 			_active_action = null
 
 		return
@@ -66,9 +93,17 @@ func apply(context: MovementContext) -> void:
 		_active_action = action
 		_active_action.start(context)
 
-		var is_still_active: bool = _active_action.physics_tick(context)
+		var is_still_active: bool = (
+			_active_action.physics_tick(
+				context
+			)
+		)
+
 		if not is_still_active:
-			_active_action.finish(context)
+			_active_action.finish(
+				context
+			)
+
 			_active_action = null
 
 		return
@@ -92,6 +127,50 @@ func get_grounding_action() -> GroundingAction:
 func get_slide_action() -> SlideAction:
 	return _slide_action
 
+
+func get_grapple_action() -> GrappleAction:
+	return _grapple_action
+
+
+func _try_interrupt_active_grapple(
+	context: MovementContext
+) -> bool:
+	var grapple_action: GrappleAction = (
+		_active_action as GrappleAction
+	)
+
+	if grapple_action == null:
+		return false
+
+	if _dash_action != null \
+	and _dash_action.can_start(context):
+		_active_action.finish(
+			context
+		)
+
+		_active_action = _dash_action
+		_active_action.start(
+			context
+		)
+
+		return true
+
+	if _grounding_action != null \
+	and _grounding_action.can_start(context):
+		_active_action.finish(
+			context
+		)
+
+		_active_action = _grounding_action
+		_active_action.start(
+			context
+		)
+
+		return true
+
+	return false
+
+
 func cancel_active_action(
 	context: MovementContext
 ) -> void:
@@ -99,4 +178,24 @@ func cancel_active_action(
 		return
 
 	_active_action.finish(context)
+	_active_action = null
+
+
+func reset_after_respawn(
+	context: MovementContext
+) -> void:
+	if _active_action == null:
+		return
+
+	var grapple_action: GrappleAction = (
+		_active_action as GrappleAction
+	)
+
+	if grapple_action != null:
+		grapple_action.reset_after_respawn()
+	else:
+		_active_action.finish(
+			context
+		)
+
 	_active_action = null

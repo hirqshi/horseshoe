@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_041cx")
+look_sensitivity_multiplier = 0.54
 maximum_bank_angle_deg = 50.4
 bank_response_speed = 3.9
 bank_return_speed = 1.0

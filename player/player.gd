@@ -79,6 +79,8 @@ func _ready() -> void:
 
 func reset_after_respawn() -> void:
 	if movement_motor != null:
+		movement_motor.reset_after_respawn()
+
 		movement_motor.clear_speed_boost()
 
 		var glide_state: GlideState = (

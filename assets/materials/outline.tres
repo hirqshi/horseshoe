@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b1xhixl0uwj7s"]
+
+[ext_resource type="Shader" uid="uid://6jollo2116hu" path="res://assets/shaders/outlines.gdshader" id="1_0lybl"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0lybl")
+shader_parameter/sensitivity = 0.01999999955296
+shader_parameter/outline_thickness = 0.2999999932944
+shader_parameter/step_threshold = 1.999999955296
+shader_parameter/outline_color = Color(0.116666794, 0, 1, 1)

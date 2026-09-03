@@ -93,6 +93,8 @@ var _walk_input_suppressed_until_s: float = -INF
 var _grounding_action: GroundingAction
 var _slide_action: SlideAction
 
+var _grapple_action: GrappleAction
+
 var _ground_boost_until_s: float = -INF
 var _ground_boost_jump_speed_mps: float = 0.0
 
@@ -176,7 +178,18 @@ func _ready() -> void:
 	
 	_grounding_action = _action_controller.get_grounding_action()
 	_slide_action = _action_controller.get_slide_action()
+	
+	_grapple_action = _action_controller.get_grapple_action()
 
+	if _grapple_action == null:
+		push_error(
+			"MovementMotor requires a GrappleAction "
+			+ "inside ActionController."
+		)
+
+		set_physics_process(false)
+		return
+		
 	if _grounding_action == null:
 		push_error(
 			"MovementMotor requires GroundingAction inside ActionController."
@@ -1032,3 +1045,33 @@ func _on_glide_started() -> void:
 
 func _on_glide_finished() -> void:
 	glide_finished.emit()
+
+
+func get_grapple_action() -> GrappleAction:
+	return _grapple_action
+
+
+func reset_after_respawn() -> void:
+	if _action_controller != null:
+		_action_controller.reset_after_respawn(
+			_context
+		)
+
+	if _glide_state != null:
+		_glide_state.reset_after_respawn(
+			_context
+		)
+
+	_wave_dash_until_s = -INF
+	_wave_dash_velocity = Vector3.ZERO
+
+	_walk_input_suppressed_until_s = -INF
+
+	_ground_boost_until_s = -INF
+	_ground_boost_jump_speed_mps = 0.0
+
+	_jump_buffer_until_s = -INF
+	_jump_hold_remaining_s = 0.0
+	_last_grounded_time_s = -INF
+
+	_update_charge_availability()

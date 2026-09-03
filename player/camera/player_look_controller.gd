@@ -54,18 +54,18 @@ func _ready() -> void:
 	_pitch_rad = head.rotation.x
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-func _process(delta: float) -> void:
+func _process(
+	delta: float
+) -> void:
 	if not _is_enabled:
-		return
-
-	if _is_recovering_from_glide:
-		_update_glide_recovery(delta)
 		return
 
 	if not body.is_on_floor():
 		return
 
-	_recover_ground_pitch(delta)
+	_recover_ground_pitch(
+		delta
+	)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"ui_cancel"):
@@ -248,100 +248,21 @@ func begin_glide_recovery(
 
 	horizontal_forward = horizontal_forward.normalized()
 
-	_glide_recovery_target_body_yaw_rad = atan2(
+	var target_body_yaw_rad: float = atan2(
 		-horizontal_forward.x,
 		-horizontal_forward.z
 	)
 
-	var target_body_basis: Basis = Basis(
-		Vector3.UP,
-		_glide_recovery_target_body_yaw_rad
-	)
+	body.rotation.y = target_body_yaw_rad
 
 	var local_forward: Vector3 = (
-		target_body_basis.inverse()
+		body.global_basis.inverse()
 		* flight_forward.normalized()
-	)
-
-	var target_pitch_rad: float = asin(
-		clampf(
-			local_forward.y,
-			-1.0,
-			1.0
-		)
-	)
-
-	_glide_recovery_target_head_rotation = (
-		target_body_basis
-		* Basis(
-			Vector3.RIGHT,
-			target_pitch_rad
-		)
-	).get_rotation_quaternion()
-
-	_is_recovering_from_glide = true
-
-
-func _update_glide_recovery(
-	delta: float
-) -> void:
-	var response_weight: float = (
-		1.0
-		- exp(
-			-glide_recovery_response_speed
-			* delta
-		)
-	)
-
-	body.rotation.y = lerp_angle(
-		body.rotation.y,
-		_glide_recovery_target_body_yaw_rad,
-		response_weight
-	)
-
-	var current_head_rotation: Quaternion = (
-		head.global_basis
-		.get_rotation_quaternion()
-	)
-
-	var recovered_head_rotation: Quaternion = (
-		current_head_rotation.slerp(
-			_glide_recovery_target_head_rotation,
-			response_weight
-		)
-	)
-
-	head.global_basis = Basis(
-		recovered_head_rotation
-	)
-
-	var remaining_angle_rad: float = (
-		recovered_head_rotation.angle_to(
-			_glide_recovery_target_head_rotation
-		)
-	)
-
-	if remaining_angle_rad > 0.01:
-		return
-
-	head.global_basis = Basis(
-		_glide_recovery_target_head_rotation
-	)
-
-	var local_head_rotation: Quaternion = (
-		body.global_basis
-		.get_rotation_quaternion()
-		.inverse()
-		* _glide_recovery_target_head_rotation
-	)
-
-	var local_head_basis: Basis = Basis(
-		local_head_rotation
 	)
 
 	_pitch_rad = asin(
 		clampf(
-			-local_head_basis.z.y,
+			local_forward.y,
 			-1.0,
 			1.0
 		)

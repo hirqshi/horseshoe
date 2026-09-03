@@ -356,10 +356,10 @@ func update_input_state(
 func force_exit(
 	context: MovementContext
 ) -> void:
-	_requires_glide_release = true
-
 	if not _is_active:
 		return
+
+	_requires_glide_release = true
 
 	exit(context)
 
@@ -367,6 +367,24 @@ func force_exit(
 func is_active() -> bool:
 	return _is_active
 
+
+func reset_after_respawn(
+	context: MovementContext
+) -> void:
+	_requires_glide_release = false
+
+	if not _is_active:
+		return
+
+	_is_active = false
+
+	_restore_normal_look(
+		context
+	)
+
+	_motor.stance.set_is_gliding(false)
+
+	glide_finished.emit()
 
 func get_charges() -> int:
 	return _charges

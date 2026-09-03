@@ -4,10 +4,17 @@
 [ext_resource type="Script" uid="uid://bcnhmsy5ralgr" path="res://player/camera/camera_visual_rig.gd" id="2_65viv"]
 [ext_resource type="Script" uid="uid://c6s6xtq3w3xs3" path="res://player/movement/movement_motor.gd" id="3_qjkh3"]
 [ext_resource type="Resource" uid="uid://cj83mg5feq8sh" path="res://data/camera/default_camera_visual_config.tres" id="3_x7c3f"]
+[ext_resource type="Script" uid="uid://c5jotb1t2xxc6" path="res://player/actions/grapple/grapple_visual.gd" id="4_8pxes"]
+[ext_resource type="ArrayMesh" uid="uid://cjadateiqfdct" path="res://assets/models/hook/hook.obj" id="4_jfgyi"]
 [ext_resource type="Resource" uid="uid://bsfssmv454j38" path="res://data/movement/default_movement_config.tres" id="4_yw30f"]
 [ext_resource type="Script" uid="uid://bbnjlu8xn4wx3" path="res://player/movement/states/grounded_locomotion_state.gd" id="5_boad6"]
+[ext_resource type="Script" uid="uid://qmrstb1ip2xx" path="res://player/actions/grapple/grapple_rope_visual.gd" id="5_fmu53"]
+[ext_resource type="Texture2D" uid="uid://bauxt72fenptq" path="res://assets/textures/world/concrete/albedo/Concrete017_4K_Color.jpg" id="5_jfgyi"]
 [ext_resource type="Script" uid="uid://cpw6cl28g505q" path="res://player/sensors/player_sensors.gd" id="5_qjkh3"]
 [ext_resource type="Script" uid="uid://bgrcyb2s8mgwb" path="res://player/movement/states/airborne_locomotion_state.gd" id="6_rgyib"]
+[ext_resource type="Texture2D" uid="uid://bge4lb2qwktvv" path="res://assets/textures/world/concrete/normal/Concrete017_4K_NormalGL.png" id="6_wpyo2"]
+[ext_resource type="Texture2D" uid="uid://c6m6magrvnmou" path="res://assets/textures/world/concrete/roughness/Concrete017_4K_Roughness.png" id="7_7crtr"]
+[ext_resource type="Material" uid="uid://dkljra6eonr1" path="res://assets/materials/grapple_rope.tres" id="7_237xx"]
 [ext_resource type="Script" uid="uid://deqe6hcron7wf" path="res://player/movement/states/wallrun_locomotion_state.gd" id="7_e7oew"]
 [ext_resource type="Script" uid="uid://y5oaj8gqj3l8" path="res://player/actions/action_controller.gd" id="8_8t03j"]
 [ext_resource type="Resource" uid="uid://je7gkx0v4tn1" path="res://data/movement/default_wallrun_config.tres" id="8_c35mf"]
@@ -22,6 +29,8 @@
 [ext_resource type="Resource" uid="uid://riksolt1h4vf" path="res://data/movement/default_grounding_config.tres" id="11_tqiix"]
 [ext_resource type="Resource" uid="uid://bpqfok3s3mrcn" path="res://data/movement/default_slide_config.tres" id="11_wodsf"]
 [ext_resource type="Script" uid="uid://bqwyx4nl8awsr" path="res://player/camera/player_look_controller.gd" id="19_c35mf"]
+[ext_resource type="Script" uid="uid://dyic1imbfhnaa" path="res://player/actions/grapple/grapple_action.gd" id="20_mmwog"]
+[ext_resource type="Resource" uid="uid://2xr1x7ro8bls" path="res://data/movement/default_grapple_config.tres" id="21_8pxes"]
 [ext_resource type="Script" uid="uid://c550e20npurxm" path="res://player/fall/fall_tracker.gd" id="21_bjvpn"]
 [ext_resource type="Resource" uid="uid://dceteb6iuy0pc" path="res://player/fall/player_fall_config.tres" id="22_s7qer"]
 [ext_resource type="Script" uid="uid://d3j64um1at5r1" path="res://gameplay/reverse_stamina/reverse_stamina.gd" id="23_s7qer"]
@@ -58,6 +67,14 @@ height = 0.6434082
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gswnw"]
 radius = 0.318
 height = 0.97907126
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4s7s"]
+albedo_color = Color(0.86, 0.86, 0.86, 1)
+albedo_texture = ExtResource("5_jfgyi")
+roughness_texture = ExtResource("7_7crtr")
+normal_enabled = true
+normal_scale = 2.45
+normal_texture = ExtResource("6_wpyo2")
 
 [sub_resource type="Gradient" id="Gradient_o4sym"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -125,17 +142,52 @@ disabled = true
 [node name="Head" type="Node3D" parent="." unique_id=1139077187]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="CameraVisualRig" type="Node3D" parent="Head" unique_id=1080138415 node_paths=PackedStringArray("body", "camera", "movement_motor", "stance")]
+[node name="CameraVisualRig" type="Node3D" parent="Head" unique_id=1080138415 node_paths=PackedStringArray("body", "camera", "movement_motor", "stance", "grapple_visual")]
 script = ExtResource("2_65viv")
 config = ExtResource("3_x7c3f")
 body = NodePath("../..")
 camera = NodePath("Camera3D")
 movement_motor = NodePath("../../MovementMotor")
 stance = NodePath("../../PlayerStance")
+grapple_visual = NodePath("GrappleVisual")
 bob_step_rate_scale = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="Head/CameraVisualRig" unique_id=2116220637]
 fov = 130.0
+
+[node name="GrappleAimRay" type="RayCast3D" parent="Head/CameraVisualRig/Camera3D" unique_id=317141585]
+exclude_parent = false
+target_position = Vector3(0, 0, -35)
+
+[node name="HookOrigin" type="Marker3D" parent="Head/CameraVisualRig" unique_id=1374409993]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43744934, -0.7816684, 0)
+
+[node name="HookMesh" type="MeshInstance3D" parent="Head/CameraVisualRig" unique_id=1721345217]
+mesh = ExtResource("4_jfgyi")
+surface_material_override/0 = SubResource("StandardMaterial3D_e4s7s")
+
+[node name="GrappleVisual" type="Node3D" parent="Head/CameraVisualRig" unique_id=184746267 node_paths=PackedStringArray("movement_motor", "hook_origin", "hook_mesh")]
+script = ExtResource("4_8pxes")
+movement_motor = NodePath("../../../MovementMotor")
+hook_origin = NodePath("../HookOrigin")
+hook_mesh = NodePath("../HookMesh")
+hook_local_rotation_offset_deg = Vector3(-180, 0, 0)
+
+[node name="GrappleRope" type="MeshInstance3D" parent="Head/CameraVisualRig" unique_id=222163440 node_paths=PackedStringArray("grapple_visual", "hook_origin", "movement_motor")]
+material_override = ExtResource("7_237xx")
+script = ExtResource("5_fmu53")
+grapple_visual = NodePath("../GrappleVisual")
+hook_origin = NodePath("../HookOrigin")
+movement_motor = NodePath("../../../MovementMotor")
+ring_count = 22
+radial_segments = 6
+rope_radius_m = 0.11
+attached_sag_ratio = 0.13
+maximum_sag_m = 3.01
+outgoing_sag_multiplier = 0.22
+returning_sag_multiplier = 0.4
+swing_velocity_bend_per_mps = 0.11
+maximum_swing_bend_m = 1.28
 
 [node name="MovementMotor" type="Node" parent="." unique_id=2105785744 node_paths=PackedStringArray("view_pivot", "movement_yaw_pivot", "sensors", "stance")]
 script = ExtResource("3_qjkh3")
@@ -177,6 +229,11 @@ config = ExtResource("11_wodsf")
 
 [node name="CrouchAction" type="Node" parent="MovementMotor/ActionController" unique_id=1004303175]
 script = ExtResource("10_yllr7")
+
+[node name="GrappleAction" type="Node" parent="MovementMotor/ActionController" unique_id=2084296870 node_paths=PackedStringArray("aim_ray")]
+script = ExtResource("20_mmwog")
+config = ExtResource("21_8pxes")
+aim_ray = NodePath("../../../Head/CameraVisualRig/Camera3D/GrappleAimRay")
 
 [node name="PlayerSensors" type="Node3D" parent="." unique_id=1942310472 node_paths=PackedStringArray("wall_probe_left", "wall_probe_right", "wall_probe_forward", "ground_probe")]
 script = ExtResource("5_qjkh3")

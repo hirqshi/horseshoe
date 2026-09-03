@@ -8,6 +8,7 @@ signal bob_step()
 @export var camera: Camera3D
 @export var movement_motor: MovementMotor
 @export var stance: PlayerStance
+@export var grapple_visual: GrappleVisual
 
 @export_category("audio sync")
 @export_range(0.25, 1.0, 0.01) var bob_step_rate_scale: float = 0.5
@@ -16,6 +17,9 @@ var _base_position: Vector3 = Vector3.ZERO
 var _base_fov_deg: float = 75.0
 var _current_fov_deg: float = 75.0
 var _state_fov_bonus_deg: float = 0.0
+
+var _grapple_fov_bonus_deg: float = 0.0
+var _grapple_fov_target_bonus_deg: float = 0.0
 
 var _dash_fov_elapsed_s: float = -1.0
 var _dash_fov_bonus_deg: float = 0.0
@@ -85,7 +89,15 @@ func _ready() -> void:
 		push_error("CameraVisualRig requires PlayerStance.")
 		set_process(false)
 		return
-	
+		
+	if grapple_visual == null:
+		push_error(
+			"CameraVisualRig requires GrappleVisual."
+		)
+
+		set_process(false)
+		return
+
 	_base_position = position
 	_base_fov_deg = camera.fov
 	_current_fov_deg = _base_fov_deg
@@ -105,6 +117,23 @@ func _ready() -> void:
 	)
 	movement_motor.slide_started.connect(_on_slide_started)
 	movement_motor.slide_finished.connect(_on_slide_finished)
+	
+	grapple_visual.hook_outgoing_started.connect(
+		_on_grapple_hook_outgoing_started
+	)
+
+	grapple_visual.hook_attached.connect(
+		_on_grapple_hook_attached
+	)
+
+	grapple_visual.hook_returning_started.connect(
+		_on_grapple_hook_returning_started
+	)
+
+	grapple_visual.hook_hidden.connect(
+		_on_grapple_hook_hidden
+	)
+
 
 func _process(delta: float) -> void:
 	var horizontal_speed_mps: float = Vector2(
@@ -204,7 +233,16 @@ func _update_fov(
 
 	if _is_sliding:
 		slide_state_bonus_deg = config.slide_fov_bonus_deg
-
+		
+	_grapple_fov_bonus_deg = lerpf(
+		_grapple_fov_bonus_deg,
+		_grapple_fov_target_bonus_deg,
+		_get_smoothing_weight(
+			config.grapple_fov_response_speed,
+			delta
+		)
+	)
+	
 	var target_fov_deg: float = (
 		_base_fov_deg
 		+ config.speed_fov_bonus_deg * speed_ratio
@@ -212,6 +250,7 @@ func _update_fov(
 		+ slide_state_bonus_deg
 		+ _dash_fov_bonus_deg
 		+ _slide_fov_pulse_deg
+		+ _grapple_fov_bonus_deg
 	)
 
 	_current_fov_deg = lerpf(
@@ -680,3 +719,23 @@ func _update_shake(delta: float) -> void:
 		_shake_rotation_amplitude_rad = 0.0
 		_shake_duration_s = 0.0
 		_shake_sample_elapsed_s = 0.0
+
+
+func _on_grapple_hook_outgoing_started() -> void:
+	_grapple_fov_target_bonus_deg = (
+		config.grapple_outgoing_fov_bonus_deg
+	)
+
+
+func _on_grapple_hook_attached() -> void:
+	_grapple_fov_target_bonus_deg = 0.0
+
+
+func _on_grapple_hook_returning_started() -> void:
+	_grapple_fov_target_bonus_deg = (
+		config.grapple_returning_fov_bonus_deg
+	)
+
+
+func _on_grapple_hook_hidden() -> void:
+	_grapple_fov_target_bonus_deg = 0.0

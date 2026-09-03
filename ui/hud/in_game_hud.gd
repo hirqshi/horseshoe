@@ -9,6 +9,7 @@ extends CanvasLayer
 @export var dash_charges_hud: ChargeFrameHud
 @export var wall_jump_charges_hud: ChargeFrameHud
 @export var glide_charges_hud: ChargeFrameHud
+@export var grapple_indicator: GrappleIndicatorHud
 
 @export_category("viewport composite")
 @export var ui_viewport: SubViewport
@@ -21,6 +22,14 @@ var _movement_motor: MovementMotor
 func _ready() -> void:
 	if crosshair == null:
 		push_error("InGameHud requires Crosshair.")
+		set_process_input(false)
+		return
+		
+	if grapple_indicator == null:
+		push_error(
+			"InGameHud requires GrappleIndicator."
+		)
+
 		set_process_input(false)
 		return
 		
@@ -184,7 +193,31 @@ func set_player(player: Player) -> void:
 			"InGameHud could not get MovementMotor from Player."
 		)
 		return
+		
+	var grapple_action: GrappleAction = (
+		_movement_motor.get_grapple_action()
+	)
 
+	if grapple_action == null:
+		push_error(
+			"InGameHud could not get GrappleAction "
+			+ "from MovementMotor."
+		)
+
+		return
+
+	grapple_indicator.set_target_available(
+		grapple_action.is_target_available()
+	)
+
+	grapple_action.target_availability_changed.connect(
+		_on_grapple_target_availability_changed
+	)
+
+	grapple_action.cooldown_started.connect(
+		_on_grapple_cooldown_started
+	)
+	
 	dash_charges_hud.set_charge_state(
 		_movement_motor.get_dash_charges(),
 		_movement_motor.can_dash()
@@ -344,4 +377,26 @@ func _on_glide_availability_changed(
 	glide_charges_hud.set_charge_state(
 		_movement_motor.get_glide_charges(),
 		is_available
+	)
+
+
+func _on_grapple_target_availability_changed(
+	is_available: bool
+) -> void:
+	if grapple_indicator == null:
+		return
+
+	grapple_indicator.set_target_available(
+		is_available
+	)
+
+
+func _on_grapple_cooldown_started(
+	duration_s: float
+) -> void:
+	if grapple_indicator == null:
+		return
+
+	grapple_indicator.start_cooldown(
+		duration_s
 	)
