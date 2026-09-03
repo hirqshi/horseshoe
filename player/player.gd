@@ -81,6 +81,13 @@ func reset_after_respawn() -> void:
 	if movement_motor != null:
 		movement_motor.clear_speed_boost()
 
+		var glide_state: GlideState = (
+			movement_motor.get_glide_state()
+		)
+
+		if glide_state != null:
+			glide_state.restore_all_charges()
+
 	if reverse_stamina != null:
 		reverse_stamina.restore_full()
 

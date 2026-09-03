@@ -120,3 +120,11 @@ var jump_release_velocity_multiplier: float = 0.45
 
 @export_category("collision")
 @export_range(1.0, 89.0, 1.0) var max_floor_angle_deg: float = 50.0
+
+@export_category("grounding")
+@export_range(
+	0.0,
+	2.0,
+	0.01,
+	"suffix:m"
+) var floor_snap_length_m: float = 0.35

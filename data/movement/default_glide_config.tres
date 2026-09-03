@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GlideConfig" format=3 uid="uid://cfcup6m3l5ndw"]
+
+[ext_resource type="Script" uid="uid://bwvgpy1yrq0g1" path="res://player/movement/states/glide_config.gd" id="1_041cx"]
+
+[resource]
+script = ExtResource("1_041cx")
+maximum_bank_angle_deg = 50.4
+bank_response_speed = 3.9
+bank_return_speed = 1.0
+bank_input_strength = 18.64
+neutral_sink_speed_mps = 1.05
+metadata/_custom_type_script = "uid://bwvgpy1yrq0g1"

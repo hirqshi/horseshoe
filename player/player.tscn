@@ -14,9 +14,11 @@
 [ext_resource type="Script" uid="uid://dcg5etkq4idhh" path="res://player/actions/dash/dash_action.gd" id="9_2ieo8"]
 [ext_resource type="Script" uid="uid://dx1e22ufcmubo" path="res://player/actions/grounding/grounding_action.gd" id="10_32hag"]
 [ext_resource type="Resource" uid="uid://bti7l146y8ekq" path="res://data/movement/default_dash_config.tres" id="10_ebec5"]
+[ext_resource type="Script" uid="uid://bta70wfmqfxy8" path="res://player/movement/states/glide_state.gd" id="10_j55il"]
 [ext_resource type="Script" uid="uid://cojxqomndtewn" path="res://player/actions/slide/slide_action.gd" id="10_kb6p2"]
 [ext_resource type="Script" uid="uid://g6ku284a0f23" path="res://player/actions/crouch/crouch_action.gd" id="10_yllr7"]
 [ext_resource type="Script" uid="uid://css26icnxn6px" path="res://player/stance/player_stance.gd" id="11_2ieo8"]
+[ext_resource type="Resource" uid="uid://cfcup6m3l5ndw" path="res://data/movement/default_glide_config.tres" id="11_hjies"]
 [ext_resource type="Resource" uid="uid://riksolt1h4vf" path="res://data/movement/default_grounding_config.tres" id="11_tqiix"]
 [ext_resource type="Resource" uid="uid://bpqfok3s3mrcn" path="res://data/movement/default_slide_config.tres" id="11_wodsf"]
 [ext_resource type="Script" uid="uid://bqwyx4nl8awsr" path="res://player/camera/player_look_controller.gd" id="19_c35mf"]
@@ -50,8 +52,12 @@ radius = 0.3
 height = 1.6
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8t03j"]
-radius = 0.205
+radius = 0.32
 height = 0.6434082
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gswnw"]
+radius = 0.318
+height = 0.97907126
 
 [sub_resource type="Gradient" id="Gradient_o4sym"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -100,6 +106,7 @@ material = SubResource("StandardMaterial3D_dx5ib")
 orientation = 1
 
 [node name="Player" type="CharacterBody3D" unique_id=361433541 node_paths=PackedStringArray("look_controller")]
+floor_max_angle = 0.9599311
 script = ExtResource("1_g1dw6")
 look_controller = NodePath("PlayerLookController")
 
@@ -109,6 +116,11 @@ shape = SubResource("CapsuleShape3D_6m30h")
 [node name="CrouchingCollider" type="CollisionShape3D" parent="." unique_id=629685485]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.47829592, 0)
 shape = SubResource("CapsuleShape3D_8t03j")
+
+[node name="GlidingCollider" type="CollisionShape3D" parent="." unique_id=308774140]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.4863432, -0.0031401515)
+shape = SubResource("CapsuleShape3D_gswnw")
+disabled = true
 
 [node name="Head" type="Node3D" parent="." unique_id=1139077187]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -142,6 +154,11 @@ script = ExtResource("6_rgyib")
 [node name="WallrunState" type="Node" parent="MovementMotor" unique_id=1877129951]
 script = ExtResource("7_e7oew")
 config = ExtResource("8_c35mf")
+
+[node name="GlideState" type="Node" parent="MovementMotor" unique_id=575491559 node_paths=PackedStringArray("look_controller")]
+script = ExtResource("10_j55il")
+config = ExtResource("11_hjies")
+look_controller = NodePath("../../PlayerLookController")
 
 [node name="ActionController" type="Node" parent="MovementMotor" unique_id=972487612]
 script = ExtResource("8_8t03j")
@@ -183,10 +200,11 @@ target_position = Vector3(0, 0, -0.5)
 [node name="GroundProbe" type="RayCast3D" parent="PlayerSensors" unique_id=1842487763]
 target_position = Vector3(0, -5, 0)
 
-[node name="PlayerStance" type="Node" parent="." unique_id=855263564 node_paths=PackedStringArray("standing_collider", "crouching_collider", "head")]
+[node name="PlayerStance" type="Node" parent="." unique_id=855263564 node_paths=PackedStringArray("standing_collider", "crouching_collider", "gliding_collider", "head")]
 script = ExtResource("11_2ieo8")
 standing_collider = NodePath("../StandingCollider")
 crouching_collider = NodePath("../CrouchingCollider")
+gliding_collider = NodePath("../GlidingCollider")
 head = NodePath("../Head")
 standing_head_height_m = 0.5
 crouching_head_height_m = 0.0

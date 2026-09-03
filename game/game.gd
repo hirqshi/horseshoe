@@ -12,34 +12,42 @@ func _ready() -> void:
 		push_error(
 			"Game requires a Player."
 		)
+
 		return
 
 	if world == null:
 		push_error(
 			"Game requires a World."
 		)
+
 		return
 
 	if in_game_hud == null:
 		push_error(
 			"Game requires an InGameHud."
 		)
+
 		return
 
 	if player_death_controller == null:
 		push_error(
 			"Game requires a PlayerDeathController."
 		)
+
 		return
 
-	world.setup(player)
+	world.setup(
+		player
+	)
 
 	player_death_controller.setup(
 		player,
 		world
 	)
 
-	in_game_hud.set_player(player)
+	in_game_hud.set_player(
+		player
+	)
 
 	player.look_delta_received.connect(
 		in_game_hud.register_look_delta

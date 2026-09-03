@@ -6,6 +6,7 @@ signal stance_changed(is_crouching: bool)
 @export_category("nodes")
 @export var standing_collider: CollisionShape3D
 @export var crouching_collider: CollisionShape3D
+@export var gliding_collider: CollisionShape3D
 @export var head: Node3D
 
 @export_category("collision")
@@ -27,6 +28,7 @@ var _body: CharacterBody3D
 var _is_crouching: bool = false
 var _wants_to_stand: bool = false
 var _is_sliding_visual: bool = false
+var _is_gliding: bool = false
 
 func _ready() -> void:
 	_body = get_parent() as CharacterBody3D
@@ -45,13 +47,24 @@ func _ready() -> void:
 		push_error("PlayerStance requires CrouchingCollider.")
 		set_process(false)
 		return
-
+		
+	if gliding_collider == null:
+		push_error(
+			"PlayerStance requires GlidingCollider."
+		)
+		set_process(false)
+		return
+		
 	if head == null:
 		push_error("PlayerStance requires Head.")
 		set_process(false)
 		return
 
 	_is_crouching = standing_collider.disabled
+	gliding_collider.set_deferred(
+		"disabled",
+		true
+	)
 	_apply_head_height(true)
 
 func _process(delta: float) -> void:
@@ -125,6 +138,41 @@ func can_stand() -> bool:
 
 	return overlaps.is_empty()
 
+func set_is_gliding(
+	value: bool
+) -> void:
+	if _is_gliding == value:
+		return
+
+	_is_gliding = value
+
+	if _is_gliding:
+		_wants_to_stand = false
+
+		standing_collider.set_deferred(
+			"disabled",
+			true
+		)
+
+		crouching_collider.set_deferred(
+			"disabled",
+			true
+		)
+
+		gliding_collider.set_deferred(
+			"disabled",
+			false
+		)
+
+		return
+
+	gliding_collider.set_deferred(
+		"disabled",
+		true
+	)
+
+	_apply_stance_colliders()
+
 func set_is_sliding(value: bool) -> void:
 	if _is_sliding_visual == value:
 		return
@@ -163,8 +211,45 @@ func _apply_head_height(
 		transition_speed_mps * delta
 	)
 
-func _set_crouching(value: bool) -> void:
+func _set_crouching(
+	value: bool
+) -> void:
 	_is_crouching = value
-	standing_collider.set_deferred("disabled", _is_crouching)
-	crouching_collider.set_deferred("disabled", not _is_crouching)
+
+	_apply_stance_colliders()
+
 	stance_changed.emit(_is_crouching)
+
+func _apply_stance_colliders() -> void:
+	if _is_gliding:
+		standing_collider.set_deferred(
+			"disabled",
+			true
+		)
+
+		crouching_collider.set_deferred(
+			"disabled",
+			true
+		)
+
+		gliding_collider.set_deferred(
+			"disabled",
+			false
+		)
+
+		return
+
+	standing_collider.set_deferred(
+		"disabled",
+		_is_crouching
+	)
+
+	crouching_collider.set_deferred(
+		"disabled",
+		not _is_crouching
+	)
+
+	gliding_collider.set_deferred(
+		"disabled",
+		true
+	)

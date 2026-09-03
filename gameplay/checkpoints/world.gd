@@ -7,7 +7,7 @@ extends Node3D
 @export var pickups_root: PickupContainer
 
 var _player: Player
-var _active_rest_zone_count: int = 0
+var _active_rest_sources: Array[Node] = []
 var _are_zones_connected: bool = false
 
 
@@ -18,6 +18,7 @@ func setup(
 		push_error(
 			"World requires a Player."
 		)
+
 		return
 
 	_player = player
@@ -26,19 +27,23 @@ func setup(
 		push_error(
 			"World requires a CheckpointManager."
 		)
+
 		return
 
-	checkpoint_manager.setup(_player)
+	checkpoint_manager.setup(
+		_player
+	)
 
+	_connect_checkpoint_zones()
 	_connect_zones()
-
 	_update_rest_zone_state()
 
 
 func get_respawn_transform() -> Transform3D:
 	if checkpoint_manager == null:
 		push_error(
-			"World cannot provide a respawn transform: CheckpointManager is missing."
+			"World cannot provide a respawn transform: "
+			+ "CheckpointManager is missing."
 		)
 
 		return Transform3D.IDENTITY
@@ -47,12 +52,31 @@ func get_respawn_transform() -> Transform3D:
 
 
 func reset_player_zone_state() -> void:
-	_active_rest_zone_count = 0
+	_active_rest_sources.clear()
 
 	_update_rest_zone_state()
 
 	if pickups_root != null:
 		pickups_root.reset_pickups()
+
+
+func _connect_checkpoint_zones() -> void:
+	if checkpoint_manager == null:
+		return
+
+	if not checkpoint_manager.player_entered_checkpoint_zone.is_connected(
+		_on_checkpoint_player_entered
+	):
+		checkpoint_manager.player_entered_checkpoint_zone.connect(
+			_on_checkpoint_player_entered
+		)
+
+	if not checkpoint_manager.player_exited_checkpoint_zone.is_connected(
+		_on_checkpoint_player_exited
+	):
+		checkpoint_manager.player_exited_checkpoint_zone.connect(
+			_on_checkpoint_player_exited
+		)
 
 
 func _connect_zones() -> void:
@@ -70,18 +94,26 @@ func _connect_rest_zones() -> void:
 		return
 
 	for zone_node: Node in rest_zones_root.get_children():
-		var rest_zone: RestZone = zone_node as RestZone
+		var rest_zone: RestZone = (
+			zone_node as RestZone
+		)
 
 		if rest_zone == null:
 			continue
 
-		rest_zone.player_entered.connect(
+		if not rest_zone.player_entered.is_connected(
 			_on_rest_zone_player_entered
-		)
+		):
+			rest_zone.player_entered.connect(
+				_on_rest_zone_player_entered
+			)
 
-		rest_zone.player_exited.connect(
+		if not rest_zone.player_exited.is_connected(
 			_on_rest_zone_player_exited
-		)
+		):
+			rest_zone.player_exited.connect(
+				_on_rest_zone_player_exited
+			)
 
 
 func _connect_death_zones() -> void:
@@ -89,41 +121,59 @@ func _connect_death_zones() -> void:
 		return
 
 	for zone_node: Node in death_zones_root.get_children():
-		var death_zone: DeathZone = zone_node as DeathZone
+		var death_zone: DeathZone = (
+			zone_node as DeathZone
+		)
 
 		if death_zone == null:
 			continue
 
-		death_zone.player_entered.connect(
+		if not death_zone.player_entered.is_connected(
 			_on_death_zone_player_entered
-		)
+		):
+			death_zone.player_entered.connect(
+				_on_death_zone_player_entered
+			)
+
+
+func _on_checkpoint_player_entered(
+	checkpoint: Checkpoint
+) -> void:
+	_add_rest_source(
+		checkpoint
+	)
+
+
+func _on_checkpoint_player_exited(
+	checkpoint: Checkpoint
+) -> void:
+	_remove_rest_source(
+		checkpoint
+	)
 
 
 func _on_rest_zone_player_entered(
-	_rest_zone: RestZone,
+	rest_zone: RestZone,
 	body: Node3D
 ) -> void:
 	if body != _player:
 		return
 
-	_active_rest_zone_count += 1
-
-	_update_rest_zone_state()
+	_add_rest_source(
+		rest_zone
+	)
 
 
 func _on_rest_zone_player_exited(
-	_rest_zone: RestZone,
+	rest_zone: RestZone,
 	body: Node3D
 ) -> void:
 	if body != _player:
 		return
 
-	_active_rest_zone_count = maxi(
-		0,
-		_active_rest_zone_count - 1
+	_remove_rest_source(
+		rest_zone
 	)
-
-	_update_rest_zone_state()
 
 
 func _on_death_zone_player_entered(
@@ -134,6 +184,42 @@ func _on_death_zone_player_entered(
 		return
 
 	_player.request_instant_death()
+
+
+func _add_rest_source(
+	source: Node
+) -> void:
+	if source == null:
+		return
+
+	if _active_rest_sources.has(source):
+		return
+
+	_active_rest_sources.append(
+		source
+	)
+
+	_update_rest_zone_state()
+
+
+func _remove_rest_source(
+	source: Node
+) -> void:
+	if source == null:
+		return
+
+	var source_index: int = _active_rest_sources.find(
+		source
+	)
+
+	if source_index < 0:
+		return
+
+	_active_rest_sources.remove_at(
+		source_index
+	)
+
+	_update_rest_zone_state()
 
 
 func _update_rest_zone_state() -> void:
@@ -148,8 +234,9 @@ func _update_rest_zone_state() -> void:
 		push_error(
 			"World could not get ReverseStamina from Player."
 		)
+
 		return
 
 	reverse_stamina.set_resting(
-		_active_rest_zone_count > 0
+		not _active_rest_sources.is_empty()
 	)

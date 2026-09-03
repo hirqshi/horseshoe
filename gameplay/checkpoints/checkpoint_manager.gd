@@ -6,16 +6,30 @@ signal checkpoint_changed(
 	current_checkpoint: Checkpoint
 )
 
+signal player_entered_checkpoint_zone(
+	checkpoint: Checkpoint
+)
+
+signal player_exited_checkpoint_zone(
+	checkpoint: Checkpoint
+)
+
 @export var checkpoints_root: Node3D
 @export var initial_spawn_anchor: Marker3D
 
 var active_checkpoint: Checkpoint
-var player: CharacterBody3D
+var player: Player
 
 
 func setup(
-	target_player: CharacterBody3D
+	target_player: Player
 ) -> void:
+	if target_player == null:
+		push_error(
+			"CheckpointManager requires a Player."
+		)
+		return
+
 	player = target_player
 
 
@@ -29,12 +43,15 @@ func get_respawn_transform() -> Transform3D:
 
 	if initial_spawn_anchor == null:
 		push_error(
-			"CheckpointManager has no active checkpoint and no InitialSpawn."
+			"CheckpointManager has no active checkpoint "
+			+ "and no InitialSpawn."
 		)
 
 		return Transform3D.IDENTITY
 
-	var initial_transform: Transform3D = initial_spawn_anchor.global_transform
+	var initial_transform: Transform3D = (
+		initial_spawn_anchor.global_transform
+	)
 
 	return Transform3D(
 		initial_transform.basis.orthonormalized(),
@@ -51,14 +68,26 @@ func _connect_checkpoints() -> void:
 		return
 
 	for checkpoint_node: Node in checkpoints_root.get_children():
-		var checkpoint: Checkpoint = checkpoint_node as Checkpoint
+		var checkpoint: Checkpoint = (
+			checkpoint_node as Checkpoint
+		)
 
 		if checkpoint == null:
 			continue
 
-		checkpoint.body_reached.connect(
+		if not checkpoint.body_reached.is_connected(
 			_on_checkpoint_body_reached
-		)
+		):
+			checkpoint.body_reached.connect(
+				_on_checkpoint_body_reached
+			)
+
+		if not checkpoint.body_presence_changed.is_connected(
+			_on_checkpoint_presence_changed
+		):
+			checkpoint.body_presence_changed.connect(
+				_on_checkpoint_presence_changed
+			)
 
 
 func _set_active_checkpoint(
@@ -67,7 +96,9 @@ func _set_active_checkpoint(
 	if new_checkpoint == active_checkpoint:
 		return
 
-	var previous_checkpoint: Checkpoint = active_checkpoint
+	var previous_checkpoint: Checkpoint = (
+		active_checkpoint
+	)
 
 	if previous_checkpoint != null:
 		previous_checkpoint.set_active(false)
@@ -79,10 +110,6 @@ func _set_active_checkpoint(
 		previous_checkpoint,
 		active_checkpoint
 	)
-	print(
-		"Checkpoint activated: %s"
-		% active_checkpoint.name
-	)
 
 
 func _on_checkpoint_body_reached(
@@ -92,4 +119,26 @@ func _on_checkpoint_body_reached(
 	if body != player:
 		return
 
-	_set_active_checkpoint(checkpoint)
+	_set_active_checkpoint(
+		checkpoint
+	)
+
+
+func _on_checkpoint_presence_changed(
+	checkpoint: Checkpoint,
+	body: Node3D,
+	is_inside: bool
+) -> void:
+	if body != player:
+		return
+
+	if is_inside:
+		player_entered_checkpoint_zone.emit(
+			checkpoint
+		)
+
+		return
+
+	player_exited_checkpoint_zone.emit(
+		checkpoint
+	)

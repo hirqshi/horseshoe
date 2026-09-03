@@ -31,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://cuj83tmp5lk1d" path="res://assets/textures/ui/walljumpcharge.png" id="23_jucfl"]
 [ext_resource type="Script" uid="uid://bykjfged4t630" path="res://ui/hud/charge_icon.gd" id="24_jdpby"]
 [ext_resource type="Texture2D" uid="uid://786i61wstakh" path="res://assets/textures/ui/circledecor.png" id="27_fegy3"]
+[ext_resource type="Texture2D" uid="uid://b3wljeyhhjhjs" path="res://assets/textures/ui/glidecharge.png" id="27_posua"]
 [ext_resource type="Script" uid="uid://thpnlkoka52d" path="res://audio/death_audio.gd" id="32_cf130"]
 [ext_resource type="AudioStream" uid="uid://cfrraot688i8o" path="res://assets/sound/sfx/Sounds_Packet_First/Death.wav" id="32_pvdu1"]
 
@@ -205,7 +206,7 @@ render_target_update_mode = 4
 [node name="Player" parent="ScreenSpaceProjection/ProjectionInput/WorldContainer" unique_id=361433541 instance=ExtResource("2_h7iqs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33338058, 0)
 
-[node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud", "reverse_stamina_hud", "dash_charges_hud", "wall_jump_charges_hud", "ui_viewport", "hud_root", "ui_composite")]
+[node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud", "reverse_stamina_hud", "dash_charges_hud", "wall_jump_charges_hud", "glide_charges_hud", "ui_viewport", "hud_root", "ui_composite")]
 layer = 20
 script = ExtResource("6_j8tme")
 crosshair = NodePath("UiViewport/HudRoot/Crosshair")
@@ -214,6 +215,7 @@ fall_danger_hud = NodePath("UiViewport/HudRoot/FallDangerHud")
 reverse_stamina_hud = NodePath("UiViewport/HudRoot/ReverseStaminaBar")
 dash_charges_hud = NodePath("UiViewport/HudRoot/DashChargesHud")
 wall_jump_charges_hud = NodePath("UiViewport/HudRoot/WallJumpChargesHud")
+glide_charges_hud = NodePath("UiViewport/HudRoot/GlideChargesHud")
 ui_viewport = NodePath("UiViewport")
 hud_root = NodePath("UiViewport/HudRoot")
 ui_composite = NodePath("UiComposite")
@@ -353,9 +355,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = 45.0
+offset_top = 98.0
 offset_right = 20.0
-offset_bottom = 85.0
+offset_bottom = 138.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -660,6 +662,84 @@ offset_bottom = 243.99998
 rotation = 3.926991
 pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("27_fegy3")
+
+[node name="GlideChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=399815653 node_paths=PackedStringArray("charge_icons")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("21_8bboj")
+charge_icons = [NodePath("GlideCharge1"), NodePath("GlideCharge2")]
+element_alpha = 0.7
+lag_sensitivity = 0.269
+lag_max_distance_px = 30.0
+lag_follow_speed = 9.6
+lag_return_speed = 7.4
+
+[node name="Frame" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=266190596]
+modulate = Color(0.07250014, 0, 0.87, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = 145.0
+offset_right = 41.0
+offset_bottom = 200.00002
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("22_q52ks")
+
+[node name="GlideCharge1" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=653058212]
+modulate = Color(0.7833333, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = 155.0
+offset_right = 11.0
+offset_bottom = 163.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("27_posua")
+script = ExtResource("24_jdpby")
+pulse_scale = 1.6
+pulse_in_duration = 0.1
+
+[node name="GlideCharge2" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=1637330637]
+modulate = Color(0.7833333, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = 173.0
+offset_right = 11.0
+offset_bottom = 181.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("27_posua")
+script = ExtResource("24_jdpby")
+pulse_scale = 1.6
+pulse_in_duration = 0.1
 
 [node name="WallJumpChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=235241088 node_paths=PackedStringArray("charge_icons")]
 layout_mode = 1

@@ -32,6 +32,18 @@ signal wall_jump_availability_changed(
 signal dash_failed()
 signal wall_jump_failed()
 
+signal glide_charges_changed(
+	current_charges: int,
+	max_charges: int
+)
+
+signal glide_availability_changed(
+	is_available: bool
+)
+
+signal glide_started()
+signal glide_finished()
+
 signal speed_boost_started(
 	speed_multiplier: float,
 	duration_s: float
@@ -61,6 +73,11 @@ signal impulse_applied(
 @onready var _wallrun_state: WallrunLocomotionState = (
 	get_node_or_null("WallrunState") as WallrunLocomotionState
 )
+@onready var _glide_state: GlideState = (
+	get_node_or_null(
+		"GlideState"
+	) as GlideState
+)
 
 var _body: CharacterBody3D
 var _player_input: PlayerInput = PlayerInput.new()
@@ -84,6 +101,7 @@ var _speed_boost_multiplier: float = 1.0
 
 var _is_dash_available: bool = false
 var _is_wall_jump_available: bool = false
+var _is_glide_available: bool = false
 
 var _last_grounded_time_s: float = -INF
 var _jump_buffer_until_s: float = -INF
@@ -125,10 +143,12 @@ func _ready() -> void:
 		return
 		
 	if _grounded_state == null \
-			or _airborne_state == null \
-			or _wallrun_state == null:
+	or _airborne_state == null \
+	or _wallrun_state == null \
+	or _glide_state == null:
 		push_error(
-			"MovementMotor requires GroundedState, AirborneState and WallrunState."
+			"MovementMotor requires GroundedState, AirborneState, "
+			+ "WallrunState and GlideState."
 		)
 		set_physics_process(false)
 		return
@@ -185,8 +205,23 @@ func _ready() -> void:
 	_wallrun_state.wall_jump_failed.connect(
 		_on_wall_jump_failed
 	)
-	_body.floor_max_angle = deg_to_rad(config.max_floor_angle_deg)
+	
+	_glide_state.glide_charges_changed.connect(
+		_on_glide_charges_changed
+	)
 
+	_glide_state.glide_started.connect(
+		_on_glide_started
+	)
+
+	_glide_state.glide_finished.connect(
+		_on_glide_finished
+	)
+	
+	_body.floor_max_angle = deg_to_rad(config.max_floor_angle_deg)
+	_body.floor_snap_length = (
+		config.floor_snap_length_m
+	)
 	_context.body = _body
 	_context.view_pivot = view_pivot
 	_context.movement_yaw_pivot = movement_yaw_pivot
@@ -223,6 +258,10 @@ func _physics_process(delta: float) -> void:
 	_context.update(
 		delta,
 		current_time_s
+	)
+
+	_glide_state.update_input_state(
+		_context
 	)
 
 	_update_speed_boost(delta)
@@ -359,7 +398,14 @@ func _process_post_move(pre_move_vertical_speed_mps: float) -> void:
 
 	if not _was_on_floor and is_on_floor_now:
 		_wallrun_state.restore_wall_jump_charges()
-		landed.emit(maxf(0.0, -pre_move_vertical_speed_mps))
+		_glide_state.restore_all_charges()
+
+		landed.emit(
+			maxf(
+				0.0,
+				-pre_move_vertical_speed_mps
+			)
+		)
 
 	if _was_on_floor and not is_on_floor_now:
 		left_ground.emit()
@@ -396,12 +442,35 @@ func _update_locomotion_state() -> void:
 
 	if _body.is_on_floor():
 		next_state = _grounded_state
-	elif _active_state == _wallrun_state \
-			and not _wallrun_state.can_continue(_context):
-		next_state = _airborne_state
+
+	elif _active_state == _glide_state:
+		if _action_controller.has_active_action():
+			_glide_state.force_exit(
+				_context
+			)
+
+			next_state = _airborne_state
+
+		elif _glide_state.can_continue(
+			_context
+		):
+			next_state = _glide_state
+
+		else:
+			next_state = _airborne_state
+
 	elif not _action_controller.blocks_locomotion_transition() \
-			and _wallrun_state.can_enter(_context):
+	and _glide_state.can_enter(_context):
+		next_state = _glide_state
+
+	elif _active_state == _wallrun_state \
+	and not _wallrun_state.can_continue(_context):
+		next_state = _airborne_state
+
+	elif not _action_controller.blocks_locomotion_transition() \
+	and _wallrun_state.can_enter(_context):
 		next_state = _wallrun_state
+
 	else:
 		next_state = _airborne_state
 
@@ -489,6 +558,8 @@ func _update_wall_touch_event() -> void:
 	)
 
 	if not _was_touching_wall and is_touching_wall:
+		_glide_state.restore_all_charges()
+
 		wall_touched.emit()
 
 	_was_touching_wall = is_touching_wall
@@ -675,6 +746,78 @@ func apply_repulsion(
 		final_speed_mps
 	)
 
+
+func get_glide_charges() -> int:
+	if _glide_state == null:
+		return 0
+
+	return _glide_state.get_charges()
+
+
+func get_glide_max_charges() -> int:
+	if _glide_state == null:
+		return 0
+
+	return _glide_state.get_max_charges()
+
+
+func can_glide() -> bool:
+	if _glide_state == null:
+		return false
+
+	if _body == null:
+		return false
+
+	if _action_controller.has_active_action():
+		return false
+
+	return _glide_state.is_deploy_available(
+		_context
+	)
+
+
+func get_glide_state() -> GlideState:
+	return _glide_state
+
+
+func is_gliding() -> bool:
+	if _glide_state == null:
+		return false
+
+	return _glide_state.is_active()
+
+
+func register_glide_look_delta(
+	mouse_delta: Vector2,
+	mouse_sensitivity: float
+) -> void:
+	if _glide_state == null:
+		return
+
+	if not _glide_state.is_active():
+		return
+
+	_glide_state.register_look_delta(
+		_context,
+		mouse_delta,
+		mouse_sensitivity
+	)
+
+
+func cancel_glide() -> void:
+	if _glide_state == null:
+		return
+
+	_glide_state.force_exit(
+		_context
+	)
+
+	if _active_state == _glide_state:
+		_set_locomotion_state(
+			_airborne_state
+		)
+
+
 func get_dash_charges() -> int:
 	if _dash_action == null:
 		return 0
@@ -758,6 +901,15 @@ func _update_charge_availability() -> void:
 
 		wall_jump_availability_changed.emit(
 			_is_wall_jump_available
+		)
+
+	var can_use_glide: bool = can_glide()
+
+	if can_use_glide != _is_glide_available:
+		_is_glide_available = can_use_glide
+
+		glide_availability_changed.emit(
+			_is_glide_available
 		)
 
 
@@ -862,3 +1014,21 @@ func _on_dash_failed() -> void:
 
 func _on_wall_jump_failed() -> void:
 	wall_jump_failed.emit()
+
+
+func _on_glide_charges_changed(
+	current_charges: int,
+	max_charges: int
+) -> void:
+	glide_charges_changed.emit(
+		current_charges,
+		max_charges
+	)
+
+
+func _on_glide_started() -> void:
+	glide_started.emit()
+
+
+func _on_glide_finished() -> void:
+	glide_finished.emit()

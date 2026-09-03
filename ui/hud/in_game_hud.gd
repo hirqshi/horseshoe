@@ -8,6 +8,7 @@ extends CanvasLayer
 @export var reverse_stamina_hud: ReverseStaminaHud
 @export var dash_charges_hud: ChargeFrameHud
 @export var wall_jump_charges_hud: ChargeFrameHud
+@export var glide_charges_hud: ChargeFrameHud
 
 @export_category("viewport composite")
 @export var ui_viewport: SubViewport
@@ -50,6 +51,13 @@ func _ready() -> void:
 	if wall_jump_charges_hud == null:
 		push_error(
 			"InGameHud requires WallJumpChargesHud."
+		)
+		set_process_input(false)
+		return
+		
+	if glide_charges_hud == null:
+		push_error(
+			"InGameHud requires GlideChargesHud."
 		)
 		set_process_input(false)
 		return
@@ -186,7 +194,12 @@ func set_player(player: Player) -> void:
 		_movement_motor.get_wall_jump_charges(),
 		_movement_motor.can_wall_jump()
 	)
-
+	
+	glide_charges_hud.set_charge_state(
+		_movement_motor.get_glide_charges(),
+		_movement_motor.can_glide()
+	)
+	
 	_movement_motor.dash_charges_changed.connect(
 		_on_dash_charges_changed
 	)
@@ -201,6 +214,13 @@ func set_player(player: Player) -> void:
 
 	_movement_motor.wall_jump_availability_changed.connect(
 		_on_wall_jump_availability_changed
+	)
+	_movement_motor.glide_charges_changed.connect(
+		_on_glide_charges_changed
+	)
+
+	_movement_motor.glide_availability_changed.connect(
+		_on_glide_availability_changed
 	)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -240,7 +260,11 @@ func register_look_delta(
 	wall_jump_charges_hud.register_look_delta(
 		mouse_delta
 	)
-
+	
+	glide_charges_hud.register_look_delta(
+		mouse_delta
+	)
+	
 func set_hud_visible(value: bool) -> void:
 	_is_hud_visible = value
 	visible = _is_hud_visible
@@ -294,5 +318,30 @@ func _on_wall_jump_availability_changed(
 
 	wall_jump_charges_hud.set_charge_state(
 		_movement_motor.get_wall_jump_charges(),
+		is_available
+	)
+
+
+func _on_glide_charges_changed(
+	current_charges: int,
+	_max_charges: int
+) -> void:
+	if _movement_motor == null:
+		return
+
+	glide_charges_hud.set_charge_state(
+		current_charges,
+		_movement_motor.can_glide()
+	)
+
+
+func _on_glide_availability_changed(
+	is_available: bool
+) -> void:
+	if _movement_motor == null:
+		return
+
+	glide_charges_hud.set_charge_state(
+		_movement_motor.get_glide_charges(),
 		is_available
 	)
