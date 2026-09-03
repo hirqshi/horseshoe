@@ -100,6 +100,9 @@ func _ready() -> void:
 	)
 	movement_motor.dash_started.connect(_on_dash_started)
 	movement_motor.dash_finished.connect(_on_dash_finished)
+	movement_motor.impulse_applied.connect(
+		_on_impulse_applied
+	)
 	movement_motor.slide_started.connect(_on_slide_started)
 	movement_motor.slide_finished.connect(_on_slide_finished)
 
@@ -449,6 +452,11 @@ func _update_wallrun_lean(delta: float) -> void:
 			delta
 		)
 	)
+
+func _on_impulse_applied(
+	_impulse_speed_mps: float
+) -> void:
+	_on_dash_started()
 
 func _on_dash_started() -> void:
 	_dash_fov_elapsed_s = 0.0

@@ -11,6 +11,7 @@ var player_input: PlayerInput
 var velocity: Vector3 = Vector3.ZERO
 var is_grounded: bool = false
 var is_walk_input_suppressed: bool = false
+var speed_multiplier: float = 1.0
 var delta: float = 0.0
 var time_s: float = 0.0
 
@@ -96,6 +97,8 @@ func get_target_speed_mps(
 	and not ignore_walk_input \
 	and not is_walk_input_suppressed:
 		target_speed_mps *= config.walk_speed_multiplier
+
+	target_speed_mps *= speed_multiplier
 
 	return target_speed_mps
 

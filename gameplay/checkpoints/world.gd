@@ -4,6 +4,7 @@ extends Node3D
 @export var checkpoint_manager: CheckpointManager
 @export var rest_zones_root: Node3D
 @export var death_zones_root: Node3D
+@export var pickups_root: PickupContainer
 
 var _player: Player
 var _active_rest_zone_count: int = 0
@@ -49,6 +50,9 @@ func reset_player_zone_state() -> void:
 	_active_rest_zone_count = 0
 
 	_update_rest_zone_state()
+
+	if pickups_root != null:
+		pickups_root.reset_pickups()
 
 
 func _connect_zones() -> void:

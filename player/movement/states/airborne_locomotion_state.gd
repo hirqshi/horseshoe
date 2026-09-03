@@ -83,32 +83,25 @@ func _apply_horizontal_movement(
 	if horizontal_velocity.is_zero_approx():
 		return
 
-	var current_direction: Vector3 = (
-		horizontal_velocity.normalized()
+	var target_velocity: Vector3 = (
+		wish_direction
+		* horizontal_speed_mps
 	)
 
-	var steering_weight: float = minf(
-		(
-			context.config.air_control_acceleration_mps2
-			/ maxf(
-				horizontal_speed_mps,
-				0.001
-			)
-		)
-		* context.delta,
-		1.0
+	var steering_delta_mps: float = (
+		context.config.air_control_acceleration_mps2
+		* context.delta
 	)
 
-	var steered_direction: Vector3 = (
-		current_direction.slerp(
-			wish_direction,
-			steering_weight
+	var steered_velocity: Vector3 = (
+		horizontal_velocity.move_toward(
+			target_velocity,
+			steering_delta_mps
 		)
-	).normalized()
+	)
 
 	context.set_horizontal_velocity(
-		steered_direction
-		* horizontal_speed_mps
+		steered_velocity
 	)
 
 

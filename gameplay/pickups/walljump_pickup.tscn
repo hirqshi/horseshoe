@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://ces1on43dj112"]
+
+[ext_resource type="PackedScene" uid="uid://bbvbp7wldlmmy" path="res://gameplay/pickups/pickup.tscn" id="1_yiatv"]
+[ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="2_mbpo5"]
+[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="3_au0wi"]
+[ext_resource type="Script" uid="uid://clpdgyaaeu8a" path="res://gameplay/pickups/pickup_definition.gd" id="4_bqu6a"]
+[ext_resource type="ArrayMesh" uid="uid://c7a8eaon6pe6h" path="res://assets/models/pickups/trigon.obj" id="5_4kpfx"]
+[ext_resource type="Material" uid="uid://cu20o41wcjcoa" path="res://assets/materials/pickups/walljump_pickup.tres" id="6_65aiw"]
+
+[sub_resource type="Resource" id="Resource_3fxkm"]
+script = ExtResource("4_bqu6a")
+effect_type = 1
+charge_amount = 4
+speed_multiplier = 1.0
+speed_boost_duration_s = 0.1
+impulse_minimum_speed_mps = 0.0
+pickup_streams = Array[AudioStream]([ExtResource("3_au0wi")])
+hum_stream = ExtResource("2_mbpo5")
+metadata/_custom_type_script = "uid://clpdgyaaeu8a"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_yiatv"]
+radius = 3.0
+
+[node name="Pickup" unique_id=66290146 instance=ExtResource("1_yiatv")]
+definition = SubResource("Resource_3fxkm")
+
+[node name="CollisionShape3D" parent="." index="0" unique_id=41489313]
+shape = SubResource("SphereShape3D_yiatv")
+
+[node name="MeshInstance3D" parent="VisualRoot" parent_id_path=PackedInt32Array(865213995) index="0" unique_id=1417926934]
+transform = Transform3D(0.22045352, 0.91772014, -0.9722218, -0.35520825, 0.9901416, 0.85409117, 1.2888958, 0.11590686, 0.4016693, 0.055360787, 0.10014944, -0.023192167)
+mesh = ExtResource("5_4kpfx")
+surface_material_override/0 = ExtResource("6_65aiw")

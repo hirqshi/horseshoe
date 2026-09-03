@@ -1,7 +1,11 @@
 class_name MomentumGrace
 extends RefCounted
 
+const MINIMUM_RECOVERY_DIRECTION_ALIGNMENT: float = 0.70
+
 var _saved_horizontal_speed_mps: float = 0.0
+
+var _saved_horizontal_direction: Vector3 = Vector3.ZERO
 
 var _grace_until_s: float = -INF
 
@@ -41,7 +45,23 @@ func update_before_locomotion(
 
 	if wish_direction.is_zero_approx():
 		return
+		
+	if _saved_horizontal_direction.is_zero_approx():
+		_clear_grace()
+		return
 
+	var direction_alignment: float = (
+		wish_direction.dot(
+			_saved_horizontal_direction
+		)
+	)
+
+	if direction_alignment < (
+		MINIMUM_RECOVERY_DIRECTION_ALIGNMENT
+	):
+		_clear_grace()
+		return
+		
 	var current_horizontal_speed_mps: float = (
 		context.get_horizontal_velocity().length()
 	)
@@ -89,10 +109,21 @@ func update_after_move(
 
 	if has_move_input \
 	and not _is_recovery_armed:
-		_saved_horizontal_speed_mps = maxf(
-			_saved_horizontal_speed_mps,
-			horizontal_speed_mps
+		var horizontal_velocity: Vector3 = (
+			context.get_horizontal_velocity()
 		)
+
+		if horizontal_speed_mps >= (
+			_saved_horizontal_speed_mps
+		):
+			_saved_horizontal_speed_mps = (
+				horizontal_speed_mps
+			)
+
+			if not horizontal_velocity.is_zero_approx():
+				_saved_horizontal_direction = (
+					horizontal_velocity.normalized()
+				)
 
 	if had_slide_collision:
 		_try_arm_collision_grace(
@@ -106,6 +137,7 @@ func update_after_move(
 
 func reset() -> void:
 	_saved_horizontal_speed_mps = 0.0
+	_saved_horizontal_direction = Vector3.ZERO
 	_grace_until_s = -INF
 	_had_move_input = false
 	_is_recovery_armed = false
@@ -176,5 +208,6 @@ func _clear_expired_grace(
 
 func _clear_grace() -> void:
 	_saved_horizontal_speed_mps = 0.0
+	_saved_horizontal_direction = Vector3.ZERO
 	_grace_until_s = -INF
 	_is_recovery_armed = false

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bbjo7u0g1e5jv"]
+
+[ext_resource type="PackedScene" uid="uid://bbvbp7wldlmmy" path="res://gameplay/pickups/pickup.tscn" id="1_u8xt0"]
+[ext_resource type="ArrayMesh" uid="uid://bpw2w6cn7i8t0" path="res://assets/models/pickups/octahedron.obj" id="2_a6neh"]
+[ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="2_p6qee"]
+[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="3_m2nol"]
+[ext_resource type="Script" uid="uid://clpdgyaaeu8a" path="res://gameplay/pickups/pickup_definition.gd" id="4_dv5k3"]
+[ext_resource type="Material" uid="uid://b6rpr1fybcpgs" path="res://assets/materials/pickups/boost_pickup.tres" id="6_p6qee"]
+
+[sub_resource type="Resource" id="Resource_a6neh"]
+script = ExtResource("4_dv5k3")
+effect_type = 2
+speed_multiplier = 1.4
+speed_boost_duration_s = 6.0
+impulse_minimum_speed_mps = 0.0
+pickup_streams = Array[AudioStream]([ExtResource("3_m2nol")])
+hum_stream = ExtResource("2_p6qee")
+metadata/_custom_type_script = "uid://clpdgyaaeu8a"
+
+[node name="Pickup" unique_id=66290146 instance=ExtResource("1_u8xt0")]
+definition = SubResource("Resource_a6neh")
+
+[node name="MeshInstance3D" parent="VisualRoot" parent_id_path=PackedInt32Array(865213995) index="0" unique_id=1417926934]
+transform = Transform3D(1.93, 0, 0, 0, 1.93, 0, 0, 0, 1.93, 0, 0, 0)
+mesh = ExtResource("2_a6neh")
+surface_material_override/0 = ExtResource("6_p6qee")

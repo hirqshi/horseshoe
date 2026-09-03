@@ -1,0 +1,98 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://drj5cuy3a75nm"]
+
+[ext_resource type="Shader" uid="uid://ce8jfswmwgev8" path="res://gameplay/checkpoints/checkpoint_smoke.gdshader" id="1_h1fy1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h1fy1"]
+render_priority = 10
+shader = ExtResource("1_h1fy1")
+shader_parameter/primary_color = Color(1, 0, 0.4833336, 1)
+shader_parameter/secondary_color = Color(1, 0.23000002, 0.2941668, 1)
+shader_parameter/bottom_color = Color(1, 1, 1, 1)
+shader_parameter/secondary_color_mix = 0.45
+shader_parameter/opacity = 0.11999999731776
+shader_parameter/emission_energy = 1.25
+shader_parameter/smoke_tiling = 1.4
+shader_parameter/smoke_scroll_direction = Vector2(0.08, -0.05)
+shader_parameter/smoke_sharpness = 0.72
+shader_parameter/mesh_bottom_y = -0.8
+shader_parameter/mesh_top_y = 0.8
+shader_parameter/bottom_cutoff = 0.0
+shader_parameter/top_cutoff = 0.0
+shader_parameter/cutoff_softness = 0.12
+shader_parameter/geometry_bottom_offset = 0.0
+shader_parameter/pulse_speed = 5.92999986745264
+shader_parameter/pulse_strength = 0.35999999195328
+shader_parameter/edge_pulse = 0.21600001026
+shader_parameter/geometry_jitter = 0.0990000047025
+shader_parameter/geometry_step_rate = 3.80000005662456
+shader_parameter/bottom_gradient_height = 0.38
+shader_parameter/bottom_color_strength = 0.65
+shader_parameter/bottom_opacity_multiplier = 1.45
+shader_parameter/bottom_emission_boost = 0.8
+shader_parameter/inner_fresnel_power = 2.0
+shader_parameter/inner_fresnel_strength = 4.0
+shader_parameter/outer_fresnel_power = 5.0
+shader_parameter/outer_fresnel_strength = 2.0
+shader_parameter/wipe_scale = 3.0
+shader_parameter/wipe_speed = 0.5
+shader_parameter/wipe_blend = 0.25
+shader_parameter/signal_scale = 22.0
+shader_parameter/signal_speed = 1.0
+shader_parameter/signal_random_scale = 0.25
+shader_parameter/signal_blend = 0.35
+shader_parameter/flicker_amount = 0.08
+shader_parameter/flicker_speed = 8.0
+shader_parameter/grain_amount = 0.08
+shader_parameter/effect_strength = 0.7
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dtj1p"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_scmly"]
+noise = SubResource("FastNoiseLite_dtj1p")
+seamless = true
+seamless_blend_skirt = 0.109
+
+[resource]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_h1fy1")
+shader = ExtResource("1_h1fy1")
+shader_parameter/smoke_texture = SubResource("NoiseTexture2D_scmly")
+shader_parameter/primary_color = Color(1, 0, 0.4833336, 1)
+shader_parameter/secondary_color = Color(1, 0, 0.016666412, 1)
+shader_parameter/bottom_color = Color(1, 0.120000005, 0.13466644, 1)
+shader_parameter/secondary_color_mix = 0.45
+shader_parameter/opacity = 0.56999998725936
+shader_parameter/emission_energy = 7.999999821184
+shader_parameter/smoke_tiling = 0.68999998830244
+shader_parameter/smoke_scroll_direction = Vector2(0.055, 0.39)
+shader_parameter/smoke_sharpness = 0.62999998591824
+shader_parameter/mesh_bottom_y = -0.8
+shader_parameter/mesh_top_y = 0.8
+shader_parameter/bottom_cutoff = 0.0
+shader_parameter/top_cutoff = 0.0
+shader_parameter/cutoff_softness = 0.40400001919
+shader_parameter/geometry_bottom_offset = 0.0
+shader_parameter/pulse_speed = 0.65999998524768
+shader_parameter/pulse_strength = 0.10999999754128
+shader_parameter/edge_pulse = 0.034000001615
+shader_parameter/geometry_jitter = 0.010000000475
+shader_parameter/geometry_step_rate = 6.90000010281828
+shader_parameter/bottom_gradient_height = 0.06100000289749999
+shader_parameter/bottom_color_strength = 0.18999999575312
+shader_parameter/bottom_opacity_multiplier = 1.58999998681232
+shader_parameter/bottom_emission_boost = 6.8999998457712
+shader_parameter/inner_fresnel_power = 2.0
+shader_parameter/inner_fresnel_strength = 4.0
+shader_parameter/outer_fresnel_power = 5.0
+shader_parameter/outer_fresnel_strength = 2.0
+shader_parameter/wipe_scale = 3.499999921768
+shader_parameter/wipe_speed = 2.31999994814336
+shader_parameter/wipe_blend = 0.81999998167136
+shader_parameter/signal_scale = 67.5499984901224
+shader_parameter/signal_speed = 4.42999990098064
+shader_parameter/signal_random_scale = 0.35999999195328
+shader_parameter/signal_blend = 0.06999999843536
+shader_parameter/flicker_amount = 0.20999999530608
+shader_parameter/flicker_speed = 8.0
+shader_parameter/grain_amount = 0.58999998681232
+shader_parameter/effect_strength = 3.71999991685056

@@ -167,6 +167,26 @@ func _on_motor_wall_jumped() -> void:
 	_restore_all_charges()
 
 
+func restore_charges(
+	amount: int,
+	resets_cooldown: bool = true
+) -> int:
+	if amount <= 0:
+		return 0
+
+	var previous_charges: int = _charges
+
+	if resets_cooldown:
+		_cooldown_until_s = -INF
+
+	_set_charges(
+		_charges + amount,
+		false
+	)
+
+	return _charges - previous_charges
+
+
 func _restore_all_charges() -> void:
 	if config == null:
 		return

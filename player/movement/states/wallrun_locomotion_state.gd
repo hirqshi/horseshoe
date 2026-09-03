@@ -646,6 +646,40 @@ func _get_wall_jump_normal(
 
 	return Vector3.ZERO
 
+func restore_wall_jump_charges_by_amount(
+	amount: int
+) -> int:
+	if amount <= 0:
+		return 0
+
+	if config == null:
+		return 0
+
+	var previous_charges: int = (
+		_wall_jump_charges
+	)
+
+	_wall_jump_charges = clampi(
+		_wall_jump_charges + amount,
+		0,
+		config.max_wall_jump_charges
+	)
+
+	var restored_charges: int = (
+		_wall_jump_charges
+		- previous_charges
+	)
+
+	if restored_charges <= 0:
+		return 0
+
+	wall_jump_charges_changed.emit(
+		_wall_jump_charges,
+		config.max_wall_jump_charges
+	)
+
+	return restored_charges
+
 func restore_wall_jump_charges() -> void:
 	if _wall_jump_charges == config.max_wall_jump_charges:
 		return

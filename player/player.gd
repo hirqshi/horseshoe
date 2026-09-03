@@ -78,6 +78,9 @@ func _ready() -> void:
 	)
 
 func reset_after_respawn() -> void:
+	if movement_motor != null:
+		movement_motor.clear_speed_boost()
+
 	if reverse_stamina != null:
 		reverse_stamina.restore_full()
 

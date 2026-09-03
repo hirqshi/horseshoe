@@ -32,6 +32,17 @@ signal wall_jump_availability_changed(
 signal dash_failed()
 signal wall_jump_failed()
 
+signal speed_boost_started(
+	speed_multiplier: float,
+	duration_s: float
+)
+
+signal speed_boost_finished()
+
+signal impulse_applied(
+	speed_mps: float
+)
+
 @export var config: MovementConfig
 @export var view_pivot: Node3D
 @export var movement_yaw_pivot: Node3D
@@ -67,6 +78,9 @@ var _slide_action: SlideAction
 
 var _ground_boost_until_s: float = -INF
 var _ground_boost_jump_speed_mps: float = 0.0
+
+var _speed_boost_stacks: Array[SpeedBoostStack] = []
+var _speed_boost_multiplier: float = 1.0
 
 var _is_dash_available: bool = false
 var _is_wall_jump_available: bool = false
@@ -209,6 +223,12 @@ func _physics_process(delta: float) -> void:
 	_context.update(
 		delta,
 		current_time_s
+	)
+
+	_update_speed_boost(delta)
+
+	_context.speed_multiplier = (
+		_speed_boost_multiplier
 	)
 
 	_context.is_walk_input_suppressed = (
@@ -387,6 +407,53 @@ func _update_locomotion_state() -> void:
 
 	_set_locomotion_state(next_state)
 
+func _update_speed_boost(
+	delta: float
+) -> void:
+	if _speed_boost_stacks.is_empty():
+		return
+
+	var had_active_boost: bool = (
+		_speed_boost_multiplier > 1.0
+	)
+
+	for stack_index: int in range(
+		_speed_boost_stacks.size() - 1,
+		-1,
+		-1
+	):
+		var stack: SpeedBoostStack = (
+			_speed_boost_stacks[stack_index]
+		)
+
+		stack.remaining_s = maxf(
+			stack.remaining_s - delta,
+			0.0
+		)
+
+		if stack.remaining_s > 0.0:
+			continue
+
+		_speed_boost_stacks.remove_at(
+			stack_index
+		)
+
+	_recalculate_speed_multiplier()
+
+	if had_active_boost \
+	and _speed_boost_multiplier <= 1.0:
+		speed_boost_finished.emit()
+
+
+func _recalculate_speed_multiplier() -> void:
+	_speed_boost_multiplier = 1.0
+
+	for stack: SpeedBoostStack in _speed_boost_stacks:
+		_speed_boost_multiplier *= (
+			stack.multiplier
+		)
+
+
 func _apply_variable_jump(delta: float) -> void:
 	if _jump_hold_remaining_s <= 0.0:
 		return
@@ -441,6 +508,173 @@ func notify_slide_started() -> void:
 func notify_slide_finished() -> void:
 	slide_finished.emit()
 
+func restore_dash_charges(
+	amount: int
+) -> int:
+	if _dash_action == null:
+		return 0
+
+	var restored_charges: int = (
+		_dash_action.restore_charges(
+			amount,
+			true
+		)
+	)
+
+	_update_charge_availability()
+
+	return restored_charges
+
+
+func restore_wall_jump_charges(
+	amount: int
+) -> int:
+	if _wallrun_state == null:
+		return 0
+
+	return _wallrun_state.restore_wall_jump_charges_by_amount(
+		amount
+	)
+
+
+func apply_speed_boost(
+	speed_multiplier: float,
+	duration_s: float
+) -> void:
+	if speed_multiplier <= 1.0:
+		return
+
+	if duration_s <= 0.0:
+		return
+
+	var stack: SpeedBoostStack = SpeedBoostStack.new(
+		speed_multiplier,
+		duration_s
+	)
+
+	_speed_boost_stacks.append(stack)
+
+	_recalculate_speed_multiplier()
+
+	speed_boost_started.emit(
+		speed_multiplier,
+		duration_s
+	)
+
+
+func clear_speed_boost() -> void:
+	if _speed_boost_stacks.is_empty():
+		return
+
+	_speed_boost_stacks.clear()
+	_speed_boost_multiplier = 1.0
+
+	speed_boost_finished.emit()
+
+
+func get_speed_multiplier() -> float:
+	return _speed_boost_multiplier
+
+
+func get_speed_boost_remaining_s() -> float:
+	var longest_remaining_s: float = 0.0
+
+	for stack: SpeedBoostStack in _speed_boost_stacks:
+		longest_remaining_s = maxf(
+			longest_remaining_s,
+			stack.remaining_s
+		)
+
+	return longest_remaining_s
+
+
+func apply_forward_impulse(
+	minimum_speed_mps: float
+) -> void:
+	if _body == null:
+		return
+
+	if minimum_speed_mps <= 0.0:
+		return
+
+	var impulse_direction: Vector3 = (
+		-view_pivot.global_basis.z
+	)
+
+	if impulse_direction.length_squared() <= 0.0001:
+		return
+
+	impulse_direction = impulse_direction.normalized()
+
+	var current_speed_mps: float = (
+		_body.velocity.length()
+	)
+
+	var final_speed_mps: float = maxf(
+		current_speed_mps,
+		minimum_speed_mps
+	)
+
+	_action_controller.cancel_active_action(
+		_context
+	)
+
+	var impulse_velocity: Vector3 = (
+		impulse_direction
+		* final_speed_mps
+	)
+
+	_body.velocity = impulse_velocity
+	_context.velocity = impulse_velocity
+
+	impulse_applied.emit(
+		final_speed_mps
+	)
+
+
+func apply_repulsion(
+	minimum_speed_mps: float
+) -> void:
+	if _body == null:
+		return
+
+	if minimum_speed_mps <= 0.0:
+		return
+
+	var repulsion_direction: Vector3 = (
+		view_pivot.global_basis.z
+	)
+
+	if repulsion_direction.length_squared() <= 0.0001:
+		return
+
+	repulsion_direction = repulsion_direction.normalized()
+
+	var current_speed_mps: float = (
+		_body.velocity.length()
+	)
+
+	var final_speed_mps: float = maxf(
+		current_speed_mps,
+		minimum_speed_mps
+	)
+
+	_action_controller.cancel_active_action(
+		_context
+	)
+
+	var repulsion_velocity: Vector3 = (
+		repulsion_direction
+		* final_speed_mps
+	)
+
+	_body.velocity = repulsion_velocity
+	_context.velocity = repulsion_velocity
+
+	impulse_applied.emit(
+		final_speed_mps
+	)
+
 func get_dash_charges() -> int:
 	if _dash_action == null:
 		return 0
@@ -466,6 +700,11 @@ func can_dash() -> bool:
 		return false
 
 	if _action_controller.has_active_action():
+		return false
+
+	if _dash_action.is_on_cooldown(
+		_context.time_s
+	):
 		return false
 
 	return get_dash_charges() > 0

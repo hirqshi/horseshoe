@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://bbvbp7wldlmmy"]
+
+[ext_resource type="Script" uid="uid://cq2tmunmbmajw" path="res://gameplay/pickups/pickup.gd" id="1_rl466"]
+[ext_resource type="Script" uid="uid://n35bsakxdw23" path="res://gameplay/pickups/pickup_visual.gd" id="1_umf7h"]
+[ext_resource type="Script" uid="uid://dflwvvevf7rmw" path="res://gameplay/pickups/pickup_audio.gd" id="2_rl466"]
+[ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="3_0c61n"]
+[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="4_e75u7"]
+[ext_resource type="Texture2D" uid="uid://cusukc5ut52wj" path="res://assets/textures/particles/spark_pickup.png" id="6_0c61n"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6m30h"]
+radius = 1.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6m30h"]
+emission_shape = 1
+emission_sphere_radius = 0.35
+orbit_velocity_min = 0.14200011
+orbit_velocity_max = 0.3360001
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = 0.39997762
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -1.8400022
+radial_accel_max = -0.12000223
+scale_min = 0.16
+scale_max = 1.63
+scale_over_velocity_min = 0.22999999
+scale_over_velocity_max = 1.9499999
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7sqxl"]
+transparency = 4
+blend_mode = 1
+shading_mode = 0
+specular_mode = 2
+albedo_color = Color(1, 1, 1, 0.05882353)
+albedo_texture = ExtResource("6_0c61n")
+texture_filter = 0
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_lfved"]
+material = SubResource("StandardMaterial3D_7sqxl")
+
+[node name="Pickup" type="Area3D" unique_id=66290146 node_paths=PackedStringArray("collision_shape", "visual", "pickup_audio")]
+script = ExtResource("1_rl466")
+collision_shape = NodePath("CollisionShape3D")
+visual = NodePath("VisualRoot")
+pickup_audio = NodePath("PickupAudio")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=41489313]
+shape = SubResource("SphereShape3D_6m30h")
+
+[node name="VisualRoot" type="Node3D" parent="." unique_id=865213995 node_paths=PackedStringArray("mesh_instance", "idle_particles")]
+script = ExtResource("1_umf7h")
+mesh_instance = NodePath("MeshInstance3D")
+idle_particles = [NodePath("../Particles")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualRoot" unique_id=1417926934]
+
+[node name="PickupAudio" type="Node3D" parent="." unique_id=921806692 node_paths=PackedStringArray("pickup_player", "hum_player")]
+script = ExtResource("2_rl466")
+pickup_player = NodePath("PickupPlayer")
+hum_player = NodePath("HumPlayer")
+
+[node name="HumPlayer" type="AudioStreamPlayer3D" parent="PickupAudio" unique_id=325492377]
+stream = ExtResource("3_0c61n")
+max_db = 1.0
+autoplay = true
+max_distance = 7.0
+bus = &"WorldSfx"
+
+[node name="PickupPlayer" type="AudioStreamPlayer3D" parent="PickupAudio" unique_id=1432643070]
+stream = ExtResource("4_e75u7")
+volume_db = -5.024
+max_distance = 35.83
+bus = &"Sfx"
+
+[node name="Particles" type="GPUParticles3D" parent="." unique_id=799549085]
+amount = 12
+lifetime = 2.0
+preprocess = 2.0
+trail_lifetime = 2.1199999999999997
+process_material = SubResource("ParticleProcessMaterial_6m30h")
+draw_pass_1 = SubResource("QuadMesh_lfved")

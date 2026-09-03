@@ -5,7 +5,13 @@
 [ext_resource type="Script" uid="uid://cviurofv6twm2" path="res://gameplay/checkpoints/checkpoint_manager.gd" id="2_v2sam"]
 [ext_resource type="Material" uid="uid://cgxaqibhsy48o" path="res://assets/textures/world/concrete_material.tres" id="4_qgppq"]
 [ext_resource type="PackedScene" uid="uid://ckyba64x5q6ip" path="res://gameplay/zones/death_zone.tscn" id="6_qgppq"]
+[ext_resource type="PackedScene" uid="uid://dhbpwms4rmg8r" path="res://gameplay/pickups/dash_pickup.tscn" id="7_lmht2"]
+[ext_resource type="Script" uid="uid://btapk6mcf3o61" path="res://gameplay/pickups/pickup_container.gd" id="7_n25am"]
 [ext_resource type="PackedScene" uid="uid://dve1ji7iuvh0t" path="res://gameplay/zones/rest_zone.tscn" id="7_uppji"]
+[ext_resource type="PackedScene" uid="uid://ces1on43dj112" path="res://gameplay/pickups/walljump_pickup.tscn" id="8_oxmr1"]
+[ext_resource type="PackedScene" uid="uid://bbjo7u0g1e5jv" path="res://gameplay/pickups/boost_pickup.tscn" id="9_n25am"]
+[ext_resource type="PackedScene" uid="uid://cqt33ud2kdjcf" path="res://gameplay/pickups/impulse_pickup.tscn" id="10_1u1bx"]
+[ext_resource type="PackedScene" uid="uid://defbs5pj7heih" path="res://gameplay/pickups/repulsion_pickup.tscn" id="12_1u1bx"]
 
 [sub_resource type="Environment" id="Environment_ioc36"]
 background_mode = 1
@@ -25,11 +31,12 @@ fog_depth_begin = 1.0
 fog_depth_end = 52.0
 adjustment_enabled = true
 
-[node name="World" type="Node3D" unique_id=46126002 node_paths=PackedStringArray("checkpoint_manager", "rest_zones_root", "death_zones_root")]
+[node name="World" type="Node3D" unique_id=46126002 node_paths=PackedStringArray("checkpoint_manager", "rest_zones_root", "death_zones_root", "pickups_root")]
 script = ExtResource("1_ydoif")
 checkpoint_manager = NodePath("Map/Checkpoints/CheckpointManager")
 rest_zones_root = NodePath("Map/RestZones")
 death_zones_root = NodePath("Map/DeathZones")
+pickups_root = NodePath("Map/Pickups")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=161113137]
 environment = SubResource("Environment_ioc36")
@@ -154,6 +161,45 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1560836, 4.8324084, -6.4224
 [node name="RestZone" parent="Map/RestZones" unique_id=272833218 instance=ExtResource("7_uppji")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.149221, 2.1804578, 1.1195946)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=867268483]
-transform = Transform3D(-0.7882903, 0.57912844, 0.20786753, 0.22653782, -0.040935617, 0.97314173, 0.57208323, 0.81420803, -0.09892534, 0, 0, 0)
+[node name="Pickups" type="Node3D" parent="Map" unique_id=1435004262]
+script = ExtResource("7_n25am")
+
+[node name="Pickup" parent="Map/Pickups" unique_id=66290146 instance=ExtResource("7_lmht2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.478563, 8.994459, 1.8304877)
+
+[node name="Pickup2" parent="Map/Pickups" unique_id=680522814 instance=ExtResource("7_lmht2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.478563, 12.157461, -2.1865778)
+
+[node name="Pickup3" parent="Map/Pickups" unique_id=842561596 instance=ExtResource("7_lmht2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.478563, 5.475582, -5.317439)
+
+[node name="Pickup4" parent="Map/Pickups" unique_id=478036318 instance=ExtResource("8_oxmr1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.937895, 6.266268, 14.420335)
+
+[node name="Pickup5" parent="Map/Pickups" unique_id=1209357638 instance=ExtResource("8_oxmr1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.972387, 11.977439, 14.420335)
+
+[node name="Pickup6" parent="Map/Pickups" unique_id=1486011883 instance=ExtResource("9_n25am")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.867526, 1.556139, 19.235195)
+
+[node name="Pickup7" parent="Map/Pickups" unique_id=1082353511 instance=ExtResource("9_n25am")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.290484, 1.0827856, 19.055489)
+
+[node name="Pickup8" parent="Map/Pickups" unique_id=699202807 instance=ExtResource("10_1u1bx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8618965, 18.25379, 9.479532)
+
+[node name="Pickup9" parent="Map/Pickups" unique_id=1100260605 instance=ExtResource("10_1u1bx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.015137, 22.962961, -1.5039892)
+
+[node name="Pickup10" parent="Map/Pickups" unique_id=770156099 instance=ExtResource("10_1u1bx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.826795, 6.9868665, 8.174662)
+
+[node name="Pickup11" parent="Map/Pickups" unique_id=1028121565 instance=ExtResource("12_1u1bx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9622717, 5.469557, 7.0404716)
+
+[node name="Pickup12" parent="Map/Pickups" unique_id=918992196 instance=ExtResource("12_1u1bx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34314537, 16.636902, 0.19791603)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Map" unique_id=867268483]
+transform = Transform3D(-0.78829026, 0.5791284, 0.20786743, 0.22653781, -0.040935595, 0.97314173, 0.57208323, 0.81420803, -0.09892532, 0, 0, 0)
 light_energy = 0.375

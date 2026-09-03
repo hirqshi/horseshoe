@@ -6,7 +6,7 @@
 script = ExtResource("1_cx8r7")
 run_speed_forward_mps = 14.0
 continuous_run_delay_s = 0.7
-momentum_grace_duration_s = 0.0
-momentum_grace_recovery_multiplier = 0.9
+air_control_acceleration_mps2 = 42.0
+momentum_grace_minimum_saved_speed_mps = 16.96
 coyote_time_s = 0.2
 metadata/_custom_type_script = "uid://ctru2sdieebhl"
