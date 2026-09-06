@@ -47,6 +47,57 @@ uniform float bayer_dither_gamma : hint_range(1.0, 3.0, 0.01) = 1.87;
 
 uniform float glitch_intensity : hint_range(0.0, 1.0, 0.01) = 0.0;
 
+// === vhs signal distortion ===
+
+// 0.0 disables VHS
+uniform float vhs_strength : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.0;
+
+// constant horizontal shift of color information
+uniform float vhs_color_offset_px : hint_range(
+	-16.0,
+	16.0,
+	0.1
+) = 2.0;
+
+// per-line random horizontal displacement of color
+uniform float vhs_color_wiggle_px : hint_range(
+	0.0,
+	24.0,
+	0.1
+) = 4.0;
+
+// weaker random displacement of brightness
+uniform float vhs_luma_wiggle_px : hint_range(
+	0.0,
+	12.0,
+	0.1
+) = 0.8;
+
+// horizontal color smearing
+uniform float vhs_color_blur_px : hint_range(
+	0.0,
+	12.0,
+	0.1
+) = 1.5;
+
+// amount of independently distorted horizontal lines
+uniform float vhs_line_density : hint_range(
+	1.0,
+	1200.0,
+	1.0
+) = 487.0;
+
+// how frequently line offsets change
+uniform float vhs_noise_fps : hint_range(
+	1.0,
+	60.0,
+	1.0
+) = 15.0;
+
 // === crt ===
 
 uniform float brightness : hint_range(0.0, 3.0, 0.01) = 1.02;
@@ -258,6 +309,217 @@ vec3 sample_chromatic(vec2 uv) {
 		red,
 		green,
 		blue
+	);
+}
+
+float get_vhs_line_noise(
+	float uv_y,
+	float seed
+) {
+	float line_index = floor(
+		uv_y
+		* vhs_line_density
+	);
+
+	float frame_index = floor(
+		TIME
+		* vhs_noise_fps
+	);
+
+	return (
+		hash(
+			vec2(
+				line_index,
+				frame_index
+				+ seed
+			)
+		)
+		* 2.0
+		- 1.0
+	);
+}
+
+
+vec3 rgb_to_yuv(
+	vec3 rgb
+) {
+	return vec3(
+		dot(
+			rgb,
+			vec3(
+				0.299,
+				0.587,
+				0.114
+			)
+		),
+		dot(
+			rgb,
+			vec3(
+				-0.14713,
+				-0.28886,
+				0.436
+			)
+		),
+		dot(
+			rgb,
+			vec3(
+				0.615,
+				-0.51499,
+				-0.10001
+			)
+		)
+	);
+}
+
+
+vec3 yuv_to_rgb(
+	vec3 yuv
+) {
+	return max(
+		vec3(
+			yuv.x
+			+ 1.13983
+			* yuv.z,
+
+			yuv.x
+			- 0.39465
+			* yuv.y
+			- 0.58060
+			* yuv.z,
+
+			yuv.x
+			+ 2.03211
+			* yuv.y
+		),
+		vec3(0.0)
+	);
+}
+
+
+vec3 sample_vhs_chromatic(
+	vec2 uv
+) {
+	if (
+		vhs_strength <= 0.0
+	) {
+		return sample_chromatic(
+			uv
+		);
+	}
+
+	float luma_noise = get_vhs_line_noise(
+		uv.y,
+		13.0
+	);
+
+	float color_noise = get_vhs_line_noise(
+		uv.y,
+		69.420
+	);
+
+	float luma_offset_px = (
+		luma_noise
+		* vhs_luma_wiggle_px
+	);
+
+	float color_offset_px = (
+		vhs_color_offset_px
+		+ color_noise
+		* vhs_color_wiggle_px
+	);
+
+	vec2 effect_texel_size = get_effect_texel_size();
+
+	vec2 luma_uv = clamp(
+		uv
+		+ vec2(
+			luma_offset_px
+			* effect_texel_size.x,
+			0.0
+		),
+		vec2(0.0),
+		vec2(1.0)
+	);
+
+	vec2 color_uv = clamp(
+		uv
+		+ vec2(
+			color_offset_px
+			* effect_texel_size.x,
+			0.0
+		),
+		vec2(0.0),
+		vec2(1.0)
+	);
+
+	vec3 luma_color = sample_chromatic(
+		luma_uv
+	);
+
+	vec3 color_center = sample_chromatic(
+		color_uv
+	);
+
+	vec3 color_signal = color_center;
+
+	if (
+		vhs_color_blur_px > 0.0
+	) {
+		vec2 blur_offset = vec2(
+			vhs_color_blur_px
+			* effect_texel_size.x,
+			0.0
+		);
+
+		vec3 color_left = sample_chromatic(
+			clamp(
+				color_uv
+				- blur_offset,
+				vec2(0.0),
+				vec2(1.0)
+			)
+		);
+
+		vec3 color_right = sample_chromatic(
+			clamp(
+				color_uv
+				+ blur_offset,
+				vec2(0.0),
+				vec2(1.0)
+			)
+		);
+
+		color_signal = (
+			color_center
+			* 0.50
+			+ color_left
+			* 0.25
+			+ color_right
+			* 0.25
+		);
+	}
+
+	vec3 luma_yuv = rgb_to_yuv(
+		luma_color
+	);
+
+	vec3 color_yuv = rgb_to_yuv(
+		color_signal
+	);
+
+	vec3 vhs_color = yuv_to_rgb(
+		vec3(
+			luma_yuv.x,
+			color_yuv.y,
+			color_yuv.z
+		)
+	);
+
+	return mix(
+		luma_color,
+		vhs_color,
+		vhs_strength
+		* effect_intensity
 	);
 }
 
@@ -623,7 +885,7 @@ void fragment() {
 		screen_uv
 	);
 
-	vec3 color = sample_chromatic(
+	vec3 color = sample_vhs_chromatic(
 		pixelized_uv
 	);
 

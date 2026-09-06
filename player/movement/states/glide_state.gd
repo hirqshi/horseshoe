@@ -368,6 +368,10 @@ func is_active() -> bool:
 	return _is_active
 
 
+func get_bank_angle_rad() -> float:
+	return _bank_angle_rad
+
+
 func reset_after_respawn(
 	context: MovementContext
 ) -> void:

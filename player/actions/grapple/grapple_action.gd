@@ -807,3 +807,26 @@ func get_hook_return_speed_mps() -> float:
 		return 0.0
 
 	return config.hook_return_speed_mps
+
+
+func get_target_distance_m() -> float:
+	if aim_ray == null:
+		return -1.0
+
+	if not aim_ray.is_colliding():
+		return -1.0
+
+	var collision_position: Vector3 = (
+		aim_ray.get_collision_point()
+	)
+
+	return aim_ray.global_position.distance_to(
+		collision_position
+	)
+
+
+func get_max_target_distance_m() -> float:
+	if config == null:
+		return 0.0
+
+	return config.maximum_target_distance_m

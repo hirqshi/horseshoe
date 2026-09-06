@@ -1,4 +1,4 @@
-class_name GrappleIndicatorHud
+class_name GrappleDistanceHud
 extends HudElement
 
 enum DisplayState {
@@ -8,26 +8,32 @@ enum DisplayState {
 }
 
 @export_category("references")
-@export var icon: TextureRect
+@export var state_icon: TextureRect
+@export var distance_label: Label
 
-@export_category("alpha")
+@export_category("distance display")
+@export var unavailable_text: String = "n/a"
+@export var distance_prefix: String = ""
+@export var distance_suffix: String = ""
+
+@export_category("icon alpha")
 @export_range(
 	0.0,
 	1.0,
 	0.01
-) var default_alpha: float = 0.30
+) var default_icon_alpha: float = 0.30
 
 @export_range(
 	0.0,
 	1.0,
 	0.01
-) var target_available_alpha: float = 1.0
+) var target_available_icon_alpha: float = 1.0
 
 @export_range(
 	0.0,
 	1.0,
 	0.01
-) var cooldown_alpha: float = 0.50
+) var cooldown_icon_alpha: float = 0.50
 
 @export_category("cooldown rotation")
 @export_range(
@@ -49,21 +55,36 @@ var _display_state: DisplayState = (
 )
 
 var _has_target: bool = false
+
 var _cooldown_remaining_s: float = 0.0
 var _cooldown_duration_s: float = 0.0
 var _cooldown_rotation_speed_rad_s: float = 0.0
+
+var _base_icon_self_modulate: Color = Color.WHITE
 
 
 func _ready() -> void:
 	super._ready()
 
-	if icon == null:
+	if state_icon == null:
 		push_error(
-			"GrappleIndicatorHud requires an Icon."
+			"%s requires StateIcon."
+			% name
 		)
-
 		set_process(false)
 		return
+
+	if distance_label == null:
+		push_error(
+			"%s requires DistanceLabel."
+			% name
+		)
+		set_process(false)
+		return
+
+	_base_icon_self_modulate = state_icon.self_modulate
+
+	distance_label.text = unavailable_text
 
 	_set_display_state(
 		DisplayState.DEFAULT
@@ -73,9 +94,7 @@ func _ready() -> void:
 func _process(
 	delta: float
 ) -> void:
-	super._process(
-		delta
-	)
+	super._process(delta)
 
 	if _display_state != DisplayState.COOLDOWN:
 		return
@@ -97,11 +116,35 @@ func set_target_available(
 		_set_display_state(
 			DisplayState.TARGET_AVAILABLE
 		)
-
 		return
 
 	_set_display_state(
 		DisplayState.DEFAULT
+	)
+
+
+func set_target_distance_m(
+	target_distance_m: float,
+	max_target_distance_m: float
+) -> void:
+	var has_raycast_hit: bool = (
+		target_distance_m >= 0.0
+	)
+
+	var is_inside_hook_range: bool = (
+		max_target_distance_m > 0.0
+		and target_distance_m <= max_target_distance_m
+	)
+
+	if not has_raycast_hit \
+	or not is_inside_hook_range:
+		distance_label.text = unavailable_text
+		return
+
+	distance_label.text = (
+		distance_prefix
+		+ "%.2f" % target_distance_m
+		+ distance_suffix
 	)
 
 
@@ -128,7 +171,7 @@ func start_cooldown(
 		)
 	)
 
-	icon.rotation = 0.0
+	state_icon.rotation = 0.0
 
 	_set_display_state(
 		DisplayState.COOLDOWN
@@ -140,22 +183,17 @@ func finish_cooldown() -> void:
 	_cooldown_duration_s = 0.0
 	_cooldown_rotation_speed_rad_s = 0.0
 
-	icon.rotation = 0.0
+	state_icon.rotation = 0.0
 
 	if _has_target:
 		_set_display_state(
 			DisplayState.TARGET_AVAILABLE
 		)
-
 		return
 
 	_set_display_state(
 		DisplayState.DEFAULT
 	)
-
-
-func is_on_cooldown() -> bool:
-	return _display_state == DisplayState.COOLDOWN
 
 
 func _update_cooldown(
@@ -167,7 +205,7 @@ func _update_cooldown(
 		0.0
 	)
 
-	icon.rotation += (
+	state_icon.rotation += (
 		_cooldown_rotation_speed_rad_s
 		* delta
 	)
@@ -186,18 +224,22 @@ func _set_display_state(
 
 	_display_state = next_state
 
+	var target_alpha: float = default_icon_alpha
+
 	match _display_state:
 		DisplayState.DEFAULT:
-			set_element_alpha(
-				default_alpha
-			)
+			target_alpha = default_icon_alpha
 
 		DisplayState.TARGET_AVAILABLE:
-			set_element_alpha(
-				target_available_alpha
-			)
+			target_alpha = target_available_icon_alpha
 
 		DisplayState.COOLDOWN:
-			set_element_alpha(
-				cooldown_alpha
-			)
+			target_alpha = cooldown_icon_alpha
+
+	state_icon.self_modulate = Color(
+		_base_icon_self_modulate.r,
+		_base_icon_self_modulate.g,
+		_base_icon_self_modulate.b,
+		_base_icon_self_modulate.a
+		* target_alpha
+	)

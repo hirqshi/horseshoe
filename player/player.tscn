@@ -71,10 +71,14 @@ height = 0.97907126
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4s7s"]
 albedo_color = Color(0.86, 0.86, 0.86, 1)
 albedo_texture = ExtResource("5_jfgyi")
+metallic = 1.0
+roughness = 0.81
 roughness_texture = ExtResource("7_7crtr")
 normal_enabled = true
-normal_scale = 2.45
+normal_scale = 7.55
 normal_texture = ExtResource("6_wpyo2")
+uv1_scale = Vector3(0.185, 0.185, 0.185)
+uv1_triplanar = true
 
 [sub_resource type="Gradient" id="Gradient_o4sym"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -122,10 +126,11 @@ texture_filter = 0
 material = SubResource("StandardMaterial3D_dx5ib")
 orientation = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=361433541 node_paths=PackedStringArray("look_controller")]
+[node name="Player" type="CharacterBody3D" unique_id=361433541 node_paths=PackedStringArray("look_controller", "camera_visual_rig")]
 floor_max_angle = 0.9599311
 script = ExtResource("1_g1dw6")
 look_controller = NodePath("PlayerLookController")
+camera_visual_rig = NodePath("Head/CameraVisualRig")
 
 [node name="StandingCollider" type="CollisionShape3D" parent="." unique_id=1632523810]
 shape = SubResource("CapsuleShape3D_6m30h")
@@ -150,6 +155,7 @@ camera = NodePath("Camera3D")
 movement_motor = NodePath("../../MovementMotor")
 stance = NodePath("../../PlayerStance")
 grapple_visual = NodePath("GrappleVisual")
+hud_heading_offset_degrees = 45.0
 bob_step_rate_scale = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="Head/CameraVisualRig" unique_id=2116220637]
@@ -281,8 +287,9 @@ movement_motor = NodePath("../MovementMotor")
 [node name="ReverseStamina" type="Node" parent="." unique_id=67301805]
 script = ExtResource("23_s7qer")
 max_recovery_speed_mps = 18.0
-slow_movement_drain_per_second = 10.0
-slowdown_grace_duration = 1.0
+idle_drain_per_second = 3.95
+slow_movement_drain_per_second = 1.79
+slowdown_grace_duration = 5.0
 
 [node name="MovementAudio" type="Node" parent="." unique_id=1465264965 node_paths=PackedStringArray("footstep_player", "crouch_footstep_player", "slide_start_player", "slide_loop_player", "slide_end_player", "dash_player", "dash_fail_player", "ground_jump_player", "wall_jump_player", "wall_jump_fail_player", "light_landing_player", "heavy_landing_player", "wind_player", "camera_visual_rig")]
 script = ExtResource("24_knn7v")
@@ -328,7 +335,7 @@ slide_loop_speed_cap_mps = 11.65
 slide_loop_silent_volume_db = -11.5
 slide_loop_max_volume_db = 0.0
 slide_loop_pitch_min = 1.0
-slide_loop_pitch_max = 1.4000000000000001
+slide_loop_pitch_max = 1.4
 slide_loop_follow_speed = 20.0
 wind_start_speed_mps = 11.68
 wind_speed_cap_mps = 19.3

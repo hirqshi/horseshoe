@@ -2,41 +2,107 @@ class_name CrosshairHudElement
 extends Control
 
 @export_category("references")
-@export var center_dot_group: HudElement
-@export var primary_crosshair_group: HudElement
-@export var upper_segment: TextureRect
-@export var right_segment: TextureRect
-@export var left_segment: TextureRect
-
-@export_category("spread directions")
-@export var upper_spread_direction: Vector2 = Vector2(0.0, -1.0)
-@export var right_spread_direction: Vector2 = Vector2(0.866, 0.5)
-@export var left_spread_direction: Vector2 = Vector2(-0.866, 0.5)
+@export var center_group: HudElement
+@export var leading_cross_group: HudElement
+@export var outer_frame_hud: CornerFrameHud
+@export var inner_frame_hud: SplitFrameHud
 
 @export_category("speed spread")
-@export_range(0.0, 500.0, 0.1, "suffix:px") var max_speed_spread_px: float = 30.0
-@export_range(0.1, 100.0, 0.1, "suffix:m/s") var speed_spread_cap_mps: float = 12.0
-@export_range(0.0, 5.0, 0.01, "suffix:m/s") var speed_spread_deadzone_mps: float = 0.1
-@export_range(0.1, 1000.0, 0.1, "suffix:px/s") var spread_expand_speed_px_s: float = 180.0
-@export_range(0.1, 1000.0, 0.1, "suffix:px/s") var spread_return_speed_px_s: float = 240.0
+@export_range(
+	0.0,
+	500.0,
+	0.1,
+	"suffix:px"
+) var max_speed_spread_px: float = 30.0
+
+@export_range(
+	0.1,
+	100.0,
+	0.1,
+	"suffix:m/s"
+) var speed_spread_cap_mps: float = 12.0
+
+@export_range(
+	0.0,
+	5.0,
+	0.01,
+	"suffix:m/s"
+) var speed_spread_deadzone_mps: float = 0.1
+
+@export_range(
+	0.1,
+	1000.0,
+	0.1,
+	"suffix:px/s"
+) var spread_expand_speed_px_s: float = 180.0
+
+@export_range(
+	0.1,
+	1000.0,
+	0.1,
+	"suffix:px/s"
+) var spread_return_speed_px_s: float = 240.0
 
 @export_category("adaptive spread")
-@export_range(0.0, 1.0, 0.01) var stable_speed_spread_multiplier: float = 0.72
-@export_range(0.0, 1.0, 0.01) var speed_change_threshold: float = 0.025
-@export_range(0.1, 100.0, 0.1, "suffix:1/s") var speed_change_decay_speed: float = 2.5
+@export_range(
+	0.0,
+	1.0,
+	0.01
+) var stable_speed_spread_multiplier: float = 0.72
+
+@export_range(
+	0.0,
+	1.0,
+	0.01
+) var speed_change_threshold: float = 0.025
+
+@export_range(
+	0.1,
+	100.0,
+	0.1,
+	"suffix:1/s"
+) var speed_change_decay_speed: float = 2.5
 
 @export_category("action spread impulses")
-@export_range(0.0, 500.0, 0.1, "suffix:px") var dash_impulse_spread_px: float = 17.0
-@export_range(0.1, 1000.0, 0.1, "suffix:px/s") var dash_impulse_return_speed_px_s: float = 85.0
-@export_range(0.0, 500.0, 0.1, "suffix:px") var slide_impulse_spread_px: float = 8.0
-@export_range(0.1, 1000.0, 0.1, "suffix:px/s") var slide_impulse_return_speed_px_s: float = 55.0
-@export_range(0.0, 1000.0, 0.1, "suffix:px") var max_total_spread_px: float = 65.0
+@export_range(
+	0.0,
+	500.0,
+	0.1,
+	"suffix:px"
+) var dash_impulse_spread_px: float = 17.0
+
+@export_range(
+	0.1,
+	1000.0,
+	0.1,
+	"suffix:px/s"
+) var dash_impulse_return_speed_px_s: float = 85.0
+
+@export_range(
+	0.0,
+	500.0,
+	0.1,
+	"suffix:px"
+) var slide_impulse_spread_px: float = 8.0
+
+@export_range(
+	0.1,
+	1000.0,
+	0.1,
+	"suffix:px/s"
+) var slide_impulse_return_speed_px_s: float = 55.0
+
+@export_range(
+	0.0,
+	1000.0,
+	0.1,
+	"suffix:px"
+) var max_total_spread_px: float = 65.0
+
+@export_category("debug")
+@export var is_debug_enabled: bool = false
 
 var _body: Player
-
-var _upper_base_position: Vector2 = Vector2.ZERO
-var _right_base_position: Vector2 = Vector2.ZERO
-var _left_base_position: Vector2 = Vector2.ZERO
 
 var _current_speed_spread_px: float = 0.0
 var _previous_speed_ratio: float = 0.0
@@ -45,59 +111,101 @@ var _speed_change_impulse: float = 0.0
 var _action_impulse_spread_px: float = 0.0
 var _action_impulse_return_speed_px_s: float = 0.0
 
-@export var is_debug_enabled: bool = false
-
 var _next_debug_time_s: float = 0.0
+
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	if center_dot_group == null:
-		push_error("CrosshairHudElement requires CenterDotGroup.")
-		set_process(false)
-		return
-
-	if primary_crosshair_group == null:
+	if center_group == null:
 		push_error(
-			"CrosshairHudElement requires PrimaryCrosshairGroup."
+			"CrosshairHudElement requires CenterGroup."
 		)
 		set_process(false)
 		return
 
-	if upper_segment == null:
-		push_error("CrosshairHudElement requires UpperSegment.")
+	if leading_cross_group == null:
+		push_error(
+			"CrosshairHudElement requires LeadingCrossGroup."
+		)
 		set_process(false)
 		return
 
-	if right_segment == null:
-		push_error("CrosshairHudElement requires RightSegment.")
+	if outer_frame_hud == null:
+		push_error(
+			"CrosshairHudElement requires OuterFrameHud."
+		)
 		set_process(false)
 		return
 
-	if left_segment == null:
-		push_error("CrosshairHudElement requires LeftSegment.")
+	if inner_frame_hud == null:
+		push_error(
+			"CrosshairHudElement requires InnerFrameHud."
+		)
 		set_process(false)
 		return
 
-	_upper_base_position = upper_segment.position
-	_right_base_position = right_segment.position
-	_left_base_position = left_segment.position
 
-func _process(delta: float) -> void:
+func _process(
+	delta: float
+) -> void:
 	if _body == null:
 		return
-	_update_speed_spread(delta)
-	_update_action_impulse(delta)
-	_apply_speed_spread()
 
-func set_player(player: Player) -> void:
+	_update_speed_spread(
+		delta
+	)
+
+	_update_action_impulse(
+		delta
+	)
+
+	_apply_dynamic_spread()
+
+
+func set_player(
+	player: Player
+) -> void:
 	_body = player
 
-func register_look_delta(mouse_delta: Vector2) -> void:
-	center_dot_group.register_look_delta(mouse_delta)
-	primary_crosshair_group.register_look_delta(mouse_delta)
 
-func _update_speed_spread(delta: float) -> void:
+func register_look_delta(
+	mouse_delta: Vector2
+) -> void:
+	center_group.register_look_delta(
+		mouse_delta
+	)
+
+	leading_cross_group.register_look_delta(
+		mouse_delta
+	)
+
+	outer_frame_hud.register_look_delta(
+		mouse_delta
+	)
+
+	inner_frame_hud.register_look_delta(
+		mouse_delta
+	)
+
+
+func play_dash_impulse() -> void:
+	_play_action_impulse(
+		dash_impulse_spread_px,
+		dash_impulse_return_speed_px_s
+	)
+
+
+func play_slide_impulse() -> void:
+	_play_action_impulse(
+		slide_impulse_spread_px,
+		slide_impulse_return_speed_px_s
+	)
+
+
+func _update_speed_spread(
+	delta: float
+) -> void:
 	var horizontal_speed_mps: float = Vector2(
 		_body.velocity.x,
 		_body.velocity.z
@@ -128,7 +236,8 @@ func _update_speed_spread(delta: float) -> void:
 		)
 
 	var target_speed_spread_px: float = (
-		max_speed_spread_px * speed_ratio
+		max_speed_spread_px
+		* speed_ratio
 	)
 
 	var transition_speed_px_s: float = (
@@ -141,11 +250,13 @@ func _update_speed_spread(delta: float) -> void:
 	_current_speed_spread_px = move_toward(
 		_current_speed_spread_px,
 		target_speed_spread_px,
-		transition_speed_px_s * delta
+		transition_speed_px_s
+		* delta
 	)
 
 	var speed_ratio_delta: float = absf(
-		speed_ratio - _previous_speed_ratio
+		speed_ratio
+		- _previous_speed_ratio
 	)
 
 	if speed_ratio_delta >= speed_change_threshold:
@@ -154,64 +265,35 @@ func _update_speed_spread(delta: float) -> void:
 	_speed_change_impulse = move_toward(
 		_speed_change_impulse,
 		0.0,
-		speed_change_decay_speed * delta
+		speed_change_decay_speed
+		* delta
 	)
 
 	_previous_speed_ratio = speed_ratio
+
 	_debug_spread(
 		spread_speed_mps,
 		speed_ratio,
 		target_speed_spread_px
 	)
 
-func _apply_speed_spread() -> void:
-	var stable_spread_px: float = (
-		_current_speed_spread_px
-		* stable_speed_spread_multiplier
+
+func _update_action_impulse(
+	delta: float
+) -> void:
+	if _action_impulse_spread_px <= 0.0:
+		return
+
+	_action_impulse_spread_px = move_toward(
+		_action_impulse_spread_px,
+		0.0,
+		_action_impulse_return_speed_px_s
+		* delta
 	)
 
-	var adaptive_spread_px: float = (
-		_current_speed_spread_px
-		* (1.0 - stable_speed_spread_multiplier)
-		* _speed_change_impulse
-	)
+	if _action_impulse_spread_px <= 0.0:
+		_action_impulse_return_speed_px_s = 0.0
 
-	var total_dynamic_spread_px: float = minf(
-		stable_spread_px
-		+ adaptive_spread_px
-		+ _action_impulse_spread_px,
-		max_total_spread_px
-	)
-
-	upper_segment.position = (
-		_upper_base_position
-		+ upper_spread_direction.normalized()
-		* total_dynamic_spread_px
-	)
-
-	right_segment.position = (
-		_right_base_position
-		+ right_spread_direction.normalized()
-		* total_dynamic_spread_px
-	)
-
-	left_segment.position = (
-		_left_base_position
-		+ left_spread_direction.normalized()
-		* total_dynamic_spread_px
-	)
-
-func play_dash_impulse() -> void:
-	_play_action_impulse(
-		dash_impulse_spread_px,
-		dash_impulse_return_speed_px_s
-	)
-
-func play_slide_impulse() -> void:
-	_play_action_impulse(
-		slide_impulse_spread_px,
-		slide_impulse_return_speed_px_s
-	)
 
 func _play_action_impulse(
 	spread_px: float,
@@ -227,18 +309,37 @@ func _play_action_impulse(
 		return_speed_px_s
 	)
 
-func _update_action_impulse(delta: float) -> void:
-	if _action_impulse_spread_px <= 0.0:
-		return
 
-	_action_impulse_spread_px = move_toward(
-		_action_impulse_spread_px,
-		0.0,
-		_action_impulse_return_speed_px_s * delta
+func _apply_dynamic_spread() -> void:
+	var stable_spread_px: float = (
+		_current_speed_spread_px
+		* stable_speed_spread_multiplier
 	)
 
-	if _action_impulse_spread_px <= 0.0:
-		_action_impulse_return_speed_px_s = 0.0
+	var adaptive_spread_px: float = (
+		_current_speed_spread_px
+		* (
+			1.0
+			- stable_speed_spread_multiplier
+		)
+		* _speed_change_impulse
+	)
+
+	var total_dynamic_spread_px: float = minf(
+		stable_spread_px
+		+ adaptive_spread_px
+		+ _action_impulse_spread_px,
+		max_total_spread_px
+	)
+
+	outer_frame_hud.set_spread_px(
+		total_dynamic_spread_px
+	)
+
+	inner_frame_hud.set_spread_px(
+		total_dynamic_spread_px
+	)
+
 
 func _debug_spread(
 	spread_speed_mps: float,
@@ -249,7 +350,8 @@ func _debug_spread(
 		return
 
 	var current_time_s: float = (
-		Time.get_ticks_msec() * 0.001
+		Time.get_ticks_msec()
+		* 0.001
 	)
 
 	if current_time_s < _next_debug_time_s:
@@ -259,18 +361,12 @@ func _debug_spread(
 
 	print(
 		"CROSSHAIR"
-		+ " | player_path: %s"
-		% [_body.get_path()]
-		+ " | floor: %s"
-		% [_body.is_on_floor()]
-		+ " | velocity: %s"
-		% [_body.velocity]
-		+ " | spread_speed: %.3f"
-		% [spread_speed_mps]
+		+ " | speed: %.3f"
+		% spread_speed_mps
 		+ " | ratio: %.3f"
-		% [speed_ratio]
+		% speed_ratio
 		+ " | target_px: %.3f"
-		% [target_spread_px]
+		% target_spread_px
 		+ " | current_px: %.3f"
-		% [_current_speed_spread_px]
+		% _current_speed_spread_px
 	)

@@ -5,38 +5,46 @@
 [ext_resource type="PackedScene" uid="uid://bgtu17lf4f73j" path="res://test/movement_test.tscn" id="1_vasa2"]
 [ext_resource type="Shader" uid="uid://d3q7ed1bj00d4" path="res://screenspace_projection/screenspace_projection.gdshader" id="2_dxrkv"]
 [ext_resource type="PackedScene" uid="uid://cefvnebo88nnh" path="res://player/player.tscn" id="2_h7iqs"]
-[ext_resource type="Texture2D" uid="uid://csg0mb81t6mw" path="res://assets/textures/ui/crosshairdot.png" id="5_dxrkv"]
 [ext_resource type="Script" uid="uid://b77y0jbt63g2m" path="res://ui/hud/crosshair_hud_element.gd" id="5_u5opy"]
 [ext_resource type="Script" uid="uid://cjjneqc3d8gjx" path="res://ui/hud/in_game_hud.gd" id="6_j8tme"]
 [ext_resource type="Script" uid="uid://bfef1slmh7ex7" path="res://ui/hud/hud_element.gd" id="6_y36n6"]
-[ext_resource type="Texture2D" uid="uid://rcw85p34vmfn" path="res://assets/textures/ui/crosshairatlas.png" id="7_y36n6"]
 [ext_resource type="Script" uid="uid://bmffdvssuqee0" path="res://ui/hud/speed_hud_element.gd" id="11_3vho3"]
-[ext_resource type="Script" uid="uid://bi00tfqbp7q4a" path="res://ui/hud/grapple_indicator_hud.gd" id="12_gvtgv"]
+[ext_resource type="Texture2D" uid="uid://dvt3x61vvm235" path="res://assets/textures/pixel_ui/crosshair.png" id="11_urpib"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="12_qf6n1"]
-[ext_resource type="Texture2D" uid="uid://nrwbnkgeb4by" path="res://assets/textures/ui/grapple_indicator.png" id="13_5ywmu"]
-[ext_resource type="Texture2D" uid="uid://chd2e8mljxd5x" path="res://assets/textures/ui/speedcorner2.png" id="13_hbvmx"]
+[ext_resource type="Script" uid="uid://c0a2ko5lggv55" path="res://ui/hud/corner_frame_hud.gd" id="13_vkvnp"]
 [ext_resource type="Script" uid="uid://fj52ts8fjlcn" path="res://ui/hud/fall_danger_hud.gd" id="14_b686c"]
-[ext_resource type="Texture2D" uid="uid://bcyup7tt0opc6" path="res://assets/textures/ui/smallline.png" id="14_hbvmx"]
-[ext_resource type="Texture2D" uid="uid://ltknr6gb83xg" path="res://assets/textures/ui/falldanger.png" id="15_hb504"]
-[ext_resource type="Texture2D" uid="uid://dv87hpoc1q30p" path="res://assets/textures/ui/playertracker.png" id="16_ee6o4"]
+[ext_resource type="Texture2D" uid="uid://dixcigwrcnc80" path="res://assets/textures/pixel_ui/square_frame.png" id="14_urpib"]
+[ext_resource type="Texture2D" uid="uid://1lcik5nc08d" path="res://assets/textures/pixel_ui/cross.png" id="15_urpib"]
+[ext_resource type="Texture2D" uid="uid://dhn002fgtuahb" path="res://assets/textures/pixel_ui/speed_corners.png" id="16_5ywmu"]
+[ext_resource type="Script" uid="uid://q3f2ancctmwm" path="res://ui/hud/split_frame_hud.gd" id="16_ta815"]
+[ext_resource type="Texture2D" uid="uid://cmmcymodxcp6p" path="res://assets/textures/pixel_ui/rollbar_left.png" id="17_0rekh"]
 [ext_resource type="Shader" uid="uid://2jlcf4m2kvpy" path="res://assets/shaders/world_composite.gdshader" id="17_4cobl"]
+[ext_resource type="Texture2D" uid="uid://4usqtyt65yki" path="res://assets/textures/pixel_ui/circle_corners.png" id="17_64wtb"]
+[ext_resource type="Script" uid="uid://pid64lkcwscr" path="res://ui/hud/camera_roll_bars.gd" id="17_281ou"]
 [ext_resource type="Shader" uid="uid://j21qohey0due" path="res://assets/shaders/ui_composite.gdshader" id="17_ln7ps"]
+[ext_resource type="Texture2D" uid="uid://c8dd01ih71lq5" path="res://assets/textures/pixel_ui/rollbar_right.png" id="18_281ou"]
 [ext_resource type="Script" uid="uid://rm6f6baxa6fe" path="res://ui/hud/reverse_stamina_hud.gd" id="18_leid8"]
-[ext_resource type="Texture2D" uid="uid://cnxnysyhtw1na" path="res://assets/textures/ui/reverse_stamina.png" id="18_mhvfb"]
-[ext_resource type="Texture2D" uid="uid://brxeldh4b7ah3" path="res://assets/textures/ui/stamina_corners.png" id="19_5e03w"]
+[ext_resource type="Script" uid="uid://tw4bavij1be8" path="res://ui/hud/grapple_distance_hud.gd" id="19_cieqw"]
 [ext_resource type="Script" uid="uid://ciulmlxmtnly0" path="res://gameplay/death/death_overlay.gd" id="19_pxxsx"]
+[ext_resource type="Texture2D" uid="uid://cl2u3bw0cpn6s" path="res://assets/textures/pixel_ui/grapple_indicator.png" id="19_urpib"]
+[ext_resource type="Texture2D" uid="uid://oi1xex2lpmsa" path="res://assets/textures/pixel_ui/decor2.png" id="20_cieqw"]
 [ext_resource type="Shader" uid="uid://c4yp0wv7qlh2k" path="res://gameplay/death/deathscreen.gdshader" id="20_dxwpq"]
 [ext_resource type="Script" uid="uid://d2xo7tv0mgiaf" path="res://gameplay/death/player_death_controller.gd" id="20_u8s88"]
 [ext_resource type="Script" uid="uid://byxl7c6ke7mde" path="res://ui/hud/charge_frame_hud.gd" id="21_8bboj"]
-[ext_resource type="Texture2D" uid="uid://dnw2dwypc5o00" path="res://assets/textures/ui/abilityframe.png" id="22_q52ks"]
-[ext_resource type="Texture2D" uid="uid://cve3m4gqxrabn" path="res://assets/textures/ui/dashcharge.png" id="23_58yx1"]
-[ext_resource type="Texture2D" uid="uid://cuj83tmp5lk1d" path="res://assets/textures/ui/walljumpcharge.png" id="23_jucfl"]
-[ext_resource type="Script" uid="uid://bykjfged4t630" path="res://ui/hud/charge_icon.gd" id="24_jdpby"]
-[ext_resource type="Texture2D" uid="uid://786i61wstakh" path="res://assets/textures/ui/circledecor.png" id="27_fegy3"]
-[ext_resource type="Texture2D" uid="uid://b3wljeyhhjhjs" path="res://assets/textures/ui/glidecharge.png" id="27_posua"]
+[ext_resource type="Texture2D" uid="uid://c6h3ivr3jfbcr" path="res://assets/textures/pixel_ui/reverse_stamina_bar.png" id="22_5ywmu"]
+[ext_resource type="Texture2D" uid="uid://cq4lqiws0fgn8" path="res://assets/textures/pixel_ui/fallmetric.png" id="23_urpib"]
+[ext_resource type="Texture2D" uid="uid://4bntjrjst3si" path="res://assets/textures/pixel_ui/labelmarker.png" id="24_urpib"]
+[ext_resource type="Texture2D" uid="uid://ddbab28wo5g1t" path="res://assets/textures/pixel_ui/dash_icon.png" id="28_posua"]
+[ext_resource type="Texture2D" uid="uid://bbgxi4i5qgwd5" path="res://assets/textures/pixel_ui/glide_icon.png" id="29_5ywmu"]
+[ext_resource type="Texture2D" uid="uid://du1xskqkqdlje" path="res://assets/textures/pixel_ui/walljump_icon.png" id="29_gvtgv"]
+[ext_resource type="Texture2D" uid="uid://wgwn247rguxo" path="res://assets/textures/pixel_ui/decor.png" id="29_mhp6k"]
 [ext_resource type="Script" uid="uid://thpnlkoka52d" path="res://audio/death_audio.gd" id="32_cf130"]
 [ext_resource type="Material" uid="uid://b1xhixl0uwj7s" path="res://assets/materials/outline.tres" id="32_mhp6k"]
 [ext_resource type="AudioStream" uid="uid://cfrraot688i8o" path="res://assets/sound/sfx/Sounds_Packet_First/Death.wav" id="32_pvdu1"]
+[ext_resource type="Script" uid="uid://b1gibo8xlqci3" path="res://ui/hud/roll_indicator_hud.gd" id="33_urpib"]
+[ext_resource type="Texture2D" uid="uid://b7fuwhhgyg8hj" path="res://assets/textures/pixel_ui/pointer.png" id="34_cieqw"]
+[ext_resource type="Script" uid="uid://cnysd0y1ix7ng" path="res://ui/hud/compass_hud.gd" id="38_281ou"]
+[ext_resource type="Script" uid="uid://bc33ledtvgkms" path="res://ui/hud/pitch_indicator_hud.gd" id="39_nrbry"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
 resource_local_to_scene = true
@@ -75,45 +83,41 @@ viewport_path = NodePath("InGameHud/UiViewport")
 resource_local_to_scene = true
 shader = ExtResource("17_ln7ps")
 shader_parameter/ui_texture = SubResource("ViewportTexture_ln7ps")
+shader_parameter/ui_texture_pixel_size = Vector2(0.0005208333, 0.0009259259)
 shader_parameter/effect_intensity = 0.999999977648
 shader_parameter/side_pinch_amount = 0.12999999709424
-shader_parameter/bloom_strength = 0.80999998189488
-shader_parameter/bloom_radius_px = 4.10000006109492
-shader_parameter/bloom_alpha = 0.4499999899416
-shader_parameter/scanline_strength = 0.58999998681232
+shader_parameter/pixel_size_px = 2.0
+shader_parameter/bloom_strength = 2.999999932944
+shader_parameter/bloom_radius_px = 2.30000003427276
+shader_parameter/bloom_alpha = 0.55999998748288
+shader_parameter/scanline_strength = 0.76999998278896
 shader_parameter/scanline_density = 143.0
 shader_parameter/grille_strength = 0.68999998457712
 shader_parameter/grille_density = 1464.0
 shader_parameter/flicker_strength = 0.36999999172976
 shader_parameter/flicker_speed = 15.0
-shader_parameter/noise_strength = 0.11999999731776
+shader_parameter/noise_strength = 0.0499999988824
 shader_parameter/noise_density = 128.0
 shader_parameter/chromatic_offset_px = 0.16999999620016
-shader_parameter/brightness = 1.03
+shader_parameter/vhs_strength = 0.52999998815344
+shader_parameter/vhs_color_offset_px = -2.4999997988338
+shader_parameter/vhs_color_wiggle_px = 0.20000000298024
+shader_parameter/vhs_luma_wiggle_px = 0.20000000298024
+shader_parameter/vhs_color_blur_px = 10.90000016242308
+shader_parameter/vhs_line_density = 190.0
+shader_parameter/vhs_noise_fps = 15.0
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_u8s88"]
 viewport_path = NodePath("InGameHud/UiViewport")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_l8g03"]
-atlas = ExtResource("7_y36n6")
-region = Rect2(41.929222, 0, 44.106155, 47.856865)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j8tme"]
-atlas = ExtResource("7_y36n6")
-region = Rect2(76.19631, 63.463654, 53.803688, 49.5346)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3vho3"]
-atlas = ExtResource("7_y36n6")
-region = Rect2(0, 62.445824, 52.446846, 51.909546)
-
 [sub_resource type="LabelSettings" id="LabelSettings_3vho3"]
 font = ExtResource("12_qf6n1")
-font_size = 38
-font_color = Color(0.85, 1, 0, 0.8039216)
+font_size = 31
+font_color = Color(1, 1, 1, 0.5803922)
 
 [sub_resource type="Gradient" id="Gradient_leid8"]
-offsets = PackedFloat32Array(0.001497006, 0.33383232, 0.6691617)
-colors = PackedColorArray(1, 0, 0.3000002, 1, 1, 0.41000003, 0.87216663, 1, 0.7833333, 1, 0, 1)
+offsets = PackedFloat32Array(0.001497006, 0.42871487)
+colors = PackedColorArray(1.5120772, 0.22474678, 0, 1, 0.12799999, 0.64, 0.50346667, 1)
 
 [sub_resource type="Gradient" id="Gradient_ln7ps"]
 offsets = PackedFloat32Array(0.07539683, 0.19894366, 0.34330985, 0.5299296, 0.72711265, 0.87852114)
@@ -126,14 +130,14 @@ gradient = SubResource("Gradient_ln7ps")
 shader = ExtResource("17_4cobl")
 shader_parameter/color_palette = SubResource("GradientTexture1D_ln7ps")
 shader_parameter/effect_intensity = 0.749999983236
-shader_parameter/pixelization_enabled = false
-shader_parameter/pixel_size_px = 1.0
+shader_parameter/pixelization_enabled = true
+shader_parameter/pixel_size_px = 2.0
 shader_parameter/chromatic_aberration_px = 2.58999994210832
 shader_parameter/chromatic_edge_start = 0.31999999284736
 shader_parameter/chromatic_edge_end = 0.85
 shader_parameter/chromatic_edge_power = 3.48999992571684
-shader_parameter/sharpness = 2.25999994948448
-shader_parameter/palette_enabled = true
+shader_parameter/sharpness = 2.95999993383808
+shader_parameter/palette_enabled = false
 shader_parameter/palette_strength_dark = 0.16999999620016
 shader_parameter/palette_strength_light = 0.0499999988824
 shader_parameter/dark_levels = 3
@@ -141,9 +145,16 @@ shader_parameter/light_levels = 8
 shader_parameter/darkness_threshold = 0.3
 shader_parameter/posterization_dither_amount = 0.0
 shader_parameter/bayer_dithering_enabled = true
-shader_parameter/bayer_dither_strength = 0.05999999865888
+shader_parameter/bayer_dither_strength = 0.03999999910592
 shader_parameter/bayer_dither_gamma = 1.27999999374144
 shader_parameter/glitch_intensity = 0.0
+shader_parameter/vhs_strength = 0.81999998167136
+shader_parameter/vhs_color_offset_px = 2.0
+shader_parameter/vhs_color_wiggle_px = 0.60000000894072
+shader_parameter/vhs_luma_wiggle_px = 0.10000000149012
+shader_parameter/vhs_color_blur_px = 3.20000004768384
+shader_parameter/vhs_line_density = 239.0
+shader_parameter/vhs_noise_fps = 42.0
 shader_parameter/brightness = 1.11999997496576
 shader_parameter/scanline_strength = 0.0
 shader_parameter/scanline_density = 129.0
@@ -161,9 +172,9 @@ shader_parameter/final_gamma = 1.20999998413008
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bjvpn"]
 shader = ExtResource("20_dxwpq")
 shader_parameter/animation_speed = 1.0
-shader_parameter/color_low = Color(0.050310016, 0.0017999983, 0.09, 1)
-shader_parameter/color_mid_red = Color(0.11, 0.021999998, 0.06453335, 1)
-shader_parameter/color_high = Color(0.063495, 0.09, 0.038700003, 1)
+shader_parameter/color_low = Color(0.09, 0.09, 0.09, 1)
+shader_parameter/color_mid_red = Color(0.11, 0.11, 0.11, 1)
+shader_parameter/color_high = Color(0.09, 0.09, 0.09, 1)
 shader_parameter/reveal_progress = 1.10000002384186
 shader_parameter/reveal_softness = 0.1790000085025
 shader_parameter/use_reveal_texture = false
@@ -218,7 +229,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33338058, 0)
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_mhp6k")
 
-[node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud", "reverse_stamina_hud", "dash_charges_hud", "wall_jump_charges_hud", "glide_charges_hud", "grapple_indicator", "ui_viewport", "hud_root", "ui_composite")]
+[node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud", "reverse_stamina_hud", "dash_charges_hud", "wall_jump_charges_hud", "glide_charges_hud", "grapple_distance_hud", "roll_indicator_hud", "camera_roll_bars_hud", "compass_hud", "pitch_indicator_hud", "ui_viewport", "hud_root", "ui_composite")]
 layer = 20
 script = ExtResource("6_j8tme")
 crosshair = NodePath("UiViewport/HudRoot/Crosshair")
@@ -228,7 +239,11 @@ reverse_stamina_hud = NodePath("UiViewport/HudRoot/ReverseStaminaBar")
 dash_charges_hud = NodePath("UiViewport/HudRoot/DashChargesHud")
 wall_jump_charges_hud = NodePath("UiViewport/HudRoot/WallJumpChargesHud")
 glide_charges_hud = NodePath("UiViewport/HudRoot/GlideChargesHud")
-grapple_indicator = NodePath("UiViewport/HudRoot/GrappleIndicator")
+grapple_distance_hud = NodePath("UiViewport/HudRoot/GrappleDistanceHud")
+roll_indicator_hud = NodePath("UiViewport/HudRoot/RollIndicatorHud")
+camera_roll_bars_hud = NodePath("UiViewport/HudRoot/CameraRollBars")
+compass_hud = NodePath("UiViewport/HudRoot/CompassHud")
+pitch_indicator_hud = NodePath("UiViewport/HudRoot/PitchIndicatorHud")
 ui_viewport = NodePath("UiViewport")
 hud_root = NodePath("UiViewport/HudRoot")
 ui_composite = NodePath("UiComposite")
@@ -241,6 +256,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ViewportTexture_u8s88")
+expand_mode = 1
 
 [node name="UiViewport" type="SubViewport" parent="InGameHud" unique_id=1509436007]
 transparent_bg = true
@@ -257,7 +273,7 @@ grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 
-[node name="Crosshair" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=903694561 node_paths=PackedStringArray("center_dot_group", "primary_crosshair_group", "upper_segment", "right_segment", "left_segment")]
+[node name="Crosshair" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=903694561 node_paths=PackedStringArray("center_group", "leading_cross_group", "outer_frame_hud", "inner_frame_hud")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -273,94 +289,216 @@ grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 script = ExtResource("5_u5opy")
-center_dot_group = NodePath("CenterDotGroup")
-primary_crosshair_group = NodePath("PrimaryCrosshairGroup")
-upper_segment = NodePath("PrimaryCrosshairGroup/UpperSegment")
-right_segment = NodePath("PrimaryCrosshairGroup/RightSegment")
-left_segment = NodePath("PrimaryCrosshairGroup/LeftSegment")
+center_group = NodePath("CenterGroup")
+leading_cross_group = NodePath("LeadingCrosshair")
+outer_frame_hud = NodePath("OuterFrameHud")
+inner_frame_hud = NodePath("InnerFrameHud")
 
-[node name="CenterDotGroup" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=245050047]
+[node name="CenterGroup" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=245050047]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_y36n6")
-element_color = Color(1, 0, 0.3000002, 1)
+element_alpha = 0.66
 is_lag_enabled = false
 
-[node name="CrosshairDot" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/CenterDotGroup" unique_id=327126489]
+[node name="Crosshair" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/CenterGroup" unique_id=327126489]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
+offset_left = -21.5
+offset_top = -13.5
+offset_right = 21.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+pivot_offset_ratio = Vector2(0.5, 0.58)
+mouse_filter = 2
+texture = ExtResource("11_urpib")
+
+[node name="OuterFrameHud" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=1756941354 node_paths=PackedStringArray("top_left", "top_right", "bottom_left", "bottom_right")]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("13_vkvnp")
+frame_texture = ExtResource("14_urpib")
+top_left = NodePath("TopLeft")
+top_right = NodePath("TopRight")
+bottom_left = NodePath("BottomLeft")
+bottom_right = NodePath("BottomRight")
+element_alpha = 0.25
+
+[node name="TopLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=2126119350]
+modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+layout_mode = 0
+offset_left = -170.0
+offset_top = -170.0
+offset_right = -130.0
+offset_bottom = -130.0
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="TopRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=1419746258]
+modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+layout_mode = 0
+offset_left = 170.0
+offset_top = -170.0
+offset_right = 210.0
+offset_bottom = -130.0
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="BottomLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=212086050]
+modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+layout_mode = 0
+offset_left = -170.0
+offset_top = 170.0
+offset_right = -130.0
+offset_bottom = 210.0
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="BottomRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=1703624833]
+modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+layout_mode = 0
+offset_left = 170.0
+offset_top = 170.0
+offset_right = 210.0
+offset_bottom = 210.0
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="LeadingCrosshair" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=1750332084]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("6_y36n6")
+element_alpha = 0.59
+look_offset_multiplier = 1.0
+
+[node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/LeadingCrosshair" unique_id=304666536]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.654902)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.5
+offset_top = -3.5
+offset_right = 2.5
+offset_bottom = 3.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("15_urpib")
+
+[node name="InnerFrameHud" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=1162635957 node_paths=PackedStringArray("left_half", "right_half")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("5_dxrkv")
+script = ExtResource("16_ta815")
+frame_texture = ExtResource("17_64wtb")
+left_half = NodePath("LeftHalf")
+right_half = NodePath("RightHalf")
+element_alpha = 0.54
 
-[node name="PrimaryCrosshairGroup" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=185062504]
+[node name="LeftHalf" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/InnerFrameHud" unique_id=441315965]
+modulate = Color(0.12799999, 0.64, 0.40106666, 0.57254905)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="RightHalf" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/InnerFrameHud" unique_id=1019257647]
+modulate = Color(0.12799999, 0.64, 0.40106666, 0.57254905)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="CameraRollBars" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=722395954 node_paths=PackedStringArray("left_bar", "right_bar")]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("6_y36n6")
-element_color = Color(0.07250014, 0, 0.87, 0.43529412)
-element_alpha = 0.48
+offset_left = 940.0
+offset_top = 520.0
+offset_right = 980.0
+offset_bottom = 560.0
+script = ExtResource("17_281ou")
+left_bar = NodePath("LeftBar")
+right_bar = NodePath("RightBar")
+rotation_multiplier = 1.0
+maximum_rotation_degrees = 180.0
+roll_follow_speed = 30.0
 
-[node name="UpperSegment" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/PrimaryCrosshairGroup" unique_id=564724087]
+[node name="LeftBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/CameraRollBars" unique_id=915540920]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.32941177)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -23.0
-offset_top = -57.0
-offset_right = 21.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("AtlasTexture_l8g03")
-
-[node name="RightSegment" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/PrimaryCrosshairGroup" unique_id=412637765]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 8.0
+offset_left = -131.0
 offset_top = -1.0
-offset_right = 61.0
-offset_bottom = 48.0
+offset_right = -77.0
+offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("AtlasTexture_j8tme")
+scale = Vector2(3, 3)
+pivot_offset_ratio = Vector2(1, 0.5)
+texture = ExtResource("17_0rekh")
 
-[node name="LeftSegment" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/PrimaryCrosshairGroup" unique_id=128249996]
+[node name="RightBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/CameraRollBars" unique_id=520896536]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.32941177)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -61.0
-offset_top = -3.0
-offset_right = -9.0
-offset_bottom = 48.0
+offset_left = 77.0
+offset_top = -2.0
+offset_right = 131.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("AtlasTexture_3vho3")
+scale = Vector2(3, 3)
+pivot_offset_ratio = Vector2(0, 0.5)
+texture = ExtResource("18_281ou")
 
-[node name="GrappleIndicator" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=1749994823 node_paths=PackedStringArray("icon")]
+[node name="GrappleDistanceHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=941681891 node_paths=PackedStringArray("state_icon", "distance_label")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -373,27 +511,59 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("12_gvtgv")
-icon = NodePath("GrappleIcon")
+script = ExtResource("19_cieqw")
+state_icon = NodePath("StateIcon")
+distance_label = NodePath("DistanceLabel")
+distance_prefix = "dst: "
+distance_suffix = "m"
+default_icon_alpha = 0.1
 cooldown_rotation_turns = 2.0
-is_lag_enabled = false
 
-[node name="GrappleIcon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GrappleIndicator" unique_id=1645635695]
-modulate = Color(0.78431374, 1, 0, 1)
+[node name="StateIcon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GrappleDistanceHud" unique_id=1497545797]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.654902)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -39.0
-offset_top = -22.0
-offset_right = 40.0
-offset_bottom = 47.0
+offset_left = 103.0
+offset_top = -100.0
+offset_right = 108.0
+offset_bottom = -95.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset_ratio = Vector2(0.5, 0.33)
-texture = ExtResource("13_5ywmu")
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("19_urpib")
+
+[node name="Decor" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GrappleDistanceHud" unique_id=27085233]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+layout_mode = 0
+offset_left = 54.0
+offset_top = -61.0
+offset_right = 81.0
+offset_bottom = -49.0
+scale = Vector2(4, 4)
+texture = ExtResource("20_cieqw")
+
+[node name="DistanceLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/GrappleDistanceHud" unique_id=2090368151]
+modulate = Color(1.5120772, 0.22474678, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 72.99998
+offset_top = -80.000015
+offset_right = 231.49997
+offset_bottom = -5.0000153
+grow_horizontal = 2
+grow_vertical = 2
+text = "00.00
+"
+label_settings = SubResource("LabelSettings_3vho3")
 
 [node name="SpeedHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=771391193 node_paths=PackedStringArray("speed_label")]
 layout_mode = 1
@@ -415,85 +585,31 @@ use_total_speed_in_air = false
 label_prefix = "speed: "
 element_alpha = 0.8
 lag_sensitivity = 0.269
-lag_max_distance_px = 20.6
+lag_max_distance_px = 6.1
 lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
-[node name="SpeedCornerLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=958240130]
-modulate = Color(0.75, 1, 0, 0.54509807)
+[node name="SpeedCorners" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=958240130]
+modulate = Color(1, 0, 0, 0.3764706)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 87.0
-offset_top = 133.99998
-offset_right = 151.0
-offset_bottom = 184.99998
+offset_left = -20.0
+offset_top = 187.99998
+offset_right = 15.0
+offset_bottom = 191.99998
 grow_horizontal = 2
 grow_vertical = 2
-rotation = -1.5707964
+scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
-texture = ExtResource("13_hbvmx")
-
-[node name="SpeedCornerRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=2038181080]
-modulate = Color(0.75, 1, 0, 0.54509807)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -151.0
-offset_top = 133.99998
-offset_right = -87.0
-offset_bottom = 184.99998
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 1.5707964
-pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("13_hbvmx")
-
-[node name="SmallLineLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=817713056]
-modulate = Color(0.85, 1, 0, 0.56078434)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 111.0
-offset_top = 157.99998
-offset_right = 141.0
-offset_bottom = 159.99998
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("14_hbvmx")
-
-[node name="SmallLineRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=637278772]
-modulate = Color(0.85, 1, 0, 0.56078434)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -140.0
-offset_top = 157.99998
-offset_right = -110.0
-offset_bottom = 159.99998
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset_ratio = Vector2(0.5, 0.5)
-mouse_filter = 2
-texture = ExtResource("14_hbvmx")
+texture = ExtResource("16_5ywmu")
 
 [node name="SpeedLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=1522808455]
+modulate = Color(1.5120772, 0.22474678, 0, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -510,7 +626,7 @@ text = "speed:16.109"
 label_settings = SubResource("LabelSettings_3vho3")
 horizontal_alignment = 1
 
-[node name="FallDangerHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=426426204 node_paths=PackedStringArray("content", "height_bar", "player_marker")]
+[node name="FallDangerHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=426426204 node_paths=PackedStringArray("content", "height_bar", "player_marker", "height_label")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -528,8 +644,9 @@ script = ExtResource("14_b686c")
 content = NodePath("Content")
 height_bar = NodePath("Content/HeightBar")
 player_marker = NodePath("Content/PlayerMarker")
-danger_color = Color(1.6095817, 0.11066928, 0, 1)
-element_alpha = 0.47
+height_label = NodePath("Content/PlayerMarker/HeightLabel")
+danger_color = Color(1.5120772, 0.22474678, 0, 1)
+element_alpha = 0.73
 
 [node name="Content" type="Control" parent="InGameHud/UiViewport/HudRoot/FallDangerHud" unique_id=74653954]
 anchors_preset = 0
@@ -538,24 +655,53 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="HeightBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/FallDangerHud/Content" unique_id=1419234547]
-modulate = Color(1, 0, 0.3000002, 1)
-layout_mode = 0
-offset_left = 151.0
-offset_top = -66.0
-offset_right = 191.0
-offset_bottom = 108.0
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.57254905)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 293.99997
+offset_top = -30.0
+offset_right = 302.99997
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
-texture = ExtResource("15_hb504")
+texture = ExtResource("23_urpib")
 
 [node name="PlayerMarker" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/FallDangerHud/Content" unique_id=814381601]
-modulate = Color(0.73333335, 1, 0, 1)
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+self_modulate = Color(1, 1, 1, 0.6313726)
 layout_mode = 0
-offset_left = 202.0
-offset_top = -66.0
-offset_right = 234.0
-offset_bottom = -46.0
+offset_left = 360.0
+offset_top = -108.0
+offset_right = 390.0
+offset_bottom = -99.0
+scale = Vector2(4, 4)
 mouse_filter = 2
-texture = ExtResource("16_ee6o4")
+texture = ExtResource("24_urpib")
+
+[node name="HeightLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/FallDangerHud/Content/PlayerMarker" unique_id=1376931777]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.2
+offset_top = -4.7
+offset_right = 65.999954
+offset_bottom = 31.3
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+text = "00.00"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
 
 [node name="ReverseStaminaBar" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=1974192693 node_paths=PackedStringArray("progress_bar")]
 layout_mode = 1
@@ -581,159 +727,6 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="ProgressBar" type="TextureProgressBar" parent="InGameHud/UiViewport/HudRoot/ReverseStaminaBar" unique_id=417858835]
-modulate = Color(1, 1, 1, 0.37254903)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -145.0
-offset_top = 35.0
-offset_right = 145.0
-offset_bottom = 119.0
-grow_horizontal = 2
-grow_vertical = 2
-step = 0.1
-value = 100.0
-fill_mode = 8
-radial_initial_angle = 180.0
-texture_progress = ExtResource("18_mhvfb")
-
-[node name="Corners" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/ReverseStaminaBar" unique_id=1271708026]
-modulate = Color(1, 0, 0.3000002, 0.6509804)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -164.0
-offset_top = -3.0
-offset_right = 164.0
-offset_bottom = 3.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("19_5e03w")
-
-[node name="DashChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=611918422 node_paths=PackedStringArray("charge_icons")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("21_8bboj")
-charge_icons = [NodePath("DashCharge4"), NodePath("DashCharge1"), NodePath("DashCharge2"), NodePath("DashCharge3")]
-element_alpha = 0.7
-lag_sensitivity = 0.269
-lag_max_distance_px = 30.0
-lag_follow_speed = 9.6
-lag_return_speed = 7.4
-
-[node name="DashCharge1" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=318005149]
-modulate = Color(0.7833333, 1, 0, 1)
-layout_mode = 0
-offset_left = -132.91547
-offset_top = 118.92053
-offset_right = -120.91547
-offset_bottom = 130.92053
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_58yx1")
-script = ExtResource("24_jdpby")
-pulse_scale = 1.6
-pulse_in_duration = 0.1
-
-[node name="DashCharge2" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=794973809]
-modulate = Color(0.7833333, 1, 0, 1)
-layout_mode = 0
-offset_left = -109.91547
-offset_top = 118.92053
-offset_right = -97.91547
-offset_bottom = 130.92053
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_58yx1")
-script = ExtResource("24_jdpby")
-pulse_scale = 1.6
-pulse_in_duration = 0.1
-
-[node name="DashCharge3" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=1728108788]
-modulate = Color(0.7833333, 1, 0, 1)
-layout_mode = 0
-offset_left = -109.91547
-offset_top = 139.92053
-offset_right = -97.91547
-offset_bottom = 151.92053
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_58yx1")
-script = ExtResource("24_jdpby")
-pulse_scale = 1.6
-pulse_in_duration = 0.1
-
-[node name="DashCharge4" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=1793625474]
-modulate = Color(1, 0, 0.3000002, 1)
-layout_mode = 0
-offset_left = -132.91547
-offset_top = 139.92053
-offset_right = -120.91547
-offset_bottom = 151.92053
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_58yx1")
-script = ExtResource("24_jdpby")
-pulse_scale = 1.6
-pulse_in_duration = 0.1
-
-[node name="Frame" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=2061735823]
-modulate = Color(0.07250014, 0, 0.87, 1)
-layout_mode = 0
-offset_left = -160.91551
-offset_top = 115.92052
-offset_right = -78.91551
-offset_bottom = 170.92053
-rotation = 0.6981317
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("22_q52ks")
-
-[node name="Decor" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=1720048850]
-modulate = Color(1, 0, 0.3000002, 0.6509804)
-layout_mode = 0
-offset_left = -232.99998
-offset_top = 150.99998
-offset_right = -110.999985
-offset_bottom = 243.99998
-rotation = 3.926991
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("27_fegy3")
-
-[node name="GlideChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=399815653 node_paths=PackedStringArray("charge_icons")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("21_8bboj")
-charge_icons = [NodePath("GlideCharge1"), NodePath("GlideCharge2")]
-element_alpha = 0.7
-lag_sensitivity = 0.269
-lag_max_distance_px = 30.0
-lag_follow_speed = 9.6
-lag_return_speed = 7.4
-
-[node name="Frame" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=266190596]
-modulate = Color(0.07250014, 0, 0.87, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -741,55 +734,119 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -41.0
-offset_top = 145.0
-offset_right = 41.0
-offset_bottom = 200.00002
+offset_top = 117.0
+offset_right = 42.0
+offset_bottom = 131.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("22_q52ks")
+step = 0.1
+value = 100.0
+fill_mode = 6
+radial_initial_angle = 180.0
+texture_progress = ExtResource("22_5ywmu")
 
-[node name="GlideCharge1" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=653058212]
-modulate = Color(0.7833333, 1, 0, 1)
+[node name="DashChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=611918422 node_paths=PackedStringArray("charge_count_label", "cooldown_label")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -11.0
-offset_top = 155.0
-offset_right = 11.0
-offset_bottom = 163.0
+offset_left = -154.0
+offset_top = -132.0
+offset_right = -154.0
+offset_bottom = -132.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("27_posua")
-script = ExtResource("24_jdpby")
-pulse_scale = 1.6
-pulse_in_duration = 0.1
+script = ExtResource("21_8bboj")
+charge_count_label = NodePath("ChargeLabel")
+cooldown_label = NodePath("CooldownLabel")
+is_cooldown_display_enabled = true
+default_alpha = 0.9
+unavailable_alpha = 0.5
+empty_alpha = 0.2
+element_alpha = 0.7
+lag_sensitivity = 0.269
+lag_max_distance_px = 30.0
+lag_follow_speed = 9.6
+lag_return_speed = 7.4
 
-[node name="GlideCharge2" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=1637330637]
-modulate = Color(0.7833333, 1, 0, 1)
+[node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=211258633]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -11.0
-offset_top = 173.0
-offset_right = 11.0
-offset_bottom = 181.0
+offset_left = -3.5
+offset_top = -3.5
+offset_right = 3.5
+offset_bottom = 3.5
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("27_posua")
-script = ExtResource("24_jdpby")
-pulse_scale = 1.6
-pulse_in_duration = 0.1
+texture = ExtResource("28_posua")
 
-[node name="WallJumpChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=235241088 node_paths=PackedStringArray("charge_icons")]
+[node name="ChargeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=50151155]
+modulate = Color(1.5120772, 0.22474678, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.000023
+offset_top = -49.00001
+offset_right = 35.19993
+offset_bottom = 25.999989
+grow_horizontal = 2
+grow_vertical = 2
+text = "4
+"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
+
+[node name="CooldownLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=1777278293]
+self_modulate = Color(1.5120772, 0.22474678, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 24.499977
+offset_top = -51.000015
+offset_right = 182.99997
+offset_bottom = 23.999985
+grow_horizontal = 2
+grow_vertical = 2
+text = "00.00
+"
+label_settings = SubResource("LabelSettings_3vho3")
+
+[node name="Decor" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud/CooldownLabel" unique_id=585354071]
+modulate = Color(1, 0, 0, 0.4509804)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.25
+offset_top = -0.5
+offset_right = -50.25
+offset_bottom = 2.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("29_mhp6k")
+
+[node name="GlideChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=399815653 node_paths=PackedStringArray("charge_count_label")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -797,101 +854,307 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -20.0
-offset_top = -20.0
+offset_top = -204.0
 offset_right = 20.0
-offset_bottom = 20.0
+offset_bottom = -164.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("21_8bboj")
-charge_icons = [NodePath("WallJumpCharge4"), NodePath("WallJumpCharge1"), NodePath("WallJumpCharge2"), NodePath("WallJumpCharge3")]
+charge_count_label = NodePath("ChargeLabel")
+default_alpha = 0.9
+unavailable_alpha = 0.5
+empty_alpha = 0.2
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
 lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
-[node name="WallJumpCharge1" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=264637590]
-modulate = Color(0.7833333, 1, 0, 1)
-layout_mode = 0
-offset_left = 149.08447
-offset_top = 102.92047
-offset_right = 169.08447
-offset_bottom = 119.92047
+[node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=289915489]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.5
+offset_top = -3.5
+offset_right = 3.5
+offset_bottom = 3.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_jucfl")
-script = ExtResource("24_jdpby")
-default_alpha = 0.7
+texture = ExtResource("29_5ywmu")
+
+[node name="ChargeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=522481549]
+modulate = Color(1.5120772, 0.22474678, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.000023
+offset_top = -49.00001
+offset_right = 35.19993
+offset_bottom = 25.999989
+grow_horizontal = 2
+grow_vertical = 2
+text = "4
+"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
+
+[node name="WallJumpChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=235241088 node_paths=PackedStringArray("charge_count_label")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 139.0
+offset_top = -158.0
+offset_right = 179.0
+offset_bottom = -118.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("21_8bboj")
+charge_count_label = NodePath("ChargeLabel")
+default_alpha = 0.9
 unavailable_alpha = 0.5
-pulse_scale = 1.6
-pulse_in_duration = 0.1
+empty_alpha = 0.2
+element_alpha = 0.7
+lag_sensitivity = 0.269
+lag_max_distance_px = 30.0
+lag_follow_speed = 9.6
+lag_return_speed = 7.4
 
-[node name="WallJumpCharge2" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=976906234]
-modulate = Color(0.7833333, 1, 0, 1)
-layout_mode = 0
-offset_left = 165.08447
-offset_top = 132.92047
-offset_right = 185.08447
-offset_bottom = 149.92047
+[node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=1556718571]
+modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.5
+offset_top = -3.5
+offset_right = 3.5
+offset_bottom = 3.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_jucfl")
-script = ExtResource("24_jdpby")
-default_alpha = 0.7
-unavailable_alpha = 0.5
-pulse_scale = 1.6
-pulse_in_duration = 0.1
+texture = ExtResource("29_gvtgv")
 
-[node name="WallJumpCharge3" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=852002031]
-modulate = Color(0.7833333, 1, 0, 1)
-layout_mode = 0
-offset_left = 133.08447
-offset_top = 132.92047
-offset_right = 153.08447
-offset_bottom = 149.92047
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_jucfl")
-script = ExtResource("24_jdpby")
-default_alpha = 0.7
-unavailable_alpha = 0.5
-pulse_scale = 1.6
-pulse_in_duration = 0.1
+[node name="ChargeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=782315509]
+modulate = Color(1.5120772, 0.22474678, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.000023
+offset_top = -49.00001
+offset_right = 35.19993
+offset_bottom = 25.999989
+grow_horizontal = 2
+grow_vertical = 2
+text = "4
+"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
 
-[node name="WallJumpCharge4" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=1899372806]
-modulate = Color(1, 0, 0.3000002, 1)
-layout_mode = 0
-offset_left = 148.08447
-offset_top = 126.92047
-offset_right = 168.08447
-offset_bottom = 143.92047
-rotation = 3.1415927
+[node name="RollIndicatorHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=541923311 node_paths=PackedStringArray("pointer", "angle_label")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -387.0
+offset_right = -104.0
+offset_bottom = -387.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("23_jucfl")
-script = ExtResource("24_jdpby")
-default_alpha = 0.7
-unavailable_alpha = 0.5
-pulse_scale = 1.6
-pulse_in_duration = 0.1
+script = ExtResource("33_urpib")
+pointer = NodePath("Pointer")
+angle_label = NodePath("AngleLabel")
+arc_radius_px = 101.5
+visible_arc_degrees = 100.0
+tick_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+degree_label_font = ExtResource("12_qf6n1")
+degree_label_font_size = 31
+degree_label_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+element_alpha = 0.7
+lag_sensitivity = 0.269
+lag_max_distance_px = 30.0
+lag_follow_speed = 9.6
+lag_return_speed = 7.4
 
-[node name="Frame" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=56821051]
-modulate = Color(0.07250014, 0, 0.87, 1)
+[node name="Pointer" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/RollIndicatorHud" unique_id=202609417]
+modulate = Color(1, 0, 0, 0.5529412)
 layout_mode = 0
-offset_left = 123.08448
-offset_top = 110.92049
-offset_right = 205.08447
-offset_bottom = 165.92049
-rotation = -0.6981317
+offset_top = 28.0
+offset_right = 9.0
+offset_bottom = 34.0
+scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("22_q52ks")
+texture = ExtResource("34_cieqw")
 
-[node name="Decor" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=1270398730]
-modulate = Color(1, 0, 0.3000002, 0.6509804)
-layout_mode = 0
-offset_left = 157.00012
-offset_top = 147.00002
-offset_right = 279.00012
-offset_bottom = 240.00002
-rotation = 2.3561945
+[node name="AngleLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/RollIndicatorHud" unique_id=98718508]
+modulate = Color(1.5120772, 0.22474678, 0, 0.64705884)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 68.065
+offset_top = 39.0
+offset_right = 139.26492
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "4
+"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
+
+[node name="CompassHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=1227115358 node_paths=PackedStringArray("pointer", "heading_label")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 423.0
+offset_right = 100.0
+offset_bottom = 453.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("27_fegy3")
+script = ExtResource("38_281ou")
+pointer = NodePath("Pointer")
+heading_label = NodePath("HeadingLabel")
+tick_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+label_font = ExtResource("12_qf6n1")
+label_font_size = 31
+label_offset_px = -22.400000000000006
+label_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+label_alpha = 0.71
+element_alpha = 0.7
+lag_sensitivity = 0.269
+lag_max_distance_px = 30.0
+lag_follow_speed = 9.6
+lag_return_speed = 7.4
+
+[node name="Pointer" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/CompassHud" unique_id=353347043]
+modulate = Color(1, 0, 0, 0.5529412)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = 31.0
+offset_right = 5.0
+offset_bottom = 37.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("34_cieqw")
+
+[node name="HeadingLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/CompassHud" unique_id=21671487]
+modulate = Color(1.5120772, 0.22474678, 0, 0.64705884)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.999985
+offset_top = 41.0
+offset_right = 35.199936
+offset_bottom = 116.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "4
+"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
+
+[node name="PitchIndicatorHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=1236602654 node_paths=PackedStringArray("pointer", "angle_label")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -472.0
+offset_top = -99.0
+offset_right = -432.0
+offset_bottom = 201.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+script = ExtResource("39_nrbry")
+pointer = NodePath("Pointer")
+angle_label = NodePath("DegreeLabel")
+scale_center_px = Vector2(160, 20)
+visible_range_degrees = 360.0
+tick_color = Color(0.12941177, 0.6392157, 0.5019608, 1)
+element_alpha = 0.7
+lag_sensitivity = 0.269
+lag_max_distance_px = 30.0
+lag_follow_speed = 9.6
+lag_return_speed = 7.4
+
+[node name="Pointer" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/PitchIndicatorHud" unique_id=1699151999]
+modulate = Color(1, 0, 0, 0.5529412)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 67.0
+offset_top = -48.0
+offset_right = 76.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5707964
+scale = Vector2(3, 3)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("34_cieqw")
+
+[node name="DegreeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/PitchIndicatorHud" unique_id=260316386]
+modulate = Color(1.5120772, 0.22474678, 0, 0.64705884)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.999985
+offset_top = -63.0
+offset_right = 58.199936
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "4
+"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 2
 
 [node name="WorldPostLayer" type="CanvasLayer" parent="." unique_id=713396926]
 layer = 10

@@ -235,6 +235,10 @@ func sync_from_glide(
 func begin_glide_recovery(
 	flight_forward: Vector3
 ) -> void:
+	var previous_global_view_rotation: Quaternion = (
+		visual_rig.get_global_view_rotation()
+	)
+
 	var horizontal_forward: Vector3 = Vector3(
 		flight_forward.x,
 		0.0,
@@ -276,3 +280,7 @@ func begin_glide_recovery(
 
 	_is_camera_upside_down = false
 	_is_recovering_from_glide = false
+
+	visual_rig.begin_glide_exit_rotation_recovery(
+		previous_global_view_rotation
+	)

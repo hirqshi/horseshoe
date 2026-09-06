@@ -10,6 +10,14 @@ signal bob_step()
 @export var stance: PlayerStance
 @export var grapple_visual: GrappleVisual
 
+@export_category("hud orientation")
+@export_range(
+	-180.0,
+	180.0,
+	0.1,
+	"suffix:deg"
+) var hud_heading_offset_degrees: float = 0.0
+
 @export_category("audio sync")
 @export_range(0.25, 1.0, 0.01) var bob_step_rate_scale: float = 0.5
 
@@ -63,6 +71,12 @@ var _look_pitch_target_rad: float = 0.0
 var _spring_offset_y: float = 0.0
 var _spring_target_y: float = 0.0
 var _spring_velocity_y: float = 0.0
+
+var _glide_exit_rotation_offset: Quaternion = (
+	Quaternion.IDENTITY
+)
+
+var _is_recovering_glide_exit_rotation: bool = false
 
 func _ready() -> void:
 	if config == null or not config.is_valid():
@@ -149,6 +163,7 @@ func _process(delta: float) -> void:
 	_update_wallrun_lean(delta)
 	_update_look_inertia(delta)
 	_update_vertical_spring(delta)
+	_update_glide_exit_rotation_recovery(delta)
 	_apply_transform()
 
 func register_look_delta(mouse_delta: Vector2) -> void:
@@ -409,6 +424,54 @@ func _update_vertical_spring(delta: float) -> void:
 		)
 	)
 
+func get_global_view_rotation() -> Quaternion:
+	return global_basis.orthonormalized().get_rotation_quaternion()
+
+func begin_glide_exit_rotation_recovery(
+	previous_global_rotation: Quaternion
+) -> void:
+	var current_global_rotation: Quaternion = (
+		global_basis.orthonormalized().get_rotation_quaternion()
+	)
+
+	_glide_exit_rotation_offset = (
+		current_global_rotation.inverse()
+		* previous_global_rotation
+	).normalized()
+
+	_is_recovering_glide_exit_rotation = true
+
+func _update_glide_exit_rotation_recovery(
+	delta: float
+) -> void:
+	if not _is_recovering_glide_exit_rotation:
+		return
+
+	var response_weight: float = (
+		_get_smoothing_weight(
+			config.glide_exit_rotation_recovery_speed,
+			delta
+		)
+	)
+
+	_glide_exit_rotation_offset = (
+		_glide_exit_rotation_offset.slerp(
+			Quaternion.IDENTITY,
+			response_weight
+		).normalized()
+	)
+
+	if _glide_exit_rotation_offset.angle_to(
+		Quaternion.IDENTITY
+	) > 0.001:
+		return
+
+	_glide_exit_rotation_offset = (
+		Quaternion.IDENTITY
+	)
+
+	_is_recovering_glide_exit_rotation = false
+
 func _apply_transform() -> void:
 	var breathing_offset: Vector3 = Vector3(
 		cos(_breathing_phase)
@@ -442,13 +505,23 @@ func _apply_transform() -> void:
 		+ _shake_position
 	)
 
-	rotation = Vector3(
-		_look_pitch_rad,
-		0.0,
-		_strafe_roll_rad
-		+ _wallrun_roll_rad
-		+ _look_roll_rad
-	) + _shake_rotation_rad
+	var base_rotation: Quaternion = Quaternion.from_euler(
+		Vector3(
+			_look_pitch_rad,
+			0.0,
+			_strafe_roll_rad
+			+ _wallrun_roll_rad
+			+ _look_roll_rad
+		)
+		+ _shake_rotation_rad
+	)
+
+	basis = Basis(
+		(
+			base_rotation
+			* _glide_exit_rotation_offset
+		).normalized()
+	)
 
 func _get_smoothing_weight(
 	response_speed: float,
@@ -739,3 +812,83 @@ func _on_grapple_hook_returning_started() -> void:
 
 func _on_grapple_hook_hidden() -> void:
 	_grapple_fov_target_bonus_deg = 0.0
+
+
+func get_hud_roll_degrees() -> float:
+	var glide_bank_rad: float = 0.0
+
+	if movement_motor != null \
+	and movement_motor.is_gliding():
+		glide_bank_rad = (
+			movement_motor.get_glide_bank_angle_rad()
+		)
+
+	var visual_roll_rad: float = (
+		_strafe_roll_rad
+		+ _wallrun_roll_rad
+		+ _look_roll_rad
+		+ glide_bank_rad
+	)
+
+	return wrapf(
+		rad_to_deg(
+			visual_roll_rad
+		),
+		-180.0,
+		180.0
+	)
+
+
+func get_hud_heading_degrees() -> float:
+	var visual_basis: Basis = (
+		global_basis.orthonormalized()
+	)
+
+	var forward_direction: Vector3 = (
+		-visual_basis.z
+	)
+
+	forward_direction.y = 0.0
+
+	if forward_direction.length_squared() <= 0.0001:
+		return 0.0
+
+	forward_direction = forward_direction.normalized()
+
+	var heading_degrees: float = rad_to_deg(
+		atan2(
+			forward_direction.x,
+			-forward_direction.z
+		)
+	)
+
+	return fposmod(
+		heading_degrees
+		+ hud_heading_offset_degrees,
+		360.0
+	)
+
+
+func get_hud_pitch_degrees() -> float:
+	var visual_basis: Basis = (
+		global_basis.orthonormalized()
+	)
+
+	var forward_direction: Vector3 = (
+		-visual_basis.z
+	)
+
+	if forward_direction.length_squared() <= 0.0001:
+		return 0.0
+
+	forward_direction = forward_direction.normalized()
+
+	return rad_to_deg(
+		asin(
+			clampf(
+				forward_direction.y,
+				-1.0,
+				1.0
+			)
+		)
+	)

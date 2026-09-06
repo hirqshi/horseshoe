@@ -800,6 +800,13 @@ func is_gliding() -> bool:
 	return _glide_state.is_active()
 
 
+func get_glide_bank_angle_rad() -> float:
+	if _glide_state == null:
+		return 0.0
+
+	return _glide_state.get_bank_angle_rad()
+
+
 func register_glide_look_delta(
 	mouse_delta: Vector2,
 	mouse_sensitivity: float
@@ -843,6 +850,22 @@ func get_dash_max_charges() -> int:
 		return 0
 
 	return _dash_action.get_max_charges()
+
+
+func get_dash_cooldown_remaining_s() -> float:
+	if _dash_action == null:
+		return 0.0
+
+	return _dash_action.get_cooldown_remaining_s(
+		_context.time_s
+	)
+
+
+func get_dash_cooldown_duration_s() -> float:
+	if _dash_action == null:
+		return 0.0
+
+	return _dash_action.get_cooldown_duration_s()
 
 
 func can_dash() -> bool:

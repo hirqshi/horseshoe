@@ -257,3 +257,20 @@ func get_walk_input_suppression_after_landing_s() -> float:
 		return 0.0
 
 	return config.walk_input_suppression_after_landing_s
+
+
+func get_cooldown_remaining_s(
+	current_time_s: float
+) -> float:
+	return maxf(
+		_cooldown_until_s
+		- current_time_s,
+		0.0
+	)
+
+
+func get_cooldown_duration_s() -> float:
+	if config == null:
+		return 0.0
+
+	return config.cooldown_s

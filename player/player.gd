@@ -15,6 +15,8 @@ signal instant_death_requested()
 
 @export var look_controller: PlayerLookController
 
+@export var camera_visual_rig: CameraVisualRig
+
 @onready var movement_motor: MovementMotor = (
 	get_node_or_null("MovementMotor") as MovementMotor
 )
@@ -52,7 +54,13 @@ func _ready() -> void:
 			"Player requires a PlayerLookController."
 		)
 		return
-
+		
+	if camera_visual_rig == null:
+		push_error(
+			"Player requires a CameraVisualRig."
+		)
+		return
+		
 	fall_tracker.fall_damage_requested.connect(
 		_on_fall_damage_requested
 	)
@@ -105,6 +113,9 @@ func get_reverse_stamina() -> ReverseStamina:
 
 func get_movement_motor() -> MovementMotor:
 	return movement_motor
+
+func get_camera_visual_rig() -> CameraVisualRig:
+	return camera_visual_rig
 
 func _on_fall_damage_requested(
 	damage: float,

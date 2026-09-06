@@ -232,3 +232,35 @@ func _reset_fall() -> void:
 	_is_falling = false
 	_peak_height_y_m = _body.global_position.y
 	_fall_time_s = 0.0
+
+
+func get_current_fall_distance_m() -> float:
+	return _get_current_fall_distance_m()
+
+
+func get_lethal_distance_m() -> float:
+	if config == null:
+		return 0.0
+
+	return config.lethal_distance_m
+
+
+func get_current_fall_progress() -> float:
+	var lethal_distance_m: float = get_lethal_distance_m()
+
+	if lethal_distance_m <= 0.0:
+		return 0.0
+
+	return clampf(
+		get_current_fall_distance_m()
+		/ lethal_distance_m,
+		0.0,
+		1.0
+	)
+
+
+func is_fall_critical() -> bool:
+	if config == null:
+		return false
+
+	return get_current_fall_progress() >= config.critical_progress

@@ -91,6 +91,14 @@ extends Resource
 	"suffix:1/s"
 ) var grapple_fov_response_speed: float = 12.0
 
+@export_category("glide exit recovery")
+@export_range(
+	0.1,
+	50.0,
+	0.1,
+	"suffix:1/s"
+) var glide_exit_rotation_recovery_speed: float = 8.0
+
 func is_valid() -> bool:
 	return (
 		speed_fov_cap_mps > 0.0
@@ -110,4 +118,5 @@ func is_valid() -> bool:
 		and slide_fov_attack_s > 0.0
 		and slide_fov_release_s > 0.0
 		and grapple_fov_response_speed > 0.0
+		and glide_exit_rotation_recovery_speed > 0.0
 	)

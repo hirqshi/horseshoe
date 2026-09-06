@@ -1,58 +1,199 @@
 shader_type canvas_item;
+
 render_mode unshaded, blend_premul_alpha;
 
 uniform sampler2D ui_texture : filter_linear, repeat_disable;
 
+// set from InGameHud using SubViewport size
+uniform vec2 ui_texture_pixel_size = vec2(
+	0.0005208333,
+	0.0009259259
+);
+
+
 // === master ===
 
-uniform float effect_intensity : hint_range(0.0, 1.0, 0.01) = 1.0;
+uniform float effect_intensity : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 1.0;
+
 
 // === convex ui projection ===
 
-// negative values pull edges inward and make the center feel closer
-uniform float side_pinch_amount : hint_range(0.0, 1.0, 0.01) = 0.50;
+uniform float side_pinch_amount : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.50;
+
+
+// === pixelation ===
+
+uniform float pixel_size_px : hint_range(
+	1.0,
+	32.0,
+	1.0
+) = 1.0;
+
+
 // === outer bloom ===
 
-uniform float bloom_strength : hint_range(0.0, 3.0, 0.01) = 0.45;
-uniform float bloom_radius_px : hint_range(0.0, 32.0, 0.1) = 3.0;
-uniform float bloom_alpha : hint_range(0.0, 1.0, 0.01) = 0.45;
+uniform float bloom_strength : hint_range(
+	0.0,
+	3.0,
+	0.01
+) = 0.45;
+
+uniform float bloom_radius_px : hint_range(
+	0.0,
+	32.0,
+	0.1
+) = 3.0;
+
+uniform float bloom_alpha : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.45;
+
 
 // === crt scanlines ===
 
-uniform float scanline_strength : hint_range(0.0, 1.0, 0.01) = 0.10;
-uniform float scanline_density : hint_range(1.0, 2000.0, 1.0) = 520.0;
+uniform float scanline_strength : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.10;
 
-uniform float grille_strength : hint_range(0.0, 1.0, 0.01) = 0.03;
-uniform float grille_density : hint_range(1.0, 2000.0, 1.0) = 360.0;
+uniform float scanline_density : hint_range(
+	1.0,
+	2000.0,
+	1.0
+) = 520.0;
 
-uniform float flicker_strength : hint_range(0.0, 1.0, 0.01) = 0.01;
-uniform float flicker_speed : hint_range(0.0, 60.0, 0.1) = 15.0;
+uniform float grille_strength : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.03;
 
-uniform float noise_strength : hint_range(0.0, 1.0, 0.01) = 0.008;
-uniform float noise_density : hint_range(1.0, 4000.0, 1.0) = 900.0;
+uniform float grille_density : hint_range(
+	1.0,
+	2000.0,
+	1.0
+) = 360.0;
 
-uniform float chromatic_offset_px : hint_range(0.0, 8.0, 0.01) = 0.12;
-uniform float brightness : hint_range(0.0, 3.0, 0.01) = 1.03;
+uniform float flicker_strength : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.01;
 
-float hash(vec2 value) {
+uniform float flicker_speed : hint_range(
+	0.0,
+	60.0,
+	0.1
+) = 15.0;
+
+uniform float noise_strength : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.008;
+
+uniform float noise_density : hint_range(
+	1.0,
+	4000.0,
+	1.0
+) = 900.0;
+
+uniform float chromatic_offset_px : hint_range(
+	0.0,
+	8.0,
+	0.01
+) = 0.12;
+
+
+// === vhs signal distortion ===
+
+uniform float vhs_strength : hint_range(
+	0.0,
+	1.0,
+	0.01
+) = 0.0;
+
+uniform float vhs_color_offset_px : hint_range(
+	-16.0,
+	16.0,
+	0.1
+) = 2.0;
+
+uniform float vhs_color_wiggle_px : hint_range(
+	0.0,
+	24.0,
+	0.1
+) = 4.0;
+
+uniform float vhs_luma_wiggle_px : hint_range(
+	0.0,
+	12.0,
+	0.1
+) = 0.8;
+
+uniform float vhs_color_blur_px : hint_range(
+	0.0,
+	12.0,
+	0.1
+) = 1.5;
+
+uniform float vhs_line_density : hint_range(
+	1.0,
+	1200.0,
+	1.0
+) = 487.0;
+
+uniform float vhs_noise_fps : hint_range(
+	1.0,
+	60.0,
+	1.0
+) = 15.0;
+
+
+float hash(
+	vec2 value
+) {
 	return fract(
 		sin(
 			dot(
 				value,
-				vec2(127.1, 311.7)
+				vec2(
+					127.1,
+					311.7
+				)
 			)
 		)
 		* 43758.5453123
 	);
 }
 
-vec2 get_bulged_screen_uv(vec2 uv) {
-	vec2 centered_uv = uv - vec2(0.5);
+
+vec2 get_bulged_screen_uv(
+	vec2 uv
+) {
+	vec2 centered_uv = (
+		uv
+		- vec2(0.5)
+	);
 
 	float horizontal_side_weight = (
 		1.0
 		- pow(
-			abs(centered_uv.y) * 2.0,
+			abs(
+				centered_uv.y
+			)
+			* 2.0,
 			2.0
 		)
 	);
@@ -60,7 +201,10 @@ vec2 get_bulged_screen_uv(vec2 uv) {
 	float vertical_side_weight = (
 		1.0
 		- pow(
-			abs(centered_uv.x) * 2.0,
+			abs(
+				centered_uv.x
+			)
+			* 2.0,
 			2.0
 		)
 	);
@@ -81,7 +225,38 @@ vec2 get_bulged_screen_uv(vec2 uv) {
 	);
 }
 
-vec4 sample_ui(vec2 uv) {
+
+vec2 get_pixelated_uv(
+	vec2 uv
+) {
+	float effective_pixel_size_px = mix(
+		1.0,
+		pixel_size_px,
+		effect_intensity
+	);
+
+	vec2 pixel_size_uv = (
+		ui_texture_pixel_size
+		* max(
+			effective_pixel_size_px,
+			1.0
+		)
+	);
+
+	return (
+		floor(
+			uv
+			/ pixel_size_uv
+		)
+		+ vec2(0.5)
+	)
+	* pixel_size_uv;
+}
+
+
+vec4 sample_ui(
+	vec2 uv
+) {
 	if (
 		uv.x < 0.0
 		|| uv.x > 1.0
@@ -91,17 +266,237 @@ vec4 sample_ui(vec2 uv) {
 		return vec4(0.0);
 	}
 
-	return texture(ui_texture, uv);
+	return texture(
+		ui_texture,
+		uv
+	);
 }
 
-void fragment() {
-	vec2 warped_uv = get_bulged_screen_uv(UV);
 
-	vec4 source = sample_ui(warped_uv);
+float get_vhs_line_noise(
+	float uv_y,
+	float seed
+) {
+	float line_index = floor(
+		uv_y
+		* vhs_line_density
+	);
+
+	float frame_index = floor(
+		TIME
+		* vhs_noise_fps
+	);
+
+	return (
+		hash(
+			vec2(
+				line_index,
+				frame_index
+				+ seed
+			)
+		)
+		* 2.0
+		- 1.0
+	);
+}
+
+
+vec3 rgb_to_yuv(
+	vec3 rgb
+) {
+	return vec3(
+		dot(
+			rgb,
+			vec3(
+				0.299,
+				0.587,
+				0.114
+			)
+		),
+
+		dot(
+			rgb,
+			vec3(
+				-0.14713,
+				-0.28886,
+				0.436
+			)
+		),
+
+		dot(
+			rgb,
+			vec3(
+				0.615,
+				-0.51499,
+				-0.10001
+			)
+		)
+	);
+}
+
+
+vec3 yuv_to_rgb(
+	vec3 yuv
+) {
+	return max(
+		vec3(
+			yuv.x
+			+ 1.13983
+			* yuv.z,
+
+			yuv.x
+			- 0.39465
+			* yuv.y
+			- 0.58060
+			* yuv.z,
+
+			yuv.x
+			+ 2.03211
+			* yuv.y
+		),
+		vec3(0.0)
+	);
+}
+
+
+vec4 sample_vhs_ui(
+	vec2 uv
+) {
+	if (
+		vhs_strength <= 0.0
+	) {
+		return sample_ui(
+			uv
+		);
+	}
+
+	float luma_noise = get_vhs_line_noise(
+		uv.y,
+		13.0
+	);
+
+	float color_noise = get_vhs_line_noise(
+		uv.y,
+		69.420
+	);
+
+	float luma_offset_px = (
+		luma_noise
+		* vhs_luma_wiggle_px
+	);
+
+	float color_offset_px = (
+		vhs_color_offset_px
+		+ color_noise
+		* vhs_color_wiggle_px
+	);
+
+	vec2 luma_uv = (
+		uv
+		+ vec2(
+			luma_offset_px
+			* ui_texture_pixel_size.x,
+			0.0
+		)
+	);
+
+	vec2 color_uv = (
+		uv
+		+ vec2(
+			color_offset_px
+			* ui_texture_pixel_size.x,
+			0.0
+		)
+	);
+
+	vec4 luma_sample = sample_ui(
+		luma_uv
+	);
+
+	vec4 color_center = sample_ui(
+		color_uv
+	);
+
+	vec4 color_sample = color_center;
+
+	if (
+		vhs_color_blur_px > 0.0
+	) {
+		vec2 blur_offset = vec2(
+			vhs_color_blur_px
+			* ui_texture_pixel_size.x,
+			0.0
+		);
+
+		vec4 color_left = sample_ui(
+			color_uv
+			- blur_offset
+		);
+
+		vec4 color_right = sample_ui(
+			color_uv
+			+ blur_offset
+		);
+
+		color_sample = (
+			color_center
+			* 0.50
+			+ color_left
+			* 0.25
+			+ color_right
+			* 0.25
+		);
+	}
+
+	vec3 luma_yuv = rgb_to_yuv(
+		luma_sample.rgb
+	);
+
+	vec3 color_yuv = rgb_to_yuv(
+		color_sample.rgb
+	);
+
+	vec3 vhs_rgb = yuv_to_rgb(
+		vec3(
+			luma_yuv.x,
+			color_yuv.y,
+			color_yuv.z
+		)
+	);
+
+	vec4 vhs_sample = vec4(
+		vhs_rgb,
+		luma_sample.a
+	);
+
+	return mix(
+		luma_sample,
+		vhs_sample,
+		vhs_strength
+		* effect_intensity
+	);
+}
+
+
+void fragment() {
+	vec2 warped_uv = get_bulged_screen_uv(
+		UV
+	);
+
+	vec2 pixelated_uv = get_pixelated_uv(
+		warped_uv
+	);
+
+	vec4 source = sample_vhs_ui(
+		pixelated_uv
+	);
 
 	vec2 chromatic_offset_uv = (
-		vec2(chromatic_offset_px, 0.0)
-		* TEXTURE_PIXEL_SIZE
+		vec2(
+			chromatic_offset_px,
+			0.0
+		)
+		* ui_texture_pixel_size
 	);
 
 	vec3 source_rgb = source.rgb;
@@ -110,14 +505,16 @@ void fragment() {
 		source.a > 0.0001
 		&& chromatic_offset_px > 0.0
 	) {
-		float red = sample_ui(
-			warped_uv - chromatic_offset_uv
+		float red = sample_vhs_ui(
+			pixelated_uv
+			- chromatic_offset_uv
 		).r;
 
 		float green = source.g;
 
-		float blue = sample_ui(
-			warped_uv + chromatic_offset_uv
+		float blue = sample_vhs_ui(
+			pixelated_uv
+			+ chromatic_offset_uv
 		).b;
 
 		source_rgb = vec3(
@@ -139,7 +536,9 @@ void fragment() {
 
 	float scanline_multiplier = mix(
 		1.0,
-		0.58 + scanline * 0.42,
+		0.58
+		+ scanline
+		* 0.42,
 		scanline_strength
 	);
 
@@ -155,7 +554,9 @@ void fragment() {
 
 	float grille_multiplier = mix(
 		1.0,
-		0.75 + grille * 0.25,
+		0.75
+		+ grille
+		* 0.25,
 		grille_strength
 	);
 
@@ -170,7 +571,9 @@ void fragment() {
 
 	float flicker_multiplier = mix(
 		1.0,
-		0.96 + flicker * 0.04,
+		0.96
+		+ flicker
+		* 0.04,
 		flicker_strength
 	);
 
@@ -199,35 +602,50 @@ void fragment() {
 		* source.a
 	);
 
-	crt_color *= brightness;
-
 	vec2 bloom_offset = (
-		TEXTURE_PIXEL_SIZE
+		ui_texture_pixel_size
 		* bloom_radius_px
 	);
 
 	vec4 bloom_left = sample_ui(
-		warped_uv - vec2(bloom_offset.x, 0.0)
+		pixelated_uv
+		- vec2(
+			bloom_offset.x,
+			0.0
+		)
 	);
 
 	vec4 bloom_right = sample_ui(
-		warped_uv + vec2(bloom_offset.x, 0.0)
+		pixelated_uv
+		+ vec2(
+			bloom_offset.x,
+			0.0
+		)
 	);
 
 	vec4 bloom_up = sample_ui(
-		warped_uv - vec2(0.0, bloom_offset.y)
+		pixelated_uv
+		- vec2(
+			0.0,
+			bloom_offset.y
+		)
 	);
 
 	vec4 bloom_down = sample_ui(
-		warped_uv + vec2(0.0, bloom_offset.y)
+		pixelated_uv
+		+ vec2(
+			0.0,
+			bloom_offset.y
+		)
 	);
 
 	vec4 bloom_up_left = sample_ui(
-		warped_uv - bloom_offset
+		pixelated_uv
+		- bloom_offset
 	);
 
 	vec4 bloom_up_right = sample_ui(
-		warped_uv
+		pixelated_uv
 		+ vec2(
 			bloom_offset.x,
 			-bloom_offset.y
@@ -235,7 +653,7 @@ void fragment() {
 	);
 
 	vec4 bloom_down_left = sample_ui(
-		warped_uv
+		pixelated_uv
 		+ vec2(
 			-bloom_offset.x,
 			bloom_offset.y
@@ -243,22 +661,32 @@ void fragment() {
 	);
 
 	vec4 bloom_down_right = sample_ui(
-		warped_uv + bloom_offset
+		pixelated_uv
+		+ bloom_offset
 	);
 
 	vec4 bloom_sample = (
-		bloom_left * 0.12
-		+ bloom_right * 0.12
-		+ bloom_up * 0.12
-		+ bloom_down * 0.12
-		+ bloom_up_left * 0.10
-		+ bloom_up_right * 0.10
-		+ bloom_down_left * 0.10
-		+ bloom_down_right * 0.10
+		bloom_left
+		* 0.12
+		+ bloom_right
+		* 0.12
+		+ bloom_up
+		* 0.12
+		+ bloom_down
+		* 0.12
+		+ bloom_up_left
+		* 0.10
+		+ bloom_up_right
+		* 0.10
+		+ bloom_down_left
+		* 0.10
+		+ bloom_down_right
+		* 0.10
 	);
 
 	float outer_bloom_alpha = max(
-		bloom_sample.a - source.a,
+		bloom_sample.a
+		- source.a,
 		0.0
 	);
 
@@ -271,6 +699,7 @@ void fragment() {
 	vec3 bloom_color = (
 		bloom_sample.rgb
 		* bloom_strength
+		* bloom_alpha
 		* effect_intensity
 	);
 
