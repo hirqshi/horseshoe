@@ -1,0 +1,184 @@
+[gd_scene format=3 uid="uid://c5r0jrkyfj0c"]
+
+[ext_resource type="Script" uid="uid://ds6hul4j4u0t3" path="res://ui/common/confirm_panel.gd" id="1_bov6v"]
+[ext_resource type="Theme" uid="uid://3oh8qomayi5p" path="res://assets/themes/buttons.tres" id="2_h5asi"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_ocox1"]
+[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="4_ocox1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ocox1"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.2509804, 0, 1)
+corner_detail = 1
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_ocox1"]
+font = ExtResource("3_ocox1")
+font_size = 40
+font_color = Color(1, 0.25, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4yfcj"]
+font = ExtResource("3_ocox1")
+font_size = 26
+font_color = Color(1, 0.25, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yfcj"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0, 0, 0, 0.16862746)
+skew = Vector2(0.1, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.25, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dhwyj"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(1, 0.25, 0, 0.34117648)
+skew = Vector2(0.1, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slhxl"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(1, 0.25, 0, 0.34117648)
+skew = Vector2(0.1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.25, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[node name="ConfirmPanel" type="Control" unique_id=1135098963 node_paths=PackedStringArray("title_label", "message_label", "confirm_button", "cancel_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bov6v")
+title_label = NodePath("Dialog/Frame/TitleLabel")
+message_label = NodePath("Dialog/Frame/MessageLabel")
+confirm_button = NodePath("Dialog/Frame/ConfirmButton")
+cancel_button = NodePath("Dialog/Frame/CancelButton")
+
+[node name="DimOverlay" type="ColorRect" parent="." unique_id=909172499]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5058824)
+
+[node name="Dialog" type="Control" parent="." unique_id=580571108]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_h5asi")
+
+[node name="Frame" type="Panel" parent="Dialog" unique_id=1972712531]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -211.5
+offset_top = -119.0
+offset_right = 211.5
+offset_bottom = 154.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ocox1")
+
+[node name="TitleLabel" type="Label" parent="Dialog/Frame" unique_id=86769055]
+layout_mode = 0
+offset_left = 3.5
+offset_top = 9.0
+offset_right = 418.5
+offset_bottom = 67.0
+text = "status"
+label_settings = SubResource("LabelSettings_ocox1")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MessageLabel" type="Label" parent="Dialog/Frame" unique_id=1017552645]
+layout_mode = 0
+offset_left = 3.5
+offset_top = 55.0
+offset_right = 418.5
+offset_bottom = 176.0
+text = "status"
+label_settings = SubResource("LabelSettings_4yfcj")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CancelButton" type="Button" parent="Dialog/Frame" unique_id=242149161]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 43.0
+offset_top = 36.5
+offset_right = 169.0
+offset_bottom = 106.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_ocox1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yfcj")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dhwyj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_slhxl")
+text = "cancel
+"
+
+[node name="ConfirmButton" type="Button" parent="Dialog/Frame" unique_id=1447307902]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -171.0
+offset_top = 36.5
+offset_right = -45.0
+offset_bottom = 106.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_ocox1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4yfcj")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dhwyj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_slhxl")
+text = "confirm
+"

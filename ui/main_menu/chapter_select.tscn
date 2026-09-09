@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://cp8e1sbdmqsno"]
+
+[ext_resource type="Script" uid="uid://0oxgk0tw24f0" path="res://ui/main_menu/chapter_select.gd" id="1_tusxr"]
+[ext_resource type="PackedScene" uid="uid://b2scc4y7ugvc4" path="res://ui/main_menu/chapter_card.tscn" id="2_uta75"]
+[ext_resource type="Resource" uid="uid://dm1mhlomyh6xh" path="res://data/chapters/chapter_01.tres" id="3_y01jl"]
+[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="5_cop21"]
+
+[node name="ChapterSelect" type="Control" unique_id=508456767 node_paths=PackedStringArray("chapter_cards", "back_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tusxr")
+chapter_cards = [NodePath("ChapterCard")]
+back_button = NodePath("BackButton")
+
+[node name="ChapterCard" parent="." unique_id=1448361952 instance=ExtResource("2_uta75")]
+layout_mode = 0
+offset_left = 342.0
+offset_top = 238.0
+offset_right = 342.0
+offset_bottom = 238.0
+chapter_definition = ExtResource("3_y01jl")
+
+[node name="BackButton" type="Button" parent="." unique_id=1967915195]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 962.0
+offset_right = 298.0
+offset_bottom = 1043.0
+theme = ExtResource("5_cop21")
+text = "back to menu"
+
+[node name="BG" type="ColorRect" parent="." unique_id=823427385]
+modulate = Color(0, 0, 0, 1)
+z_index = -14
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -334.0
+offset_top = -247.0
+offset_right = 317.0
+offset_bottom = 231.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

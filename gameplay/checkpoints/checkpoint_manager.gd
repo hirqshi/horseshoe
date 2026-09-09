@@ -1,3 +1,4 @@
+@tool
 class_name CheckpointManager
 extends Node
 
@@ -20,6 +21,20 @@ signal player_exited_checkpoint_zone(
 var active_checkpoint: Checkpoint
 var player: Player
 
+var _checkpoint_by_id: Dictionary[StringName, Checkpoint] = {}
+var _id_rng: RandomNumberGenerator = RandomNumberGenerator.new()
+
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		_id_rng.randomize()
+		call_deferred(
+			"_connect_checkpoints"
+		)
+		return
+
+	_connect_checkpoints()
+
 
 func setup(
 	target_player: Player
@@ -33,10 +48,6 @@ func setup(
 	player = target_player
 
 
-func _ready() -> void:
-	_connect_checkpoints()
-
-
 func get_respawn_transform() -> Transform3D:
 	if active_checkpoint != null:
 		return active_checkpoint.get_spawn_transform()
@@ -46,7 +57,6 @@ func get_respawn_transform() -> Transform3D:
 			"CheckpointManager has no active checkpoint "
 			+ "and no InitialSpawn."
 		)
-
 		return Transform3D.IDENTITY
 
 	var initial_transform: Transform3D = (
@@ -59,13 +69,47 @@ func get_respawn_transform() -> Transform3D:
 	)
 
 
+func get_checkpoint_by_id(
+	checkpoint_id: StringName
+) -> Checkpoint:
+	if checkpoint_id.is_empty():
+		return null
+
+	return _checkpoint_by_id.get(
+		checkpoint_id
+	) as Checkpoint
+
+
+func restore_active_checkpoint(
+	checkpoint_id: StringName
+) -> bool:
+	var checkpoint: Checkpoint = get_checkpoint_by_id(
+		checkpoint_id
+	)
+
+	if checkpoint == null:
+		push_warning(
+			"CheckpointManager could not restore checkpoint '%s'."
+			% checkpoint_id
+		)
+		return false
+
+	_set_active_checkpoint(
+		checkpoint,
+		false
+	)
+
+	return true
+
+
 func _connect_checkpoints() -> void:
 	if checkpoints_root == null:
 		push_error(
 			"CheckpointManager requires a Checkpoints root."
 		)
-
 		return
+
+	_checkpoint_by_id.clear()
 
 	for checkpoint_node: Node in checkpoints_root.get_children():
 		var checkpoint: Checkpoint = (
@@ -74,6 +118,10 @@ func _connect_checkpoints() -> void:
 
 		if checkpoint == null:
 			continue
+
+		_register_checkpoint_id(
+			checkpoint
+		)
 
 		if not checkpoint.body_reached.is_connected(
 			_on_checkpoint_body_reached
@@ -90,8 +138,91 @@ func _connect_checkpoints() -> void:
 			)
 
 
+func _register_checkpoint_id(
+	checkpoint: Checkpoint
+) -> void:
+	if checkpoint == null:
+		return
+
+	var was_generated: bool = false
+	var was_regenerated_after_duplicate: bool = false
+
+	if checkpoint.checkpoint_id.is_empty():
+		if not Engine.is_editor_hint():
+			push_error(
+				(
+					"Checkpoint '%s' has no generated checkpoint_id. "
+					+ "Open and save this chapter scene in the editor."
+				)
+				% checkpoint.name
+			)
+			return
+
+		checkpoint.checkpoint_id = _generate_unique_checkpoint_id()
+		was_generated = true
+
+	var existing_checkpoint: Checkpoint = (
+		_checkpoint_by_id.get(
+			checkpoint.checkpoint_id
+		) as Checkpoint
+	)
+
+	if existing_checkpoint != null:
+		if not Engine.is_editor_hint():
+			push_error(
+				"Checkpoint '%s' and '%s' share checkpoint_id '%s'."
+				% [
+					existing_checkpoint.name,
+					checkpoint.name,
+					checkpoint.checkpoint_id,
+				]
+			)
+			return
+
+		checkpoint.checkpoint_id = _generate_unique_checkpoint_id()
+		was_regenerated_after_duplicate = true
+
+	_checkpoint_by_id[checkpoint.checkpoint_id] = checkpoint
+
+	if was_generated:
+		print(
+			"checkpoint id created: %s -> %s"
+			% [
+				checkpoint.name,
+				checkpoint.checkpoint_id,
+			]
+		)
+
+	if was_regenerated_after_duplicate:
+		print(
+			"checkpoint duplicate id replaced: %s -> %s"
+			% [
+				checkpoint.name,
+				checkpoint.checkpoint_id,
+			]
+		)
+
+
+func _generate_unique_checkpoint_id() -> StringName:
+	var generated_id: StringName = &""
+
+	while generated_id.is_empty() or _checkpoint_by_id.has(generated_id):
+		generated_id = StringName(
+			"checkpoint_%08x_%08x_%08x_%08x"
+			% [
+				_id_rng.randi(),
+				_id_rng.randi(),
+				_id_rng.randi(),
+				_id_rng.randi(),
+			]
+		)
+
+	return generated_id
+
+
 func _set_active_checkpoint(
-	new_checkpoint: Checkpoint
+	new_checkpoint: Checkpoint,
+	should_emit_changed: bool = true
 ) -> void:
 	if new_checkpoint == active_checkpoint:
 		return
@@ -101,15 +232,20 @@ func _set_active_checkpoint(
 	)
 
 	if previous_checkpoint != null:
-		previous_checkpoint.set_active(false)
+		previous_checkpoint.set_active(
+			false
+		)
 
 	active_checkpoint = new_checkpoint
-	active_checkpoint.set_active(true)
-
-	checkpoint_changed.emit(
-		previous_checkpoint,
-		active_checkpoint
+	active_checkpoint.set_active(
+		true
 	)
+
+	if should_emit_changed:
+		checkpoint_changed.emit(
+			previous_checkpoint,
+			active_checkpoint
+		)
 
 
 func _on_checkpoint_body_reached(
@@ -136,7 +272,6 @@ func _on_checkpoint_presence_changed(
 		player_entered_checkpoint_zone.emit(
 			checkpoint
 		)
-
 		return
 
 	player_exited_checkpoint_zone.emit(

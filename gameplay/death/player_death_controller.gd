@@ -54,11 +54,11 @@ func setup(
 	_player.fatal_fall_detected.connect(
 		_on_player_fatal_fall_detected
 	)
-	
+
 	_player.reverse_stamina_depleted.connect(
 		_on_player_reverse_stamina_depleted
 	)
-	
+
 	_player.instant_death_requested.connect(
 		_on_player_instant_death_requested
 	)
@@ -87,20 +87,23 @@ func request_death() -> void:
 		return
 
 	is_dying = true
-	
+
+	if SaveManager.has_active_profile():
+		SaveManager.register_death()
+
 	if death_audio != null:
 		death_audio.play_death()
-		
+
 	_previous_player_process_mode = _player.process_mode
 	_player.process_mode = Node.PROCESS_MODE_DISABLED
-
 	_player.velocity = Vector3.ZERO
 
 	death_overlay.cover_immediately()
 
 	await get_tree().process_frame
 
-	if !is_instance_valid(_player):
+	if not is_instance_valid(_player):
+		_finish_death()
 		return
 
 	var respawn_transform: Transform3D = (
@@ -111,12 +114,12 @@ func request_death() -> void:
 	_player.velocity = Vector3.ZERO
 
 	_player.reset_after_respawn()
-
 	_world.reset_player_zone_state()
 
 	await get_tree().physics_frame
 
-	if !is_instance_valid(_player):
+	if not is_instance_valid(_player):
+		_finish_death()
 		return
 
 	_player.velocity = Vector3.ZERO
@@ -126,17 +129,22 @@ func request_death() -> void:
 			blackout_hold_duration
 		).timeout
 
-	if !is_instance_valid(_player):
+	if not is_instance_valid(_player):
+		_finish_death()
 		return
 
 	_player.process_mode = _previous_player_process_mode
 	_player.velocity = Vector3.ZERO
 
-	if death_overlay != null:
+	if is_instance_valid(death_overlay):
 		await death_overlay.reveal(
 			reveal_duration
 		)
 
+	_finish_death()
+
+
+func _finish_death() -> void:
 	is_dying = false
 
 
@@ -146,8 +154,10 @@ func _on_player_fatal_fall_detected(
 ) -> void:
 	request_death()
 
+
 func _on_player_reverse_stamina_depleted() -> void:
 	request_death()
+
 
 func _on_player_instant_death_requested() -> void:
 	request_death()

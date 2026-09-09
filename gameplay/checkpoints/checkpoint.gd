@@ -1,3 +1,4 @@
+@tool
 class_name Checkpoint
 extends Area3D
 
@@ -16,6 +17,10 @@ signal active_changed(
 	is_active: bool
 )
 
+@export_group("Save")
+@export_storage var checkpoint_id: StringName = &""
+
+@export_group("References")
 @export var spawn_anchor: Marker3D
 @export var visual: CheckpointVisual
 
@@ -23,6 +28,9 @@ var is_active: bool = false
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
 	body_entered.connect(
 		_on_body_entered
 	)
@@ -41,7 +49,6 @@ func _ready() -> void:
 		visual.set_active(
 			is_active
 		)
-
 
 func set_active(
 	value: bool

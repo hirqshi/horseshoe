@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://clawxk32flwhn"]
+
+[ext_resource type="Script" uid="uid://cm3aeqche8rvd" path="res://ui/settings/audio_settings_panel.gd" id="1_cq4dc"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="1_qqsin"]
+[ext_resource type="PackedScene" uid="uid://d0d2aib65fcse" path="res://ui/settings/audio_setting_row.tscn" id="2_6vq25"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6vq25"]
+font = ExtResource("1_qqsin")
+font_size = 55
+font_color = Color(1, 0.25, 0, 1)
+
+[node name="AudioSettingsPanel" type="Control" unique_id=1537190100 node_paths=PackedStringArray("audio_rows")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_cq4dc")
+audio_rows = [NodePath("MasterRow"), NodePath("MusicRow"), NodePath("SfxRow")]
+
+[node name="SectionTitleLabel" type="Label" parent="." unique_id=2040750737]
+visible = false
+layout_mode = 0
+offset_left = 771.0
+offset_top = 224.0
+offset_right = 1115.0
+offset_bottom = 413.0
+text = "Audio Settings"
+label_settings = SubResource("LabelSettings_6vq25")
+horizontal_alignment = 1
+
+[node name="MasterRow" parent="." unique_id=953626964 instance=ExtResource("2_6vq25")]
+layout_mode = 1
+offset_left = 815.0
+offset_top = 336.0
+offset_right = 815.0
+offset_bottom = 336.0
+
+[node name="MusicRow" parent="." unique_id=2038556537 instance=ExtResource("2_6vq25")]
+layout_mode = 1
+offset_left = 815.0
+offset_top = 518.0
+offset_right = 815.0
+offset_bottom = 518.0
+bus_name = &"Music"
+
+[node name="SfxRow" parent="." unique_id=1052007748 instance=ExtResource("2_6vq25")]
+layout_mode = 1
+offset_left = 815.0
+offset_top = 704.0
+offset_right = 815.0
+offset_bottom = 704.0
+bus_name = &"Sfx"

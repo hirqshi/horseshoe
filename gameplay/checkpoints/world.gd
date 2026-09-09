@@ -1,6 +1,10 @@
 class_name World
 extends Node3D
 
+signal checkpoint_activated(
+	checkpoint: Checkpoint
+)
+
 @export var checkpoint_manager: CheckpointManager
 @export var rest_zones_root: Node3D
 @export var death_zones_root: Node3D
@@ -51,6 +55,21 @@ func get_respawn_transform() -> Transform3D:
 	return checkpoint_manager.get_respawn_transform()
 
 
+func restore_checkpoint(
+	checkpoint_id: StringName
+) -> bool:
+	if checkpoint_manager == null:
+		push_error(
+			"World cannot restore checkpoint: "
+			+ "CheckpointManager is missing."
+		)
+		return false
+
+	return checkpoint_manager.restore_active_checkpoint(
+		checkpoint_id
+	)
+
+
 func reset_player_zone_state() -> void:
 	_active_rest_sources.clear()
 
@@ -63,6 +82,13 @@ func reset_player_zone_state() -> void:
 func _connect_checkpoint_zones() -> void:
 	if checkpoint_manager == null:
 		return
+
+	if not checkpoint_manager.checkpoint_changed.is_connected(
+		_on_checkpoint_changed
+	):
+		checkpoint_manager.checkpoint_changed.connect(
+			_on_checkpoint_changed
+		)
 
 	if not checkpoint_manager.player_entered_checkpoint_zone.is_connected(
 		_on_checkpoint_player_entered
@@ -141,6 +167,18 @@ func _on_checkpoint_player_entered(
 ) -> void:
 	_add_rest_source(
 		checkpoint
+	)
+
+
+func _on_checkpoint_changed(
+	_previous_checkpoint: Checkpoint,
+	current_checkpoint: Checkpoint
+) -> void:
+	if current_checkpoint == null:
+		return
+
+	checkpoint_activated.emit(
+		current_checkpoint
 	)
 
 

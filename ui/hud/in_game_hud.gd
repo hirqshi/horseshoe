@@ -255,8 +255,13 @@ func _update_camera_orientation() -> void:
 		roll_degrees
 	)
 
+	var is_gliding: bool = (
+		_movement_motor.is_gliding()
+	)
+
 	camera_roll_bars_hud.set_roll_degrees(
-		roll_degrees
+		roll_degrees,
+		is_gliding
 	)
 
 	compass_hud.set_heading_degrees(

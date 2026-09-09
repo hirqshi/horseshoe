@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://d06w6qvkqm62r" path="res://screenspace_projection/screenspace_projection.gd" id="1_4fuuu"]
 [ext_resource type="Script" uid="uid://ceqpqkk7vcrwj" path="res://game/game.gd" id="1_l8g03"]
-[ext_resource type="PackedScene" uid="uid://bgtu17lf4f73j" path="res://test/movement_test.tscn" id="1_vasa2"]
 [ext_resource type="Shader" uid="uid://d3q7ed1bj00d4" path="res://screenspace_projection/screenspace_projection.gdshader" id="2_dxrkv"]
 [ext_resource type="PackedScene" uid="uid://cefvnebo88nnh" path="res://player/player.tscn" id="2_h7iqs"]
+[ext_resource type="Resource" uid="uid://dm1mhlomyh6xh" path="res://data/chapters/chapter_01.tres" id="2_iswgq"]
 [ext_resource type="Script" uid="uid://b77y0jbt63g2m" path="res://ui/hud/crosshair_hud_element.gd" id="5_u5opy"]
 [ext_resource type="Script" uid="uid://cjjneqc3d8gjx" path="res://ui/hud/in_game_hud.gd" id="6_j8tme"]
 [ext_resource type="Script" uid="uid://bfef1slmh7ex7" path="res://ui/hud/hud_element.gd" id="6_y36n6"]
@@ -45,6 +45,7 @@
 [ext_resource type="Texture2D" uid="uid://b7fuwhhgyg8hj" path="res://assets/textures/pixel_ui/pointer.png" id="34_cieqw"]
 [ext_resource type="Script" uid="uid://cnysd0y1ix7ng" path="res://ui/hud/compass_hud.gd" id="38_281ou"]
 [ext_resource type="Script" uid="uid://bc33ledtvgkms" path="res://ui/hud/pitch_indicator_hud.gd" id="39_nrbry"]
+[ext_resource type="Script" uid="uid://ce1e2jtfbgpol" path="res://ui/hud/world_post.gd" id="40_iswgq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
 resource_local_to_scene = true
@@ -146,7 +147,7 @@ shader_parameter/darkness_threshold = 0.3
 shader_parameter/posterization_dither_amount = 0.0
 shader_parameter/bayer_dithering_enabled = true
 shader_parameter/bayer_dither_strength = 0.03999999910592
-shader_parameter/bayer_dither_gamma = 1.27999999374144
+shader_parameter/bayer_dither_gamma = 2.56999996490736
 shader_parameter/glitch_intensity = 0.0
 shader_parameter/vhs_strength = 0.81999998167136
 shader_parameter/vhs_color_offset_px = 2.0
@@ -184,11 +185,13 @@ shader_parameter/reveal_noise_strength = 0.6
 shader_parameter/reveal_origin = Vector2(0.5, 0.5)
 shader_parameter/radial_reveal_strength = 0.35
 
-[node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("player", "in_game_hud", "world", "player_death_controller")]
+[node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("world_container", "in_game_hud", "player_death_controller")]
 script = ExtResource("1_l8g03")
-player = NodePath("ScreenSpaceProjection/ProjectionInput/WorldContainer/Player")
+allow_direct_scene_start = true
+development_chapter_definition = ExtResource("2_iswgq")
+player_scene = ExtResource("2_h7iqs")
+world_container = NodePath("ScreenSpaceProjection/ProjectionInput/WorldContainer")
 in_game_hud = NodePath("InGameHud")
-world = NodePath("ScreenSpaceProjection/ProjectionInput/WorldContainer/World")
 player_death_controller = NodePath("PlayerDeathController")
 
 [node name="ScreenSpaceProjection" type="Camera3D" parent="." unique_id=2131587968]
@@ -219,11 +222,6 @@ size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
 [node name="WorldContainer" type="Node3D" parent="ScreenSpaceProjection/ProjectionInput" unique_id=1596189794]
-
-[node name="World" parent="ScreenSpaceProjection/ProjectionInput/WorldContainer" unique_id=46126002 instance=ExtResource("1_vasa2")]
-
-[node name="Player" parent="ScreenSpaceProjection/ProjectionInput/WorldContainer" unique_id=361433541 instance=ExtResource("2_h7iqs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33338058, 0)
 
 [node name="OutlineQuad" type="MeshInstance3D" parent="ScreenSpaceProjection/ProjectionInput" unique_id=1805947837]
 extra_cull_margin = 16384.0
@@ -703,7 +701,7 @@ text = "00.00"
 label_settings = SubResource("LabelSettings_3vho3")
 horizontal_alignment = 1
 
-[node name="ReverseStaminaBar" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=1974192693 node_paths=PackedStringArray("progress_bar")]
+[node name="ReverseStaminaBar" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=1974192693 node_paths=PackedStringArray("progress_bar", "percent_label")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -718,6 +716,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("18_leid8")
 progress_bar = NodePath("ProgressBar")
+percent_label = NodePath("PercentLabel")
 bar_follow_speed = 22.700000000000003
 stamina_gradient = SubResource("Gradient_leid8")
 element_color = Color(1, 1, 1, 0.6627451)
@@ -746,6 +745,25 @@ value = 100.0
 fill_mode = 6
 radial_initial_angle = 180.0
 texture_progress = ExtResource("22_5ywmu")
+
+[node name="PercentLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/ReverseStaminaBar" unique_id=32978495]
+modulate = Color(0.37, 1, 0.832, 0.69411767)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.000023
+offset_top = 89.999985
+offset_right = 35.19993
+offset_bottom = 164.99998
+grow_horizontal = 2
+grow_vertical = 2
+text = "4
+"
+label_settings = SubResource("LabelSettings_3vho3")
+horizontal_alignment = 1
 
 [node name="DashChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=611918422 node_paths=PackedStringArray("charge_count_label", "cooldown_label")]
 layout_mode = 1
@@ -1046,7 +1064,7 @@ heading_label = NodePath("HeadingLabel")
 tick_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
 label_font = ExtResource("12_qf6n1")
 label_font_size = 31
-label_offset_px = -22.400000000000006
+label_offset_px = -22.40000000000001
 label_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
 label_alpha = 0.71
 element_alpha = 0.7
@@ -1167,6 +1185,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("40_iswgq")
 metadata/_edit_use_anchors_ = true
 
 [node name="DeathOverlay" type="CanvasLayer" parent="." unique_id=2128964982 node_paths=PackedStringArray("screen_cover")]

@@ -1,10 +1,27 @@
 class_name ReverseStaminaHud
 extends HudElement
 
+@export_category("references")
 @export var progress_bar: TextureProgressBar
+@export var percent_label: Label
 
 @export_category("bar smoothing")
-@export_range(0.1, 100.0, 0.1, "suffix:1/s") var bar_follow_speed: float = 16.0
+@export_range(
+	0.1,
+	100.0,
+	0.1,
+	"suffix:1/s"
+) var bar_follow_speed: float = 16.0
+
+@export_category("percent display")
+@export var percent_prefix: String = ""
+@export var percent_suffix: String = "%"
+
+@export_range(
+	0,
+	2,
+	1
+) var percent_decimal_places: int = 0
 
 @export_category("color gradient")
 @export var stamina_gradient: Gradient
@@ -20,14 +37,21 @@ func _ready() -> void:
 
 	if progress_bar == null:
 		push_error(
-			"ReverseStaminaHud requires a TextureProgressBar."
+			"ReverseStaminaHud requires ProgressBar."
+		)
+		set_process(false)
+		return
+
+	if percent_label == null:
+		push_error(
+			"ReverseStaminaHud requires PercentLabel."
 		)
 		set_process(false)
 		return
 
 	if stamina_gradient == null:
 		push_error(
-			"ReverseStaminaHud requires a Stamina Gradient."
+			"ReverseStaminaHud requires StaminaGradient."
 		)
 		set_process(false)
 		return
@@ -36,20 +60,26 @@ func _ready() -> void:
 	progress_bar.max_value = 100.0
 	progress_bar.value = 100.0
 
+	_update_percent_label()
+
 	_apply_stamina_color(
 		_displayed_normalized_value
 	)
 
 
-func _process(delta: float) -> void:
+func _process(
+	delta: float
+) -> void:
 	super._process(delta)
 
 	if progress_bar == null:
 		return
 
 	var follow_weight: float = (
-		1.0 - exp(
-			-bar_follow_speed * delta
+		1.0
+		- exp(
+			-bar_follow_speed
+			* delta
 		)
 	)
 
@@ -63,6 +93,8 @@ func _process(delta: float) -> void:
 		_displayed_normalized_value
 		* progress_bar.max_value
 	)
+
+	_update_percent_label()
 
 	_apply_stamina_color(
 		_displayed_normalized_value
@@ -100,6 +132,8 @@ func set_reverse_stamina(
 		_on_reverse_stamina_value_changed
 	)
 
+	_update_percent_label()
+
 	_apply_stamina_color(
 		_displayed_normalized_value
 	)
@@ -117,6 +151,45 @@ func _on_reverse_stamina_value_changed(
 	)
 
 
+func _update_percent_label() -> void:
+	if percent_label == null:
+		return
+
+	var percent_value: float = (
+		clampf(
+			_displayed_normalized_value,
+			0.0,
+			1.0
+		)
+		* 100.0
+	)
+
+	var formatted_percent: String = ""
+
+	if percent_decimal_places <= 0:
+		formatted_percent = str(
+			roundi(
+				percent_value
+			)
+		)
+	else:
+		var format_string: String = (
+			"%%.%df"
+			% percent_decimal_places
+		)
+
+		formatted_percent = (
+			format_string
+			% percent_value
+		)
+
+	percent_label.text = (
+		percent_prefix
+		+ formatted_percent
+		+ percent_suffix
+	)
+
+
 func _apply_stamina_color(
 	normalized_value: float
 ) -> void:
@@ -126,10 +199,13 @@ func _apply_stamina_color(
 	if stamina_gradient == null:
 		return
 
-	progress_bar.modulate = stamina_gradient.sample(
+	var stamina_color: Color = stamina_gradient.sample(
 		clampf(
 			normalized_value,
 			0.0,
 			1.0
 		)
 	)
+
+	progress_bar.modulate = stamina_color
+	percent_label.modulate = stamina_color

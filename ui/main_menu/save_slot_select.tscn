@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://b17sbba6eoi4l"]
+
+[ext_resource type="Script" uid="uid://b4813ks4eybh5" path="res://ui/main_menu/save_slot_select.gd" id="1_l37nm"]
+[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="2_kmgth"]
+[ext_resource type="PackedScene" uid="uid://cb4ubiuqlbdoa" path="res://ui/main_menu/save_slot_entry.tscn" id="2_mk5ja"]
+
+[node name="SaveSlotSelect" type="Control" unique_id=1439426941 node_paths=PackedStringArray("slot_entries", "back_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l37nm")
+slot_entries = [NodePath("SaveSlotEntry"), NodePath("SaveSlotEntry2"), NodePath("SaveSlotEntry3")]
+back_button = NodePath("BackButton")
+
+[node name="SaveSlotEntry" parent="." unique_id=1477017188 instance=ExtResource("2_mk5ja")]
+layout_mode = 0
+offset_left = 618.0
+offset_top = 433.0
+offset_right = 618.0
+offset_bottom = 433.0
+
+[node name="SaveSlotEntry2" parent="." unique_id=299434911 instance=ExtResource("2_mk5ja")]
+layout_mode = 0
+offset_left = 911.0
+offset_top = 499.0
+offset_right = 911.0
+offset_bottom = 499.0
+
+[node name="SaveSlotEntry3" parent="." unique_id=432905937 instance=ExtResource("2_mk5ja")]
+layout_mode = 0
+offset_left = 1196.0
+offset_top = 556.0
+offset_right = 1196.0
+offset_bottom = 556.0
+
+[node name="BackButton" type="Button" parent="." unique_id=560471817]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 960.0
+offset_right = 323.0
+offset_bottom = 1041.0
+theme = ExtResource("2_kmgth")
+text = "back to menu"
+
+[node name="BG" type="ColorRect" parent="." unique_id=2115285178]
+modulate = Color(0, 0, 0, 1)
+z_index = -14
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -334.0
+offset_top = -247.0
+offset_right = 317.0
+offset_bottom = 231.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

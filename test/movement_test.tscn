@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://cviurofv6twm2" path="res://gameplay/checkpoints/checkpoint_manager.gd" id="2_v2sam"]
 [ext_resource type="Texture2D" uid="uid://1f5e2w0qf40k" path="res://assets/textures/world/concrete1_albedo.png" id="3_pbc0u"]
 [ext_resource type="Material" uid="uid://cgxaqibhsy48o" path="res://assets/textures/world/concrete_material.tres" id="4_qgppq"]
-[ext_resource type="PackedScene" uid="uid://cs6i5lqavf1fv" path="res://assets/models/test/brutalist_mega_structure_by_jungle_jim_(animated).tscn" id="5_sduet"]
 [ext_resource type="PackedScene" uid="uid://ckyba64x5q6ip" path="res://gameplay/zones/death_zone.tscn" id="6_qgppq"]
 [ext_resource type="PackedScene" uid="uid://dhbpwms4rmg8r" path="res://gameplay/pickups/dash_pickup.tscn" id="7_lmht2"]
 [ext_resource type="Script" uid="uid://btapk6mcf3o61" path="res://gameplay/pickups/pickup_container.gd" id="7_n25am"]
@@ -140,326 +139,357 @@ initial_spawn_anchor = NodePath("../InitialSpawn")
 
 [node name="Checkpoint" parent="Map/Checkpoints" unique_id=598772743 instance=ExtResource("1_3rtru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.490716, 1.6708884, 0.014582634)
+checkpoint_id = &"checkpoint_3cb63597_c1a7df44_76a03424_9fc42a4e"
 
 [node name="Checkpoint2" parent="Map/Checkpoints" unique_id=976454181 instance=ExtResource("1_3rtru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.541267, 3.8032203, -0.7304139)
+checkpoint_id = &"checkpoint_a63010f8_43dc73d3_0e314849_11da3559"
 
 [node name="Checkpoint3" parent="Map/Checkpoints" unique_id=1282533473 instance=ExtResource("1_3rtru")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.154444, 3.8032207, 9.471831)
+checkpoint_id = &"checkpoint_ed53d03e_cd545e25_4d079dde_294c8ac2"
 
 [node name="Map" type="Node3D" parent="Map" unique_id=1409757715]
 
 [node name="Test" type="Node3D" parent="Map/Map" unique_id=532018919]
-visible = false
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Map/Map/Test" unique_id=1244169388]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16461182, 0.951416)
+use_collision = true
 size = Vector3(800, 0.671, 800)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Map/Map/Test" unique_id=2097932927]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9639282, -3.3754904, 0.951416)
+use_collision = true
 size = Vector3(4.0721436, 10, 10)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D9" type="CSGBox3D" parent="Map/Map/Test" unique_id=531420330]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.72274, 0.07455683, 0.951416)
+use_collision = true
 size = Vector3(8.553528, 2.3300781, 10)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D10" type="CSGBox3D" parent="Map/Map/Test" unique_id=317166743]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.410011, 3.7083235, 0.951416)
+use_collision = true
 size = Vector3(3.1789856, 2.1484375, 10)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="Map/Map/Test" unique_id=165814567]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.410672, -3.036135, -0.3322754)
+use_collision = true
 size = Vector3(4.0721436, 10.678711, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="Map/Map/Test" unique_id=1776682055]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.114499, -3.036135, 9.737734)
+use_collision = true
 size = Vector3(6.6644897, 10.678711, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D11" type="CSGBox3D" parent="Map/Map/Test" unique_id=817603156]
 transform = Transform3D(0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0, 0, 1, 16.703228, -0.20132518, 9.737734)
+use_collision = true
 size = Vector3(9.8107605, 2.6201172, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D12" type="CSGBox3D" parent="Map/Map/Test" unique_id=1131825848]
 transform = Transform3D(0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0, 0, 1, 2.2010717, 1.9302826, 9.737734)
+use_collision = true
 size = Vector3(9.8107605, 2.6201172, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="Map/Map/Test" unique_id=1738990434]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0062933, 4.6360455, 9.737734)
+use_collision = true
 size = Vector3(6.6644897, 26.023071, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="Map/Map/Test" unique_id=1161478873]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 13.481398, -0.8785982)
+use_collision = true
 size = Vector3(6.6644897, 43.713776, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D51" type="CSGBox3D" parent="Map/Map/Test" unique_id=1680327900]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.522346, 13.481398, 5.210431)
+use_collision = true
 size = Vector3(26.822968, 43.713776, 26.434326)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D17" type="CSGBox3D" parent="Map/Map/Test" unique_id=1564734657]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 6.990629, 26.178204)
+use_collision = true
 size = Vector3(6.6644897, 30.732239, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D20" type="CSGBox3D" parent="Map/Map/Test" unique_id=537848780]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 14.553713, 43.114803)
+use_collision = true
 size = Vector3(6.6644897, 45.67189, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D18" type="CSGBox3D" parent="Map/Map/Test" unique_id=1908448741]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 6.990629, 26.178204)
+use_collision = true
 size = Vector3(6.6644897, 30.732239, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D21" type="CSGBox3D" parent="Map/Map/Test" unique_id=976417834]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 17.59199, 43.626022)
+use_collision = true
 size = Vector3(6.6644897, 51.748444, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D46" type="CSGBox3D" parent="Map/Map/Test" unique_id=490476997]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.55801, 40.192047, 36.112106)
+use_collision = true
 size = Vector3(25.533539, 96.94856, 22.46045)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D47" type="CSGBox3D" parent="Map/Map/Test" unique_id=1180460639]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.55136, 40.192047, 36.112106)
+use_collision = true
 size = Vector3(25.533539, 96.94856, 22.46045)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D48" type="CSGBox3D" parent="Map/Map/Test" unique_id=492949733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.949436, 68.30439, 21.92015)
+use_collision = true
 size = Vector3(84.73739, 6.555744, 8.780151)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D49" type="CSGBox3D" parent="Map/Map/Test" unique_id=1461531714]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.639153, 68.30439, 38.38282)
+use_collision = true
 size = Vector3(103.357956, 6.555744, 8.780151)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D22" type="CSGBox3D" parent="Map/Map/Test" unique_id=347931891]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 21.695253, 44.90411)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D23" type="CSGBox3D" parent="Map/Map/Test" unique_id=373771293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 18.36914, 44.90411)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D34" type="CSGBox3D" parent="Map/Map/Test" unique_id=830292422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 14.889139, 44.90411)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D24" type="CSGBox3D" parent="Map/Map/Test" unique_id=1260241779]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 11.804575, 63.50819)
+use_collision = true
 size = Vector3(6.6644897, 40.173615, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D25" type="CSGBox3D" parent="Map/Map/Test" unique_id=2058119763]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 15.536409, 64.01941)
+use_collision = true
 size = Vector3(6.6644897, 47.637283, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D26" type="CSGBox3D" parent="Map/Map/Test" unique_id=219714692]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 21.695253, 65.2975)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D27" type="CSGBox3D" parent="Map/Map/Test" unique_id=1029981924]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 18.36914, 65.2975)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D28" type="CSGBox3D" parent="Map/Map/Test" unique_id=1468201619]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 19.407114, 83.37935)
+use_collision = true
 size = Vector3(6.6644897, 55.378693, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D29" type="CSGBox3D" parent="Map/Map/Test" unique_id=2079461313]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 18.503366, 83.890564)
+use_collision = true
 size = Vector3(6.6644897, 53.571198, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D30" type="CSGBox3D" parent="Map/Map/Test" unique_id=1742696727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 21.695253, 85.168655)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D32" type="CSGBox3D" parent="Map/Map/Test" unique_id=894807797]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3572907, 21.695253, 55.42476)
+use_collision = true
 size = Vector3(2.4211254, 1.3017349, 60.703613)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D33" type="CSGBox3D" parent="Map/Map/Test" unique_id=3327806]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.188575, 21.695253, 55.34102)
+use_collision = true
 size = Vector3(2.4211254, 1.3017349, 60.871094)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D31" type="CSGBox3D" parent="Map/Map/Test" unique_id=1488024064]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 18.36914, 85.168655)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D35" type="CSGBox3D" parent="Map/Map/Test" unique_id=1097416476]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 32.920437, 44.90411)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D36" type="CSGBox3D" parent="Map/Map/Test" unique_id=1536839966]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 29.440435, 44.90411)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D37" type="CSGBox3D" parent="Map/Map/Test" unique_id=146744713]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 28.509544, 65.2975)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D38" type="CSGBox3D" parent="Map/Map/Test" unique_id=1937276665]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 25.18343, 65.2975)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D39" type="CSGBox3D" parent="Map/Map/Test" unique_id=94352625]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 36.24655, 85.168655)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D40" type="CSGBox3D" parent="Map/Map/Test" unique_id=1647866253]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 32.920437, 85.168655)
+use_collision = true
 size = Vector3(23.216522, 1.3017349, 1.2158203)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D19" type="CSGBox3D" parent="Map/Map/Test" unique_id=498254470]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.396778, 6.000082, 62.158474)
+use_collision = true
 size = Vector3(10.751144, 3.1585846, 79.39316)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D41" type="CSGBox3D" parent="Map/Map/Test" unique_id=2017455591]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2604084, 49.081593, 62.158474)
+use_collision = true
 size = Vector3(47.51164, 23.837105, 79.39316)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D42" type="CSGBox3D" parent="Map/Map/Test" unique_id=519157897]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 41.907227, 63.44816)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D52" type="CSGBox3D" parent="Map/Map/Test" unique_id=317994143]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.03328, 11.692116, 48.55752)
+use_collision = true
 size = Vector3(47.51164, 23.837105, 79.39316)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D43" type="CSGBox3D" parent="Map/Map/Test" unique_id=1977681024]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 47.467033, 63.44816)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D16" type="CSGBox3D" parent="Map/Map/Test" unique_id=1636468488]
 transform = Transform3D(0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0, 1, -31.628677, 13.972823, 4.263402)
+use_collision = true
 size = Vector3(6.6644897, 50.480865, 7.432617)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D44" type="CSGBox3D" parent="Map/Map/Test" unique_id=2091885927]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 52.96678, 63.44816)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D53" type="CSGBox3D" parent="Map/Map/Test" unique_id=1194737710]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 4.51775, 49.847206)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D45" type="CSGBox3D" parent="Map/Map/Test" unique_id=1320967313]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 57.891052, 63.44816)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D54" type="CSGBox3D" parent="Map/Map/Test" unique_id=1817773327]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 10.077557, 49.847206)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D55" type="CSGBox3D" parent="Map/Map/Test" unique_id=1093327773]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 15.577305, 49.847206)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D56" type="CSGBox3D" parent="Map/Map/Test" unique_id=921649382]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 20.501575, 49.847206)
+use_collision = true
 size = Vector3(54.098248, 2.7928944, 88.636986)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="Map/Map/Test" unique_id=1663849477]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.352098, 9.536322, -13.458255)
+use_collision = true
 size = Vector3(32.149582, 35.823624, 14.312012)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D8" type="CSGBox3D" parent="Map/Map/Test" unique_id=1659659683]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.75877, 3.8226452, -1.7159386)
+use_collision = true
 size = Vector3(5.74028, 24.39627, 12.181213)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D15" type="CSGBox3D" parent="Map/Map/Test" unique_id=1575342012]
 transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 57.00177, 15.134622, -1.7159386)
+use_collision = true
 size = Vector3(5.74028, 56.391373, 12.181213)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D13" type="CSGBox3D" parent="Map/Map/Test" unique_id=1745251251]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.88005, 13.224066, 12.107536)
+use_collision = true
 size = Vector3(21.288464, 43.199112, 2.0886536)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D50" type="CSGBox3D" parent="Map/Map/Test" unique_id=791756671]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.88005, 37.0457, 3.0501099)
+use_collision = true
 size = Vector3(21.288464, 19.453356, 20.203506)
 material = ExtResource("4_qgppq")
 
 [node name="CSGBox3D14" type="CSGBox3D" parent="Map/Map/Test" unique_id=138058975]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.74426, 3.8226452, 15.9879)
+use_collision = true
 size = Vector3(17.769299, 24.39627, 2.0886536)
 material = ExtResource("4_qgppq")
 
 [node name="Test2" type="Node3D" parent="Map/Map" unique_id=1548839937]
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)" parent="Map/Map/Test2" unique_id=1309507174 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.82855, -136.13731, -188.93051)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)2" parent="Map/Map/Test2" unique_id=167757131 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.82855, -136.13731, 0.8117752)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)3" parent="Map/Map/Test2" unique_id=952873027 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.82855, -136.13731, 196.71341)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)4" parent="Map/Map/Test2" unique_id=417513536 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -261.98602, -136.13731, -188.93051)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)5" parent="Map/Map/Test2" unique_id=889364602 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -261.98602, -136.13731, 0.8117752)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)6" parent="Map/Map/Test2" unique_id=63064441 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -261.98602, -136.13731, 196.71341)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)7" parent="Map/Map/Test2" unique_id=47141714 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 228.58554, -136.13731, -188.93051)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)8" parent="Map/Map/Test2" unique_id=1865823363 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 228.58554, -136.13731, 0.8117752)
-
-[node name="Brutalist Mega Structure by Jungle Jim (animated)9" parent="Map/Map/Test2" unique_id=402777244 instance=ExtResource("5_sduet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 228.58554, -136.13731, 196.71341)
 
 [node name="DeathZones" type="Node3D" parent="Map" unique_id=273639299]
 

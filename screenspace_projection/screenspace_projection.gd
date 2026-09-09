@@ -236,8 +236,11 @@ func _process(_delta: float) -> void:
 
 
 func _apply_shader_params() -> void:
-	var mat := out_mesh.material_override
-	if mat == null or not (mat is ShaderMaterial):
+	var mat: ShaderMaterial = (
+		out_mesh.material_override as ShaderMaterial
+	)
+
+	if mat == null:
 		return
 
 	# Projection
@@ -262,3 +265,9 @@ func _apply_shader_params() -> void:
 	# Sampling
 	mat.set_shader_parameter("max_major_radius", max_major_radius)
 	mat.set_shader_parameter("max_minor_radius", max_minor_radius)
+
+	# display
+	mat.set_shader_parameter(
+		"brightness",
+		GameSettings.brightness
+	)

@@ -11,13 +11,19 @@ config_version=5
 [application]
 
 config/name="horseshoe"
-run/main_scene="uid://bklilr7pp6kf6"
+run/main_scene="uid://dfn80abk6nen2"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
 [audio]
 
 buses/default_bus_layout="uid://bfmqd7k0rd8xm"
+
+[autoload]
+
+GameSettings="*uid://bajl6lcl2uafo"
+SaveManager="*uid://boxlm4km2sxf0"
+SceneManager="*uid://drhkvs3g4k1mb"
 
 [display]
 

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://d4fpbk5vw0iax"]
+
+[ext_resource type="Theme" uid="uid://3oh8qomayi5p" path="res://assets/themes/buttons.tres" id="1_82rdj"]
+
+[node name="InputSettingsPanel" type="Control" unique_id=310161234]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=1012938714]
+layout_mode = 0
+offset_left = 1491.0
+offset_top = 376.0
+offset_right = 1705.0
+offset_bottom = 729.0
+theme = ExtResource("1_82rdj")

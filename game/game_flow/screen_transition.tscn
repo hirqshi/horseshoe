@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://c1myau3rym2ai"]
+
+[ext_resource type="Script" uid="uid://b5s2xe1aamyjt" path="res://game/game_flow/screen_transition.gd" id="1_nhdon"]
+[ext_resource type="Shader" uid="uid://d31ttbkfkex20" path="res://assets/shaders/transition.gdshader" id="1_rxuc4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6m30h"]
+shader = ExtResource("1_rxuc4")
+shader_parameter/progress_trans = 0.0
+shader_parameter/transition_color = Color(0, 0, 0, 1)
+
+[node name="ScreenTransition" type="CanvasLayer" unique_id=653440208 node_paths=PackedStringArray("overlay")]
+layer = 30
+script = ExtResource("1_nhdon")
+overlay = NodePath("Overlay")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=1854679845]
+material = SubResource("ShaderMaterial_6m30h")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

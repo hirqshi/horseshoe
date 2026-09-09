@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ChapterCatalog" format=3 uid="uid://bdurtgi40y86o"]
+
+[ext_resource type="Script" uid="uid://bbsijai1qxga4" path="res://game/meta/chapter_definition.gd" id="1_wbtf4"]
+[ext_resource type="Resource" uid="uid://dm1mhlomyh6xh" path="res://data/chapters/chapter_01.tres" id="2_11muj"]
+[ext_resource type="Script" uid="uid://bw80iubr5g22l" path="res://game/game_flow/chapter_catalog.gd" id="2_im3f3"]
+
+[resource]
+script = ExtResource("2_im3f3")
+chapters = Array[ExtResource("1_wbtf4")]([ExtResource("2_11muj")])
+metadata/_custom_type_script = "uid://bw80iubr5g22l"

@@ -1,0 +1,213 @@
+[gd_scene format=3 uid="uid://cix8a2p4jmdqt"]
+
+[ext_resource type="Script" uid="uid://dq0u3xttaq0vk" path="res://ui/settings/settings_menu.gd" id="1_5fsn8"]
+[ext_resource type="Theme" uid="uid://3oh8qomayi5p" path="res://assets/themes/buttons.tres" id="2_nxuqx"]
+[ext_resource type="Shader" uid="uid://cuftvr6vltmnt" path="res://assets/shaders/crt1.gdshader" id="2_xqw42"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_xqw42"]
+[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="5_xqw42"]
+[ext_resource type="PackedScene" uid="uid://b5415c7t7mnt6" path="res://ui/settings/video_settings_panel.tscn" id="6_id1gn"]
+[ext_resource type="PackedScene" uid="uid://clawxk32flwhn" path="res://ui/settings/audio_settings_panel.tscn" id="7_bntry"]
+[ext_resource type="PackedScene" uid="uid://d4fpbk5vw0iax" path="res://ui/settings/input_settings_panel.tscn" id="8_a2u62"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_id1gn"]
+shader = ExtResource("2_xqw42")
+shader_parameter/resolution = Vector2(800, 800)
+shader_parameter/scan_line_amount = 1.0
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 1.0
+shader_parameter/grille_amount = 0.306000014535
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.6
+shader_parameter/vignette_intensity = 0.08
+shader_parameter/aberation_amount = 1.0
+shader_parameter/roll_line_amount = 0.246000011685
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -7.19199977162
+shader_parameter/pixel_strength = -0.8909998523225
+
+[sub_resource type="LabelSettings" id="LabelSettings_fjvxm"]
+font = ExtResource("3_xqw42")
+font_size = 65
+font_color = Color(1, 0.25, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xqw42"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0, 0, 0, 0.16862746)
+skew = Vector2(0.1, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.25, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id1gn"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(1, 0.25, 0, 0.34117648)
+skew = Vector2(0.1, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjvxm"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+bg_color = Color(1, 0.25, 0, 0.34117648)
+skew = Vector2(0.1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.25, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[node name="SettingsMenu" type="Control" unique_id=1375424166 node_paths=PackedStringArray("video_tab_button", "audio_tab_button", "input_tab_button", "video_panel", "audio_panel", "input_panel", "back_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5fsn8")
+video_tab_button = NodePath("VideoTabButton")
+audio_tab_button = NodePath("AudioTabButton")
+input_tab_button = NodePath("InputTabButton")
+video_panel = NodePath("VideoSettingsPanel")
+audio_panel = NodePath("AudioSettingsPanel")
+input_panel = NodePath("InputSettingsPanel")
+back_button = NodePath("BackButton")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=1905085371]
+z_index = 11
+material = SubResource("ShaderMaterial_id1gn")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DimOverlay" type="ColorRect" parent="." unique_id=1587069062]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5058824)
+
+[node name="Frame" type="Panel" parent="." unique_id=1468570950]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -55.0
+offset_top = -80.0
+offset_right = 75.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_nxuqx")
+
+[node name="HeaderLabel" type="Label" parent="." unique_id=279377209]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 25.0
+offset_right = 455.0
+offset_bottom = 214.0
+text = "settings"
+label_settings = SubResource("LabelSettings_fjvxm")
+
+[node name="BackButton" type="Button" parent="." unique_id=995950993]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 960.0
+offset_right = 323.0
+offset_bottom = 1041.0
+theme = ExtResource("5_xqw42")
+text = "back to menu"
+
+[node name="VideoTabButton" type="Button" parent="." unique_id=1528029848]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -813.0
+offset_top = -385.0
+offset_right = -575.4
+offset_bottom = -253.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_xqw42")
+theme_override_styles/normal = SubResource("StyleBoxFlat_xqw42")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_id1gn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fjvxm")
+text = "Video
+"
+
+[node name="AudioTabButton" type="Button" parent="." unique_id=750225441]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -139.0
+offset_top = -364.0
+offset_right = 98.599976
+offset_bottom = -232.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_xqw42")
+theme_override_styles/normal = SubResource("StyleBoxFlat_xqw42")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_id1gn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fjvxm")
+text = "Audio
+"
+
+[node name="InputTabButton" type="Button" parent="." unique_id=1154006336]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 516.0
+offset_top = -345.0
+offset_right = 753.6
+offset_bottom = -213.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_xqw42")
+theme_override_styles/normal = SubResource("StyleBoxFlat_xqw42")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_id1gn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fjvxm")
+text = "Input
+"
+
+[node name="VideoSettingsPanel" parent="." unique_id=1493508318 instance=ExtResource("6_id1gn")]
+layout_mode = 1
+
+[node name="AudioSettingsPanel" parent="." unique_id=1537190100 instance=ExtResource("7_bntry")]
+layout_mode = 1
+
+[node name="InputSettingsPanel" parent="." unique_id=310161234 instance=ExtResource("8_a2u62")]
+layout_mode = 1

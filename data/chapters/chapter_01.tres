@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ChapterDefinition" format=3 uid="uid://dm1mhlomyh6xh"]
+
+[ext_resource type="PackedScene" uid="uid://bgtu17lf4f73j" path="res://test/movement_test.tscn" id="1_i3kyt"]
+[ext_resource type="Script" uid="uid://bbsijai1qxga4" path="res://game/meta/chapter_definition.gd" id="1_tg5kd"]
+[ext_resource type="Texture2D" uid="uid://cfkgekggkxrbv" path="res://assets/textures/ui/uisketch.png" id="2_i3kyt"]
+
+[resource]
+script = ExtResource("1_tg5kd")
+chapter_id = &"chapter_01"
+display_name = "First chapter"
+description = "test description
+"
+preview_texture = ExtResource("2_i3kyt")
+world_scene = ExtResource("1_i3kyt")
+completion_unlock_ability_ids = PackedStringArray()
+metadata/_custom_type_script = "uid://bbsijai1qxga4"

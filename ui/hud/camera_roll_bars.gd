@@ -8,6 +8,8 @@ extends HudElement
 @export_category("rotation")
 @export var rotation_multiplier: float = -1.0
 
+@export var glide_rotation_multiplier: float = -1.0
+
 @export_range(
 	0.0,
 	180.0,
@@ -31,6 +33,7 @@ var _base_root_rotation: float = 0.0
 
 var _target_roll_radians: float = 0.0
 var _displayed_roll_radians: float = 0.0
+var _is_gliding: bool = false
 
 
 func _ready() -> void:
@@ -82,8 +85,11 @@ func _process(
 
 
 func set_roll_degrees(
-	roll_degrees: float
+	roll_degrees: float,
+	is_gliding: bool
 ) -> void:
+	_is_gliding = is_gliding
+
 	var clamped_roll_degrees: float = clampf(
 		roll_degrees,
 		-maximum_rotation_degrees,
@@ -107,9 +113,18 @@ func _configure_rotation_pivot() -> void:
 
 
 func _apply_rotation() -> void:
+	var current_rotation_multiplier: float = (
+		rotation_multiplier
+	)
+
+	if _is_gliding:
+		current_rotation_multiplier *= (
+			glide_rotation_multiplier
+		)
+
 	var rotation_offset: float = (
 		_displayed_roll_radians
-		* rotation_multiplier
+		* current_rotation_multiplier
 	)
 
 	rotation = (

@@ -24,6 +24,9 @@ var _glide_recovery_target_head_rotation: Quaternion = (
 	Quaternion.IDENTITY
 )
 
+var is_horizontal_look_inverted: bool = false
+var is_vertical_look_inverted: bool = false
+
 @export_category("glide recovery")
 @export_range(
 	0.1,
@@ -53,7 +56,18 @@ func _ready() -> void:
 		
 	_pitch_rad = head.rotation.x
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	apply_look_settings(
+		GameSettings.mouse_sensitivity,
+		GameSettings.is_horizontal_look_inverted,
+		GameSettings.is_vertical_look_inverted
+	)
 
+	GameSettings.mouse_look_settings_changed.connect(
+		_on_mouse_look_settings_changed
+	)
+	
+	
 func _process(
 	delta: float
 ) -> void:
@@ -116,15 +130,29 @@ func _apply_mouse_look(mouse_delta: Vector2) -> void:
 		else 1.0
 	)
 
+	var horizontal_inversion_multiplier: float = (
+		-1.0
+		if is_horizontal_look_inverted
+		else 1.0
+	)
+
+	var vertical_inversion_multiplier: float = (
+		-1.0
+		if is_vertical_look_inverted
+		else 1.0
+	)
+
 	var yaw_delta_rad: float = (
 		-mouse_delta.x
 		* mouse_sensitivity
 		* yaw_multiplier
+		* horizontal_inversion_multiplier
 	)
 
 	var pitch_delta_rad: float = (
 		-mouse_delta.y
 		* mouse_sensitivity
+		* vertical_inversion_multiplier
 	)
 
 	body.rotate_y(yaw_delta_rad)
@@ -149,6 +177,22 @@ func _apply_mouse_look(mouse_delta: Vector2) -> void:
 	head.rotation.x = _pitch_rad
 
 	_update_upside_down_state()
+
+
+func apply_look_settings(
+	mouse_sensitivity_value: float,
+	is_horizontal_inverted: bool,
+	is_vertical_inverted: bool
+) -> void:
+	mouse_sensitivity = clampf(
+		mouse_sensitivity_value,
+		0.0001,
+		0.05
+	)
+
+	is_horizontal_look_inverted = is_horizontal_inverted
+	is_vertical_look_inverted = is_vertical_inverted
+
 
 func _update_upside_down_state() -> void:
 	var head_up_dot: float = (
@@ -283,4 +327,16 @@ func begin_glide_recovery(
 
 	visual_rig.begin_glide_exit_rotation_recovery(
 		previous_global_view_rotation
+	)
+
+
+func _on_mouse_look_settings_changed(
+	mouse_sensitivity_value: float,
+	is_horizontal_inverted: bool,
+	is_vertical_inverted: bool
+) -> void:
+	apply_look_settings(
+		mouse_sensitivity_value,
+		is_horizontal_inverted,
+		is_vertical_inverted
 	)
