@@ -1,0 +1,181 @@
+[gd_scene format=3 uid="uid://dgkjii0yfbg60"]
+
+[ext_resource type="Script" uid="uid://b5dpgrhsmvt5i" path="res://ui/pause_menu/pause_menu.gd" id="1_b4b0p"]
+[ext_resource type="Shader" uid="uid://cuftvr6vltmnt" path="res://assets/shaders/crt1.gdshader" id="3_uraes"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="4_ihaig"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="5_ihaig"]
+[ext_resource type="Theme" uid="uid://dw17ompj7dn1v" path="res://assets/themes/buttons_colored.tres" id="5_umsyg"]
+[ext_resource type="PackedScene" uid="uid://cix8a2p4jmdqt" path="res://ui/settings/settings_menu.tscn" id="5_uraes"]
+[ext_resource type="PackedScene" uid="uid://c5r0jrkyfj0c" path="res://ui/common/confirm_panel.tscn" id="6_ihaig"]
+[ext_resource type="ArrayMesh" uid="uid://bpw2w6cn7i8t0" path="res://assets/models/pickups/octahedron.obj" id="7_lhp7q"]
+[ext_resource type="PackedScene" uid="uid://df6od8mhphked" path="res://ui/common/cursor_frame.tscn" id="8_umsyg"]
+[ext_resource type="Script" uid="uid://582lvgj7s3rn" path="res://ui/common/menu_entrance_animator.gd" id="10_b05md"]
+[ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="11_8cp71"]
+[ext_resource type="ArrayMesh" uid="uid://c7a8eaon6pe6h" path="res://assets/models/pickups/trigon.obj" id="17_tfo3w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_umsyg"]
+shader = ExtResource("3_uraes")
+shader_parameter/resolution = Vector2(800, 800)
+shader_parameter/scan_line_amount = 1.0
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 1.0
+shader_parameter/grille_amount = 0.306000014535
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.6
+shader_parameter/vignette_intensity = 0.08
+shader_parameter/aberation_amount = 1.0
+shader_parameter/roll_line_amount = 0.246000011685
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -7.19199977162
+shader_parameter/pixel_strength = -0.8909998523225
+
+[sub_resource type="LabelSettings" id="LabelSettings_3qrb2"]
+font = ExtResource("4_ihaig")
+font_size = 40
+font_color = Color(0, 0.9833336, 1, 1)
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1403487296 node_paths=PackedStringArray("pause_panel", "settings_menu", "confirm_panel", "resume_button", "settings_button", "restart_button", "main_menu_button")]
+process_mode = 3
+script = ExtResource("1_b4b0p")
+pause_panel = NodePath("PausePanel")
+settings_menu = NodePath("SettingsMenu")
+confirm_panel = NodePath("ConfirmPanel")
+resume_button = NodePath("PausePanel/ResumeButton")
+settings_button = NodePath("PausePanel/SettingsButton")
+restart_button = NodePath("PausePanel/RestartButton")
+main_menu_button = NodePath("PausePanel/QuitButton")
+
+[node name="PausePanel" type="Control" parent="." unique_id=1672504548]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("5_ihaig")
+
+[node name="Overlay" type="ColorRect" parent="PausePanel" unique_id=2136889331]
+z_index = 194
+material = SubResource("ShaderMaterial_umsyg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DimOverlay" type="ColorRect" parent="PausePanel" unique_id=790056010]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5058824)
+
+[node name="TitleLabel" type="Label" parent="PausePanel" unique_id=1986569799]
+layout_mode = 0
+offset_left = 74.0
+offset_top = 140.0
+offset_right = 489.0
+offset_bottom = 198.0
+text = "Game Paused"
+label_settings = SubResource("LabelSettings_3qrb2")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ResumeButton" type="Button" parent="PausePanel" unique_id=1304459517]
+z_index = 20
+layout_mode = 0
+offset_left = 213.0
+offset_top = 381.0
+offset_right = 449.0
+offset_bottom = 504.0
+theme = ExtResource("5_umsyg")
+text = "resume"
+
+[node name="RestartButton" type="Button" parent="PausePanel" unique_id=1678750503]
+z_index = 20
+layout_mode = 0
+offset_left = 266.0
+offset_top = 526.0
+offset_right = 442.0
+offset_bottom = 619.0
+theme = ExtResource("5_umsyg")
+text = "restart"
+
+[node name="SettingsButton" type="Button" parent="PausePanel" unique_id=353691017]
+z_index = 20
+layout_mode = 0
+offset_left = 468.0
+offset_top = 396.0
+offset_right = 664.0
+offset_bottom = 628.0
+theme = ExtResource("5_umsyg")
+text = "settings"
+
+[node name="QuitButton" type="Button" parent="PausePanel" unique_id=101919960]
+z_index = 20
+layout_mode = 0
+offset_left = 336.0
+offset_top = 645.0
+offset_right = 514.0
+offset_bottom = 751.0
+theme = ExtResource("5_umsyg")
+text = "quit to menu"
+
+[node name="MenuEntranceAnimator" type="Node" parent="PausePanel" unique_id=1964378213 node_paths=PackedStringArray("animated_controls")]
+script = ExtResource("10_b05md")
+animated_controls = [NodePath("../ResumeButton"), NodePath("../RestartButton"), NodePath("../SettingsButton"), NodePath("../QuitButton")]
+duration_s = 0.28
+ui_stagger_s = 0.09
+preview_delay_s = 0.05
+
+[node name="PausePreview" type="Control" parent="PausePanel" unique_id=1237663232]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="PausePanel/PausePreview" unique_id=959341149]
+modulate = Color(1, 1, 1, 0.4862745)
+layout_mode = 0
+offset_left = 15.0
+offset_top = 62.0
+offset_right = 906.0
+offset_bottom = 926.0
+mouse_filter = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="PausePanel/PausePreview/SubViewportContainer" unique_id=1743323997]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(891, 864)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="PausePanel/PausePreview/SubViewportContainer/SubViewport" unique_id=158862202]
+cull_mask = 1024
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PausePanel/PausePreview/SubViewportContainer/SubViewport" unique_id=2114488558]
+transform = Transform3D(2.3874753, -0.42319044, -0.86689, 0, 2.3139951, -1.129625, 0.96467, 1.0473597, 2.1454778, 0, 0, -2.080707)
+layers = 1024
+mesh = ExtResource("7_lhp7q")
+surface_material_override/0 = ExtResource("11_8cp71")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="PausePanel/PausePreview/SubViewportContainer/SubViewport" unique_id=2020980280]
+transform = Transform3D(0.537137, 0.33797082, 0.11525833, -0.35708368, 0.5083868, 0.17337535, 0, -0.208191, 0.6104764, -0.9386491, 1.2140744, -2.080707)
+layers = 1024
+mesh = ExtResource("17_tfo3w")
+surface_material_override/0 = ExtResource("11_8cp71")
+
+[node name="SettingsMenu" parent="." unique_id=1375424166 instance=ExtResource("5_uraes")]
+visible = false
+
+[node name="ConfirmPanel" parent="." unique_id=1135098963 instance=ExtResource("6_ihaig")]
+visible = false
+
+[node name="CursorFrame" parent="." unique_id=1248730015 node_paths=PackedStringArray("hover_targets") instance=ExtResource("8_umsyg")]
+hover_targets = [NodePath("../PausePanel/ResumeButton"), NodePath("../PausePanel/RestartButton"), NodePath("../PausePanel/SettingsButton"), NodePath("../PausePanel/QuitButton")]

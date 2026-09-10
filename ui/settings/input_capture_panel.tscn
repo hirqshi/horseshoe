@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://bsjb1ybje7of0"]
+
+[ext_resource type="Script" uid="uid://bcoo11t3ots5" path="res://ui/settings/input_capture_panel.gd" id="1_w66xn"]
+[ext_resource type="Theme" uid="uid://3oh8qomayi5p" path="res://assets/themes/buttons.tres" id="2_tcbyd"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_q2s8o"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="4_w66xn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01bin"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0.8999996, 1)
+corner_detail = 1
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_3kxjp"]
+font = ExtResource("3_q2s8o")
+font_size = 40
+font_color = Color(1, 0, 0.8999996, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7xg1n"]
+font = ExtResource("3_q2s8o")
+font_size = 26
+font_color = Color(0, 0.9833336, 1, 1)
+
+[node name="InputCapturePanel" type="Control" unique_id=658430567 node_paths=PackedStringArray("title_label", "message_label", "cancel_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_w66xn")
+title_label = NodePath("Dialog/Frame/TitleLabel")
+message_label = NodePath("Dialog/Frame/MessageLabel")
+cancel_button = NodePath("Dialog/Frame/CancelButton")
+
+[node name="DimOverlay" type="ColorRect" parent="." unique_id=1984507485]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5058824)
+
+[node name="Dialog" type="Control" parent="." unique_id=1965391219]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_tcbyd")
+
+[node name="Frame" type="Panel" parent="Dialog" unique_id=178685582]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -211.5
+offset_top = -119.0
+offset_right = 211.5
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_01bin")
+
+[node name="TitleLabel" type="Label" parent="Dialog/Frame" unique_id=1258621424]
+layout_mode = 0
+offset_left = 3.5
+offset_top = 9.0
+offset_right = 418.5
+offset_bottom = 67.0
+text = "status"
+label_settings = SubResource("LabelSettings_3kxjp")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MessageLabel" type="Label" parent="Dialog/Frame" unique_id=1098944746]
+layout_mode = 0
+offset_left = 3.5
+offset_top = 55.0
+offset_right = 418.5
+offset_bottom = 150.0
+text = "status"
+label_settings = SubResource("LabelSettings_7xg1n")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CancelButton" type="Button" parent="Dialog/Frame" unique_id=522344348]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = 64.0
+offset_right = 98.0
+offset_bottom = 134.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_w66xn")
+text = "cancel
+"

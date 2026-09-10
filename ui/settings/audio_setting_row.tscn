@@ -11,7 +11,7 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 0.25, 0, 1)
+border_color = Color(1, 0, 0.8999996, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
@@ -21,15 +21,15 @@ anti_aliasing = false
 [sub_resource type="LabelSettings" id="LabelSettings_scw3o"]
 font = ExtResource("1_0na5a")
 font_size = 38
-font_color = Color(1, 0.25, 0, 1)
+font_color = Color(0.8666667, 1, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bscbu"]
-bg_color = Color(1, 0.25, 0, 1)
+bg_color = Color(0, 0.9833336, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.25, 0, 1)
+border_color = Color(0, 0.9833336, 1, 1)
 anti_aliasing = false
 
 [node name="AudioSettingRow" type="Control" unique_id=953626964 node_paths=PackedStringArray("bus_label", "volume_slider", "volume_value_label")]
@@ -39,6 +39,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_s5q0v")
 bus_label = NodePath("Panel/BusLabel")
 volume_slider = NodePath("Panel/VolumeSlider")

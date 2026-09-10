@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dfu6nq3nr5gke"]
+
+[ext_resource type="ArrayMesh" uid="uid://bqn3c31w0wte3" path="res://assets/models/pickups/cube.obj" id="1_cla3y"]
+[ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="2_w5lyo"]
+
+[node name="CubePreview" type="Node3D" unique_id=77141416]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2082775436]
+mesh = ExtResource("1_cla3y")
+surface_material_override/0 = ExtResource("2_w5lyo")

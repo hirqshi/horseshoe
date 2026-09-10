@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bbj4ggddw4ul5"]
+
+[ext_resource type="Script" uid="uid://dvxnjpllur2a1" path="res://ui/settings/input_binding_row.gd" id="1_rl0oq"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="2_rl0oq"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_w362a"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dfh5v"]
+font = ExtResource("3_w362a")
+font_size = 26
+font_color = Color(0.8666667, 1, 0, 1)
+
+[node name="InputBindingRow" type="Control" unique_id=100186353 node_paths=PackedStringArray("action_label", "primary_bind_button", "secondary_bind_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_rl0oq")
+action_label = NodePath("ActionLabel")
+primary_bind_button = NodePath("PrimaryBindButton")
+secondary_bind_button = NodePath("SecondaryBindButton")
+
+[node name="PrimaryBindButton" type="Button" parent="." unique_id=1347823947]
+layout_mode = 0
+offset_left = -78.0
+offset_top = -12.0
+offset_right = -7.0
+offset_bottom = 36.0
+theme = ExtResource("2_rl0oq")
+
+[node name="SecondaryBindButton" type="Button" parent="." unique_id=1248611882]
+layout_mode = 0
+offset_top = -12.0
+offset_right = 71.0
+offset_bottom = 36.0
+theme = ExtResource("2_rl0oq")
+
+[node name="ActionLabel" type="Label" parent="." unique_id=403725529]
+layout_mode = 0
+offset_left = -75.0
+offset_top = -46.0
+offset_right = 122.0
+offset_bottom = 33.0
+text = "action"
+label_settings = SubResource("LabelSettings_dfh5v")
+autowrap_mode = 2

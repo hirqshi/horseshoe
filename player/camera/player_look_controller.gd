@@ -82,10 +82,6 @@ func _process(
 	)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"ui_cancel"):
-		set_is_enabled(false)
-		return
-
 	if event is InputEventMouseButton and event.pressed:
 		set_is_enabled(true)
 		return

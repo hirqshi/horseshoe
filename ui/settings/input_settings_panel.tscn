@@ -1,8 +1,34 @@
 [gd_scene format=3 uid="uid://d4fpbk5vw0iax"]
 
-[ext_resource type="Theme" uid="uid://3oh8qomayi5p" path="res://assets/themes/buttons.tres" id="1_82rdj"]
+[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="1_bjq2h"]
+[ext_resource type="Script" uid="uid://bjs54xbqhot2k" path="res://ui/settings/input_settings_panel.gd" id="1_y80vo"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_vrqxf"]
+[ext_resource type="Texture2D" uid="uid://csg0mb81t6mw" path="res://assets/textures/ui/crosshairdot.png" id="3_bjq2h"]
+[ext_resource type="PackedScene" uid="uid://bbj4ggddw4ul5" path="res://ui/settings/input_binding_row.tscn" id="5_i2kok"]
+[ext_resource type="Theme" uid="uid://dw17ompj7dn1v" path="res://assets/themes/buttons_colored.tres" id="5_pimbu"]
+[ext_resource type="PackedScene" uid="uid://c5r0jrkyfj0c" path="res://ui/common/confirm_panel.tscn" id="6_im7d2"]
+[ext_resource type="PackedScene" uid="uid://bsjb1ybje7of0" path="res://ui/settings/input_capture_panel.tscn" id="7_pimbu"]
 
-[node name="InputSettingsPanel" type="Control" unique_id=310161234]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_im7d2"]
+bg_color = Color(0, 0.9833336, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.9833336, 1, 1)
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_i2kok"]
+font = ExtResource("2_vrqxf")
+font_size = 26
+font_color = Color(0, 0.9833336, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_im7d2"]
+font = ExtResource("2_vrqxf")
+font_size = 26
+font_color = Color(0, 0.9833336, 1, 1)
+
+[node name="InputSettingsPanel" type="Control" unique_id=310161234 node_paths=PackedStringArray("sensitivity_slider", "sensitivity_value_label", "invert_horizontal_button", "invert_vertical_button", "binding_rows", "reset_defaults_button", "input_capture_panel", "confirm_panel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,11 +36,218 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("1_bjq2h")
+script = ExtResource("1_y80vo")
+sensitivity_slider = NodePath("SensitivitySlider")
+sensitivity_value_label = NodePath("SensitivitySlider/SensitivityValueLabel")
+invert_horizontal_button = NodePath("InvertHorizontalButton")
+invert_vertical_button = NodePath("InvertVerticalButton")
+binding_rows = [NodePath("InputBindingRow"), NodePath("InputBindingRow2"), NodePath("InputBindingRow3"), NodePath("InputBindingRow4"), NodePath("InputBindingRow5"), NodePath("InputBindingRow6"), NodePath("InputBindingRow7"), NodePath("InputBindingRow8"), NodePath("InputBindingRow9"), NodePath("InputBindingRow10"), NodePath("InputBindingRow11"), NodePath("InputBindingRow12"), NodePath("InputBindingRow13")]
+reset_defaults_button = NodePath("ResetDefaultsButton")
+input_capture_panel = NodePath("InputCapturePanel")
+confirm_panel = NodePath("ConfirmPanel")
 
-[node name="Panel" type="Panel" parent="." unique_id=1012938714]
+[node name="SensitivitySlider" type="HSlider" parent="." unique_id=811442465]
 layout_mode = 0
-offset_left = 1491.0
-offset_top = 376.0
-offset_right = 1705.0
-offset_bottom = 729.0
-theme = ExtResource("1_82rdj")
+offset_left = 1150.0
+offset_top = 579.0
+offset_right = 1426.0
+offset_bottom = 595.0
+theme_override_icons/grabber = ExtResource("3_bjq2h")
+theme_override_icons/grabber_highlight = ExtResource("3_bjq2h")
+theme_override_icons/grabber_disabled = ExtResource("3_bjq2h")
+theme_override_styles/slider = SubResource("StyleBoxFlat_im7d2")
+value = 42.0
+
+[node name="SensitivityValueLabel" type="Label" parent="SensitivitySlider" unique_id=9417504]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 21.0
+offset_right = 207.0
+offset_bottom = 100.0
+text = "100%"
+label_settings = SubResource("LabelSettings_i2kok")
+
+[node name="SensitivityLabel" type="Label" parent="SensitivitySlider" unique_id=673505510]
+layout_mode = 0
+offset_left = 10.0
+offset_top = -36.0
+offset_right = 207.0
+offset_bottom = 43.0
+text = "Sensitivity"
+label_settings = SubResource("LabelSettings_i2kok")
+
+[node name="InvertHorizontalButton" type="Button" parent="." unique_id=238613391]
+layout_mode = 0
+offset_left = 1251.0
+offset_top = 402.0
+offset_right = 1427.0
+offset_bottom = 450.0
+theme = ExtResource("5_pimbu")
+theme_override_colors/font_color = Color(1, 0.2509804, 0, 1)
+theme_override_colors/font_focus_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.25, 0, 1)
+
+[node name="InvertHorizontalLabel" type="Label" parent="InvertHorizontalButton" unique_id=1050552557]
+layout_mode = 0
+offset_left = 2.0
+offset_top = -34.0
+offset_right = 199.0
+offset_bottom = 45.0
+text = "Invert horizontal"
+label_settings = SubResource("LabelSettings_im7d2")
+
+[node name="InvertVerticalButton" type="Button" parent="." unique_id=693113614]
+layout_mode = 0
+offset_left = 1251.0
+offset_top = 490.0
+offset_right = 1427.0
+offset_bottom = 538.0
+theme = ExtResource("5_pimbu")
+theme_override_colors/font_color = Color(1, 0.2509804, 0, 1)
+theme_override_colors/font_focus_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.25, 0, 1)
+
+[node name="InvertVerticalLabel" type="Label" parent="InvertVerticalButton" unique_id=1854082675]
+layout_mode = 0
+offset_left = 2.0
+offset_top = -34.0
+offset_right = 199.0
+offset_bottom = 45.0
+text = "Invert vertical"
+label_settings = SubResource("LabelSettings_im7d2")
+
+[node name="ResetDefaultsButton" type="Button" parent="." unique_id=1802800940]
+layout_mode = 0
+offset_left = 1592.0
+offset_top = 956.0
+offset_right = 1768.0
+offset_bottom = 1004.0
+theme = ExtResource("5_pimbu")
+theme_override_colors/font_color = Color(1, 0.2509804, 0, 1)
+theme_override_colors/font_focus_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.25, 0, 1)
+
+[node name="ResetDefaultsLabel" type="Label" parent="ResetDefaultsButton" unique_id=1607870117]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -34.0
+offset_right = 199.0
+offset_bottom = 45.0
+text = "RESET DEFAULTS"
+label_settings = SubResource("LabelSettings_im7d2")
+
+[node name="InputBindingRow" parent="." unique_id=100186353 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1541.0
+offset_top = 411.0
+offset_right = 1541.0
+offset_bottom = 411.0
+action_id = &"move_forward"
+
+[node name="InputBindingRow2" parent="." unique_id=1857382821 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1532.0
+offset_top = 499.0
+offset_right = 1532.0
+offset_bottom = 499.0
+action_id = &"move_back"
+
+[node name="InputBindingRow3" parent="." unique_id=1087528912 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1524.0
+offset_top = 586.0
+offset_right = 1524.0
+offset_bottom = 586.0
+action_id = &"move_left"
+
+[node name="InputBindingRow4" parent="." unique_id=953256828 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1515.0
+offset_top = 672.0
+offset_right = 1515.0
+offset_bottom = 672.0
+action_id = &"move_right"
+
+[node name="InputBindingRow5" parent="." unique_id=400130865 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1504.0
+offset_top = 761.0
+offset_right = 1504.0
+offset_bottom = 761.0
+action_id = &"walk"
+
+[node name="InputBindingRow6" parent="." unique_id=2042377742 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1492.0
+offset_top = 852.0
+offset_right = 1492.0
+offset_bottom = 852.0
+action_id = &"jump"
+
+[node name="InputBindingRow7" parent="." unique_id=1646044989 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1478.0
+offset_top = 944.0
+offset_right = 1478.0
+offset_bottom = 944.0
+action_id = &"slide"
+
+[node name="InputBindingRow8" parent="." unique_id=848699753 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1709.0
+offset_top = 434.0
+offset_right = 1709.0
+offset_bottom = 434.0
+action_id = &"dash"
+
+[node name="InputBindingRow9" parent="." unique_id=1640122740 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1703.0
+offset_top = 522.0
+offset_right = 1703.0
+offset_bottom = 522.0
+action_id = &"toggle_hud"
+
+[node name="InputBindingRow10" parent="." unique_id=1944456226 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1695.0
+offset_top = 609.0
+offset_right = 1695.0
+offset_bottom = 609.0
+action_id = &"grapple"
+
+[node name="InputBindingRow11" parent="." unique_id=2114749360 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1689.0
+offset_top = 695.0
+offset_right = 1689.0
+offset_bottom = 695.0
+action_id = &"glide"
+
+[node name="InputBindingRow12" parent="." unique_id=429439289 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1686.0
+offset_top = 785.0
+offset_right = 1686.0
+offset_bottom = 785.0
+action_id = &"interact"
+
+[node name="InputBindingRow13" parent="." unique_id=1090917898 instance=ExtResource("5_i2kok")]
+layout_mode = 1
+offset_left = 1675.0
+offset_top = 874.0
+offset_right = 1675.0
+offset_bottom = 874.0
+action_id = &"pause"
+
+[node name="ConfirmPanel" parent="." unique_id=1135098963 instance=ExtResource("6_im7d2")]
+visible = false
+layout_mode = 1
+
+[node name="InputCapturePanel" parent="." unique_id=658430567 instance=ExtResource("7_pimbu")]
+visible = false
+layout_mode = 1

@@ -13,6 +13,7 @@ extends Node
 @export var world_container: Node3D
 @export var in_game_hud: InGameHud
 @export var player_death_controller: PlayerDeathController
+@export var pause_menu: PauseMenu
 
 var player: Player = null
 var world: World = null
@@ -78,7 +79,13 @@ func _validate_persistent_references() -> bool:
 			"Game requires a PlayerDeathController."
 		)
 		return false
-
+		
+	if pause_menu == null:
+		push_error(
+			"Game requires a PauseMenu."
+		)
+		return false
+		
 	return true
 
 
@@ -183,7 +190,11 @@ func _setup_gameplay_nodes() -> void:
 		player,
 		world
 	)
-
+	
+	pause_menu.setup(
+		player
+	)
+	
 	in_game_hud.set_player(
 		player
 	)

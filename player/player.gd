@@ -114,6 +114,9 @@ func get_reverse_stamina() -> ReverseStamina:
 func get_movement_motor() -> MovementMotor:
 	return movement_motor
 
+func get_look_controller() -> PlayerLookController:
+	return look_controller
+
 func get_camera_visual_rig() -> CameraVisualRig:
 	return camera_visual_rig
 

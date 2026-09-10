@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://df6od8mhphked"]
+
+[ext_resource type="Texture2D" uid="uid://bd55uwadfcvmi" path="res://assets/textures/pixel_ui/top_left.png" id="1_h50qy"]
+[ext_resource type="Script" uid="uid://bpcav4erqf83c" path="res://ui/common/cursor_frame.gd" id="1_m1t3q"]
+[ext_resource type="Texture2D" uid="uid://4mk2vnlixnyg" path="res://assets/textures/pixel_ui/top_right.png" id="2_nr0nj"]
+[ext_resource type="Texture2D" uid="uid://b5kser7ine785" path="res://assets/textures/pixel_ui/bottom_left.png" id="3_826f4"]
+[ext_resource type="Texture2D" uid="uid://cc7q3dycx7oj3" path="res://assets/textures/pixel_ui/bottom_right.png" id="4_m1t3q"]
+
+[node name="CursorFrame" type="Control" unique_id=1248730015 node_paths=PackedStringArray("top_left", "top_right", "bottom_left", "bottom_right")]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_m1t3q")
+top_left = NodePath("TopLeft")
+top_right = NodePath("TopRight")
+bottom_left = NodePath("BottomLeft")
+bottom_right = NodePath("BottomRight")
+free_size_px = Vector2(60, 60)
+
+[node name="TopLeft" type="TextureRect" parent="." unique_id=1908241353]
+modulate = Color(0.8666667, 1, 0, 0.7294118)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("1_h50qy")
+
+[node name="TopRight" type="TextureRect" parent="." unique_id=2034247406]
+modulate = Color(0.8666667, 1, 0, 0.7294118)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("2_nr0nj")
+
+[node name="BottomLeft" type="TextureRect" parent="." unique_id=1499595471]
+modulate = Color(0.8666667, 1, 0, 0.7294118)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("3_826f4")
+
+[node name="BottomRight" type="TextureRect" parent="." unique_id=964450191]
+modulate = Color(0.8666667, 1, 0, 0.7294118)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("4_m1t3q")

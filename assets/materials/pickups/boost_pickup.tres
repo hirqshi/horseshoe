@@ -1,12 +1,14 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://b6rpr1fybcpgs"]
 
+[ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="1_fwyl6"]
 [ext_resource type="Shader" uid="uid://ce8jfswmwgev8" path="res://gameplay/checkpoints/checkpoint_smoke.gdshader" id="1_h8dce"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1q0y3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jj1f6"]
 render_priority = 10
+next_pass = ExtResource("1_fwyl6")
 shader = ExtResource("1_h8dce")
 shader_parameter/primary_color = Color(1, 1, 1, 1)
-shader_parameter/secondary_color = Color(0.33266658, 0.23000002, 1, 1)
+shader_parameter/secondary_color = Color(0.2833333, 0, 1, 1)
 shader_parameter/bottom_color = Color(1, 1, 1, 1)
 shader_parameter/secondary_color_mix = 0.45
 shader_parameter/opacity = 0.11999999731776
@@ -54,14 +56,14 @@ seamless_blend_skirt = 0.109
 
 [resource]
 render_priority = 0
-next_pass = SubResource("ShaderMaterial_1q0y3")
+next_pass = SubResource("ShaderMaterial_jj1f6")
 shader = ExtResource("1_h8dce")
 shader_parameter/smoke_texture = SubResource("NoiseTexture2D_scmly")
 shader_parameter/primary_color = Color(0, 0, 1, 1)
-shader_parameter/secondary_color = Color(0.68200004, 0.47000003, 1, 1)
+shader_parameter/secondary_color = Color(0.099999905, 0, 1, 1)
 shader_parameter/bottom_color = Color(0.38399976, 0.120000005, 1, 1)
 shader_parameter/secondary_color_mix = 0.45
-shader_parameter/opacity = 0.56999998725936
+shader_parameter/opacity = 0.08999999798832
 shader_parameter/emission_energy = 7.999999821184
 shader_parameter/smoke_tiling = 0.68999998830244
 shader_parameter/smoke_scroll_direction = Vector2(0.055, 0.39)

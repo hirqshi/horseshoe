@@ -7,6 +7,10 @@ extends Control
 @export var chapter_select: ChapterSelect
 @export var settings_menu: SettingsMenu
 
+@export var main_menu_preview: Menu3DPreview
+@export var save_slots_preview: Menu3DPreview
+@export var chapter_select_preview: Menu3DPreview
+
 @export_group("Main Buttons")
 @export var continue_button: Button
 @export var start_button: Button
@@ -162,7 +166,7 @@ func _connect_signals() -> void:
 func _show_main_panel() -> void:
 	if main_panel != null:
 		main_panel.visible = true
-
+		
 	if save_slot_select != null:
 		save_slot_select.visible = false
 
@@ -170,7 +174,22 @@ func _show_main_panel() -> void:
 		chapter_select.visible = false
 
 	_pending_clear_slot_index = -1
+	
+	if main_menu_preview != null:
+		main_menu_preview.set_active(
+			true
+		)
 
+	if save_slots_preview != null:
+		save_slots_preview.set_active(
+			false
+		)
+
+	if chapter_select_preview != null:
+		chapter_select_preview.set_active(
+			false
+		)
+	
 	_set_status_text(
 		""
 	)
@@ -193,7 +212,22 @@ func _show_save_slot_select() -> void:
 
 	if chapter_select != null:
 		chapter_select.visible = false
+		
+	if main_menu_preview != null:
+		main_menu_preview.set_active(
+			false
+		)
 
+	if save_slots_preview != null:
+		save_slots_preview.set_active(
+			true
+		)
+
+	if chapter_select_preview != null:
+		chapter_select_preview.set_active(
+			false
+		)
+		
 	_pending_clear_slot_index = -1
 
 
@@ -207,7 +241,22 @@ func _show_chapter_select() -> void:
 	if chapter_select != null:
 		chapter_select.visible = true
 		chapter_select.refresh()
+		
+	if main_menu_preview != null:
+		main_menu_preview.set_active(
+			false
+		)
 
+	if save_slots_preview != null:
+		save_slots_preview.set_active(
+			false
+		)
+
+	if chapter_select_preview != null:
+		chapter_select_preview.set_active(
+			true
+		)
+		
 	_pending_clear_slot_index = -1
 
 

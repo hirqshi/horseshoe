@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="3_bhh7y"]
 [ext_resource type="Script" uid="uid://clpdgyaaeu8a" path="res://gameplay/pickups/pickup_definition.gd" id="4_adsgq"]
 [ext_resource type="ArrayMesh" uid="uid://bqn3c31w0wte3" path="res://assets/models/pickups/cube.obj" id="5_jc6lw"]
+[ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="6_bhh7y"]
 [ext_resource type="Shader" uid="uid://ce8jfswmwgev8" path="res://gameplay/checkpoints/checkpoint_smoke.gdshader" id="6_htr17"]
 
 [sub_resource type="Resource" id="Resource_p6qee"]
@@ -21,6 +22,7 @@ radius = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_htr17"]
 render_priority = 10
+next_pass = ExtResource("6_bhh7y")
 shader = ExtResource("6_htr17")
 shader_parameter/primary_color = Color(1, 0, 0, 1)
 shader_parameter/secondary_color = Color(1, 0.5, 0, 1)
@@ -74,11 +76,11 @@ render_priority = 0
 next_pass = SubResource("ShaderMaterial_htr17")
 shader = ExtResource("6_htr17")
 shader_parameter/smoke_texture = SubResource("NoiseTexture2D_scmly")
-shader_parameter/primary_color = Color(1, 0.48333335, 0, 1)
-shader_parameter/secondary_color = Color(1, 0.8333334, 0, 1)
+shader_parameter/primary_color = Color(1, 0.6, 0, 1)
+shader_parameter/secondary_color = Color(1, 0.85, 0, 1)
 shader_parameter/bottom_color = Color(1, 1, 1, 1)
 shader_parameter/secondary_color_mix = 0.45
-shader_parameter/opacity = 0.56999998725936
+shader_parameter/opacity = 0.20999999530608
 shader_parameter/emission_energy = 7.999999821184
 shader_parameter/smoke_tiling = 0.68999998830244
 shader_parameter/smoke_scroll_direction = Vector2(0.055, 0.39)

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b17sbba6eoi4l"]
 
 [ext_resource type="Script" uid="uid://b4813ks4eybh5" path="res://ui/main_menu/save_slot_select.gd" id="1_l37nm"]
-[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="2_kmgth"]
 [ext_resource type="PackedScene" uid="uid://cb4ubiuqlbdoa" path="res://ui/main_menu/save_slot_entry.tscn" id="2_mk5ja"]
+[ext_resource type="Theme" uid="uid://dw17ompj7dn1v" path="res://assets/themes/buttons_colored.tres" id="3_l37nm"]
 
 [node name="SaveSlotSelect" type="Control" unique_id=1439426941 node_paths=PackedStringArray("slot_entries", "back_button")]
 layout_mode = 3
@@ -42,7 +42,7 @@ offset_left = 52.0
 offset_top = 960.0
 offset_right = 323.0
 offset_bottom = 1041.0
-theme = ExtResource("2_kmgth")
+theme = ExtResource("3_l37nm")
 text = "back to menu"
 
 [node name="BG" type="ColorRect" parent="." unique_id=2115285178]

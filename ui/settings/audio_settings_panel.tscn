@@ -7,7 +7,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_6vq25"]
 font = ExtResource("1_qqsin")
 font_size = 55
-font_color = Color(1, 0.25, 0, 1)
+font_color = Color(1, 0, 0.8999996, 1)
 
 [node name="AudioSettingsPanel" type="Control" unique_id=1537190100 node_paths=PackedStringArray("audio_rows")]
 layout_mode = 3

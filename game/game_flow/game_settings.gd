@@ -46,6 +46,25 @@ const SETTINGS_SECTION_VIDEO: String = "video"
 const SETTINGS_SECTION_AUDIO: String = "audio"
 const SETTINGS_SECTION_PROFILE: String = "profile"
 
+const SETTINGS_SECTION_INPUT: String = "input"
+const SETTINGS_SECTION_INPUT_BINDINGS: String = "input_bindings"
+
+const REBINDABLE_ACTION_IDS: PackedStringArray = [
+	"move_forward",
+	"move_back",
+	"move_left",
+	"move_right",
+	"walk",
+	"jump",
+	"slide",
+	"dash",
+	"grapple",
+	"glide",
+	"interact",
+	"pause",
+	"toggle_hud",
+]
+
 const DEFAULT_BRIGHTNESS: float = 1.0
 const MIN_WINDOW_WIDTH_PX: int = 960
 const MIN_WINDOW_HEIGHT_PX: int = 540
@@ -74,10 +93,13 @@ var last_selected_save_slot_index: int = -1
 
 var _bus_volume_db_by_name: Dictionary[StringName, float] = {}
 
+var _default_input_events_by_action: Dictionary[StringName, InputEventList] = {}
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+	_capture_default_input_bindings()
 	_load_settings()
 
 
@@ -430,7 +452,36 @@ func save_settings() -> bool:
 			String(bus_name),
 			_bus_volume_db_by_name[bus_name]
 		)
+		
+	for action_id_text: String in REBINDABLE_ACTION_IDS:
+		var action_id: StringName = StringName(
+			action_id_text
+		)
 
+		if not InputMap.has_action(
+			action_id
+		):
+			continue
+
+		var serialized_events: Array = []
+
+		for input_event: InputEvent in get_action_bindings(
+			action_id
+		):
+			serialized_events.append(
+				_serialize_input_event(
+					input_event
+				)
+			)
+
+		config.set_value(
+			SETTINGS_SECTION_INPUT_BINDINGS,
+			String(action_id),
+			JSON.stringify(
+				serialized_events
+			)
+		)
+		
 	var save_error: Error = config.save(
 		SETTINGS_PATH
 	)
@@ -564,6 +615,10 @@ func _load_settings() -> void:
 		)
 	)
 	
+	_load_input_bindings(
+		config
+	)
+	
 	last_selected_save_slot_index = int(
 		config.get_value(
 			SETTINGS_SECTION_PROFILE,
@@ -692,6 +747,505 @@ func _is_valid_vsync_mode(
 		or value == DisplayServer.VSYNC_ADAPTIVE
 		or value == DisplayServer.VSYNC_MAILBOX
 	)
+
+
+func get_rebindable_action_ids() -> PackedStringArray:
+	return REBINDABLE_ACTION_IDS
+
+
+func get_action_bindings(
+	action_id: StringName
+) -> Array[InputEvent]:
+	var result: Array[InputEvent] = []
+
+	if not InputMap.has_action(
+		action_id
+	):
+		push_error(
+			"GameSettings: Input Map has no action '%s'."
+			% action_id
+		)
+		return result
+
+	var input_events: Array[InputEvent] = (
+		InputMap.action_get_events(
+			action_id
+		)
+	)
+
+	for input_event: InputEvent in input_events:
+		if not _is_supported_rebind_event(
+			input_event
+		):
+			continue
+
+		var copied_event: InputEvent = (
+			input_event.duplicate(
+				true
+			) as InputEvent
+		)
+
+		if copied_event != null:
+			result.append(
+				copied_event
+			)
+
+	return result
+
+
+func get_default_action_bindings(
+	action_id: StringName
+) -> Array[InputEvent]:
+	var default_event_list: InputEventList = (
+		_default_input_events_by_action.get(
+			action_id
+		) as InputEventList
+	)
+
+	if default_event_list == null:
+		return []
+
+	return default_event_list.get_events_copy()
+
+
+func get_action_bind_slot_count(
+	action_id: StringName
+) -> int:
+	var current_events: Array[InputEvent] = get_action_bindings(
+		action_id
+	)
+
+	var default_events: Array[InputEvent] = (
+		get_default_action_bindings(
+			action_id
+		)
+	)
+
+	return maxi(
+		1,
+		maxi(
+			current_events.size(),
+			default_events.size()
+		)
+	)
+
+
+func get_action_binding_display_name(
+	action_id: StringName,
+	slot_index: int
+) -> String:
+	var input_events: Array[InputEvent] = get_action_bindings(
+		action_id
+	)
+
+	if slot_index < 0 or slot_index >= input_events.size():
+		return "UNBOUND"
+
+	return _get_input_event_display_name(
+		input_events[slot_index]
+	)
+
+
+func rebind_action_slot(
+	action_id: StringName,
+	slot_index: int,
+	new_input_event: InputEvent
+) -> bool:
+	if not InputMap.has_action(
+		action_id
+	):
+		push_error(
+			"GameSettings: Input Map has no action '%s'."
+			% action_id
+		)
+		return false
+
+	if slot_index < 0:
+		push_error(
+			"GameSettings: invalid bind slot index %d."
+			% slot_index
+		)
+		return false
+
+	if not _is_supported_rebind_event(
+		new_input_event
+	):
+		push_error(
+			"GameSettings: unsupported input event for '%s'."
+			% action_id
+		)
+		return false
+
+	var input_events: Array[InputEvent] = get_action_bindings(
+		action_id
+	)
+
+	while input_events.size() <= slot_index:
+		input_events.append(
+			InputEventKey.new()
+		)
+
+	input_events[slot_index] = (
+		new_input_event.duplicate(
+			true
+		) as InputEvent
+	)
+
+	_apply_action_bindings(
+		action_id,
+		input_events
+	)
+
+	save_settings()
+
+	return true
+
+
+func clear_action_bind_slot(
+	action_id: StringName,
+	slot_index: int
+) -> bool:
+	if not InputMap.has_action(
+		action_id
+	):
+		push_error(
+			"GameSettings: Input Map has no action '%s'."
+			% action_id
+		)
+		return false
+
+	var input_events: Array[InputEvent] = get_action_bindings(
+		action_id
+	)
+
+	if slot_index < 0 or slot_index >= input_events.size():
+		return false
+
+	input_events.remove_at(
+		slot_index
+	)
+
+	_apply_action_bindings(
+		action_id,
+		input_events
+	)
+
+	save_settings()
+
+	return true
+
+
+func reset_input_bindings_to_defaults() -> void:
+	for action_id_text: String in REBINDABLE_ACTION_IDS:
+		var action_id: StringName = StringName(
+			action_id_text
+		)
+
+		if not InputMap.has_action(
+			action_id
+		):
+			continue
+
+		_apply_action_bindings(
+			action_id,
+			get_default_action_bindings(
+				action_id
+			)
+		)
+
+	save_settings()
+
+
+func _capture_default_input_bindings() -> void:
+	_default_input_events_by_action.clear()
+
+	for action_id_text: String in REBINDABLE_ACTION_IDS:
+		var action_id: StringName = StringName(
+			action_id_text
+		)
+
+		if not InputMap.has_action(
+			action_id
+		):
+			push_warning(
+				"GameSettings: Input Map action '%s' is missing."
+				% action_id
+			)
+			continue
+
+		var default_event_list: InputEventList = (
+			InputEventList.new()
+		)
+
+		default_event_list.set_events(
+			get_action_bindings(
+				action_id
+			)
+		)
+
+		_default_input_events_by_action[action_id] = (
+			default_event_list
+		)
+
+
+func _apply_action_bindings(
+	action_id: StringName,
+	input_events: Array[InputEvent]
+) -> void:
+	InputMap.action_erase_events(
+		action_id
+	)
+
+	for input_event: InputEvent in input_events:
+		if not _is_supported_rebind_event(
+			input_event
+		):
+			continue
+
+		InputMap.action_add_event(
+			action_id,
+			input_event
+		)
+
+
+func _load_input_bindings(
+	config: ConfigFile
+) -> void:
+	for action_id_text: String in REBINDABLE_ACTION_IDS:
+		var action_id: StringName = StringName(
+			action_id_text
+		)
+
+		if not InputMap.has_action(
+			action_id
+		):
+			continue
+
+		var serialized_bindings: String = String(
+			config.get_value(
+				SETTINGS_SECTION_INPUT_BINDINGS,
+				String(action_id),
+				""
+			)
+		)
+
+		if serialized_bindings.is_empty():
+			continue
+
+		var json: JSON = JSON.new()
+
+		if json.parse(serialized_bindings) != OK:
+			push_warning(
+				"GameSettings: invalid bindings for action '%s'."
+				% action_id
+			)
+			continue
+
+		if not json.data is Array:
+			push_warning(
+				"GameSettings: bindings for '%s' are not an array."
+				% action_id
+			)
+			continue
+
+		var raw_events: Array = json.data as Array
+		var parsed_events: Array[InputEvent] = []
+
+		for raw_event: Variant in raw_events:
+			if not raw_event is Dictionary:
+				continue
+
+			var event_data: Dictionary = raw_event as Dictionary
+			var input_event: InputEvent = (
+				_deserialize_input_event(
+					event_data
+				)
+			)
+
+			if input_event == null:
+				continue
+
+			parsed_events.append(
+				input_event
+			)
+
+		_apply_action_bindings(
+			action_id,
+			parsed_events
+		)
+
+
+func _serialize_input_event(
+	input_event: InputEvent
+) -> Dictionary[String, Variant]:
+	if input_event is InputEventKey:
+		var key_event: InputEventKey = (
+			input_event as InputEventKey
+		)
+
+		return {
+			"type": "key",
+			"physical_keycode": key_event.physical_keycode,
+			"keycode": key_event.keycode,
+			"shift_pressed": key_event.shift_pressed,
+			"alt_pressed": key_event.alt_pressed,
+			"ctrl_pressed": key_event.ctrl_pressed,
+			"meta_pressed": key_event.meta_pressed,
+		}
+
+	if input_event is InputEventMouseButton:
+		var mouse_event: InputEventMouseButton = (
+			input_event as InputEventMouseButton
+		)
+
+		return {
+			"type": "mouse_button",
+			"button_index": mouse_event.button_index,
+		}
+
+	return {}
+
+
+func _deserialize_input_event(
+	event_data: Dictionary
+) -> InputEvent:
+	var event_type: String = String(
+		event_data.get(
+			"type",
+			""
+		)
+	)
+
+	if event_type == "key":
+		var key_event: InputEventKey = InputEventKey.new()
+
+		key_event.physical_keycode = int(
+			event_data.get(
+				"physical_keycode",
+				0
+			)
+		)
+
+		key_event.keycode = int(
+			event_data.get(
+				"keycode",
+				0
+			)
+		)
+
+		key_event.shift_pressed = bool(
+			event_data.get(
+				"shift_pressed",
+				false
+			)
+		)
+
+		key_event.alt_pressed = bool(
+			event_data.get(
+				"alt_pressed",
+				false
+			)
+		)
+
+		key_event.ctrl_pressed = bool(
+			event_data.get(
+				"ctrl_pressed",
+				false
+			)
+		)
+
+		key_event.meta_pressed = bool(
+			event_data.get(
+				"meta_pressed",
+				false
+			)
+		)
+
+		return key_event
+
+	if event_type == "mouse_button":
+		var mouse_event: InputEventMouseButton = (
+			InputEventMouseButton.new()
+		)
+
+		mouse_event.button_index = int(
+			event_data.get(
+				"button_index",
+				0
+			)
+		)
+
+		return mouse_event
+
+	return null
+
+
+func _is_supported_rebind_event(
+	input_event: InputEvent
+) -> bool:
+	if input_event is InputEventKey:
+		return true
+
+	if input_event is InputEventMouseButton:
+		var mouse_event: InputEventMouseButton = (
+			input_event as InputEventMouseButton
+		)
+
+		return (
+			mouse_event.button_index
+			== MOUSE_BUTTON_LEFT
+			or mouse_event.button_index
+			== MOUSE_BUTTON_RIGHT
+			or mouse_event.button_index
+			== MOUSE_BUTTON_MIDDLE
+			or mouse_event.button_index
+			== MOUSE_BUTTON_XBUTTON1
+			or mouse_event.button_index
+			== MOUSE_BUTTON_XBUTTON2
+		)
+
+	return false
+
+
+func _get_input_event_display_name(
+	input_event: InputEvent
+) -> String:
+	if input_event is InputEventKey:
+		var key_event: InputEventKey = (
+			input_event as InputEventKey
+		)
+
+		var keycode: Key = (
+			key_event.physical_keycode
+			if key_event.physical_keycode != Key.KEY_NONE
+			else key_event.keycode
+		)
+
+		return OS.get_keycode_string(
+			keycode
+		).to_upper()
+
+	if input_event is InputEventMouseButton:
+		var mouse_event: InputEventMouseButton = (
+			input_event as InputEventMouseButton
+		)
+
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT:
+			return "LMB"
+
+		if mouse_event.button_index == MOUSE_BUTTON_RIGHT:
+			return "RMB"
+
+		if mouse_event.button_index == MOUSE_BUTTON_MIDDLE:
+			return "MMB"
+
+		if mouse_event.button_index == MOUSE_BUTTON_XBUTTON1:
+			return "MOUSE 4"
+
+		if mouse_event.button_index == MOUSE_BUTTON_XBUTTON2:
+			return "MOUSE 5"
+
+	return "UNBOUND"
 
 
 func _ensure_settings_directory() -> void:

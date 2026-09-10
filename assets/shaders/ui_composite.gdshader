@@ -19,6 +19,13 @@ uniform float effect_intensity : hint_range(
 	0.01
 ) = 1.0;
 
+// === color ===
+
+uniform float hue_shift_degrees : hint_range(
+	-180.0,
+	180.0,
+	0.1
+) = 0.0;
 
 // === convex ui projection ===
 
@@ -175,6 +182,137 @@ float hash(
 			)
 		)
 		* 43758.5453123
+	);
+}
+
+
+vec3 rgb_to_hsv(
+	vec3 color
+) {
+	vec4 k = vec4(
+		0.0,
+		-1.0 / 3.0,
+		2.0 / 3.0,
+		-1.0
+	);
+
+	vec4 p = mix(
+		vec4(
+			color.bg,
+			k.wz
+		),
+		vec4(
+			color.gb,
+			k.xy
+		),
+		step(
+			color.b,
+			color.g
+		)
+	);
+
+	vec4 q = mix(
+		vec4(
+			p.xyw,
+			color.r
+		),
+		vec4(
+			color.r,
+			p.yzx
+		),
+		step(
+			p.x,
+			color.r
+		)
+	);
+
+	float delta = q.x - min(
+		q.w,
+		q.y
+	);
+
+	float epsilon = 0.000001;
+
+	return vec3(
+		abs(
+			q.z
+			+ (
+				q.w
+				- q.y
+			)
+			/ (
+				6.0
+				* delta
+				+ epsilon
+			)
+		),
+		delta / (
+			q.x
+			+ epsilon
+		),
+		q.x
+	);
+}
+
+
+vec3 hsv_to_rgb(
+	vec3 color
+) {
+	vec3 rgb_wave = abs(
+		fract(
+			color.xxx
+			+ vec3(
+				0.0,
+				2.0 / 3.0,
+				1.0 / 3.0
+			)
+		)
+		* 6.0
+		- 3.0
+	);
+
+	return color.z * mix(
+		vec3(1.0),
+		clamp(
+			rgb_wave
+			- vec3(1.0),
+			0.0,
+			1.0
+		),
+		color.y
+	);
+}
+
+
+vec3 apply_hue_shift(
+	vec3 color
+) {
+	if (
+		abs(
+			hue_shift_degrees
+		) <= 0.001
+	) {
+		return color;
+	}
+
+	vec3 hsv = rgb_to_hsv(
+		max(
+			color,
+			vec3(0.0)
+		)
+	);
+
+	hsv.x = fract(
+		hsv.x
+		+ (
+			hue_shift_degrees
+			/ 360.0
+			* effect_intensity
+		)
+	);
+
+	return hsv_to_rgb(
+		hsv
 	);
 }
 
@@ -706,6 +844,10 @@ void fragment() {
 	vec3 final_color = (
 		crt_color
 		+ bloom_color
+	);
+
+	final_color = apply_hue_shift(
+		final_color
 	);
 
 	float output_alpha = max(

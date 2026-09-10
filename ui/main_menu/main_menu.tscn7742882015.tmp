@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://dfn80abk6nen2"]
+
+[ext_resource type="Theme" uid="uid://dw17ompj7dn1v" path="res://assets/themes/buttons_colored.tres" id="1_4e78x"]
+[ext_resource type="Script" uid="uid://qj3gqwlkdbkb" path="res://ui/main_menu/main_menu.gd" id="1_omy8q"]
+[ext_resource type="Shader" uid="uid://cuftvr6vltmnt" path="res://assets/shaders/crt1.gdshader" id="2_i5wg5"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="3_s4pem"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="4_u184e"]
+[ext_resource type="Script" uid="uid://582lvgj7s3rn" path="res://ui/common/menu_entrance_animator.gd" id="5_4e78x"]
+[ext_resource type="PackedScene" uid="uid://b17sbba6eoi4l" path="res://ui/main_menu/save_slot_select.tscn" id="5_joh67"]
+[ext_resource type="PackedScene" uid="uid://cp8e1sbdmqsno" path="res://ui/main_menu/chapter_select.tscn" id="6_u184e"]
+[ext_resource type="PackedScene" uid="uid://c5r0jrkyfj0c" path="res://ui/common/confirm_panel.tscn" id="8_6mijq"]
+[ext_resource type="PackedScene" uid="uid://cix8a2p4jmdqt" path="res://ui/settings/settings_menu.tscn" id="9_w2r0d"]
+[ext_resource type="PackedScene" uid="uid://df6od8mhphked" path="res://ui/common/cursor_frame.tscn" id="11_s4pem"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6mijq"]
+font = ExtResource("4_u184e")
+font_size = 26
+font_color = Color(0, 0.9833336, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_u184e"]
+font = ExtResource("4_u184e")
+font_size = 98
+font_color = Color(0.8666667, 1, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_joh67"]
+shader = ExtResource("2_i5wg5")
+shader_parameter/resolution = Vector2(800, 800)
+shader_parameter/scan_line_amount = 1.0
+shader_parameter/warp_amount = 0.10000000475
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 1.0
+shader_parameter/grille_amount = 0.306000014535
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.6
+shader_parameter/vignette_intensity = 0.08
+shader_parameter/aberation_amount = 1.0
+shader_parameter/roll_line_amount = 0.246000011685
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -7.19199977162
+shader_parameter/pixel_strength = -0.8909998523225
+
+[node name="MainMenu" type="Control" unique_id=1409158034 node_paths=PackedStringArray("main_panel", "save_slot_select", "chapter_select", "settings_menu", "continue_button", "start_button", "settings_button", "quit_button", "status_label", "confirm_panel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_s4pem")
+script = ExtResource("1_omy8q")
+main_panel = NodePath("MainPanel")
+save_slot_select = NodePath("SaveSlotSelect")
+chapter_select = NodePath("ChapterSelect")
+settings_menu = NodePath("SettingsMenu")
+continue_button = NodePath("MainPanel/ContinueButton")
+start_button = NodePath("MainPanel/StartButton")
+settings_button = NodePath("MainPanel/SettingsButton")
+quit_button = NodePath("MainPanel/QuitButton")
+status_label = NodePath("MainPanel/StatusLabel")
+confirm_panel = NodePath("ConfirmPanel")
+
+[node name="MainPanel" type="Panel" parent="." unique_id=782915272]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -27.0
+offset_top = -30.0
+offset_right = 27.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_s4pem")
+
+[node name="StartButton" type="Button" parent="MainPanel" unique_id=388747041]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -760.0
+offset_top = -189.5
+offset_right = -500.0
+offset_bottom = -45.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_s4pem")
+text = "start"
+
+[node name="ContinueButton" type="Button" parent="MainPanel" unique_id=1449903922]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -484.0
+offset_top = -98.5
+offset_right = -224.0
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_s4pem")
+text = "continue
+"
+
+[node name="SettingsButton" type="Button" parent="MainPanel" unique_id=100556173]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -509.0
+offset_top = 52.5
+offset_right = -329.0
+offset_bottom = 222.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_4e78x")
+text = "settings"
+
+[node name="QuitButton" type="Button" parent="MainPanel" unique_id=1910378753]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -651.0
+offset_top = 5.5
+offset_right = -525.0
+offset_bottom = 187.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_4e78x")
+text = "quit
+"
+
+[node name="StatusLabel" type="Label" parent="MainPanel" unique_id=1856624175]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 323.0
+offset_right = 715.0
+offset_bottom = 512.0
+text = "status"
+label_settings = SubResource("LabelSettings_6mijq")
+horizontal_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MainPanel" unique_id=774673229]
+layout_mode = 0
+offset_left = 257.0
+offset_top = 206.0
+offset_right = 686.0
+offset_bottom = 395.0
+text = "horseshoe"
+label_settings = SubResource("LabelSettings_u184e")
+horizontal_alignment = 1
+
+[node name="MenuEntranceAnimator" type="Node" parent="MainPanel" unique_id=1475485179 node_paths=PackedStringArray("animated_controls")]
+script = ExtResource("5_4e78x")
+animated_controls = [NodePath("../StartButton"), NodePath("../ContinueButton"), NodePath("../SettingsButton"), NodePath("../QuitButton")]
+duration_s = 1.06
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=264591978]
+z_index = 11
+material = SubResource("ShaderMaterial_joh67")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BG" type="ColorRect" parent="." unique_id=1189872651]
+modulate = Color(0, 0, 0, 1)
+z_index = -14
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -334.0
+offset_top = -247.0
+offset_right = 317.0
+offset_bottom = 231.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SaveSlotSelect" parent="." unique_id=1439426941 instance=ExtResource("5_joh67")]
+visible = false
+layout_mode = 1
+
+[node name="ChapterSelect" parent="." unique_id=508456767 instance=ExtResource("6_u184e")]
+layout_mode = 1
+
+[node name="ConfirmPanel" parent="." unique_id=1135098963 instance=ExtResource("8_6mijq")]
+visible = false
+layout_mode = 1
+
+[node name="SettingsMenu" parent="." unique_id=1375424166 instance=ExtResource("9_w2r0d")]
+visible = false
+layout_mode = 1
+
+[node name="CursorFrame" parent="." unique_id=1248730015 node_paths=PackedStringArray("hover_targets") instance=ExtResource("11_s4pem")]
+layout_mode = 0
+hover_targets = [NodePath("../MainPanel/StartButton"), NodePath("../MainPanel/ContinueButton"), NodePath("../MainPanel/SettingsButton"), NodePath("../MainPanel/QuitButton")]

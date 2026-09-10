@@ -15,6 +15,8 @@ radius = 1.3
 top_radius = 0.685
 bottom_radius = 1.3
 height = 3.0
+radial_segments = 4
+rings = 2
 
 [node name="Checkpoint" type="Area3D" unique_id=598772743 node_paths=PackedStringArray("spawn_anchor", "visual")]
 script = ExtResource("1_d8gsu")
@@ -32,10 +34,10 @@ mesh = SubResource("CylinderMesh_mv1y6")
 surface_material_override/0 = ExtResource("2_scmly")
 script = ExtResource("3_scmly")
 visual_mesh = NodePath(".")
-inactive_primary_color = Color(0.83333325, 1, 0, 1)
-inactive_secondary_color = Color(1, 0, 0.5, 1)
-active_primary_color = Color(0, 0.10000014, 1, 1)
-active_secondary_color = Color(0, 0.10000014, 1, 1)
+inactive_primary_color = Color(0, 1, 0.083333254, 1)
+inactive_secondary_color = Color(0.116666794, 1, 0, 1)
+active_primary_color = Color(1, 0, 0.3000002, 1)
+active_secondary_color = Color(1, 0, 0.3000002, 1)
 
 [node name="CheckpointAudio" type="Node3D" parent="." unique_id=1025582917 node_paths=PackedStringArray("activation_player", "hum_player")]
 script = ExtResource("4_q5aef")

@@ -1,9 +1,11 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://cu20o41wcjcoa"]
 
+[ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="1_58sqp"]
 [ext_resource type="Shader" uid="uid://ce8jfswmwgev8" path="res://gameplay/checkpoints/checkpoint_smoke.gdshader" id="1_y4n6n"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0c61n"]
 render_priority = 10
+next_pass = ExtResource("1_58sqp")
 shader = ExtResource("1_y4n6n")
 shader_parameter/primary_color = Color(1, 1, 1, 1)
 shader_parameter/secondary_color = Color(1, 0.97433335, 0.23000002, 1)
@@ -61,7 +63,7 @@ shader_parameter/primary_color = Color(0.8833333, 1, 0, 1)
 shader_parameter/secondary_color = Color(0.7166667, 1, 0, 1)
 shader_parameter/bottom_color = Color(1, 0.7213333, 0.120000005, 1)
 shader_parameter/secondary_color_mix = 0.45
-shader_parameter/opacity = 0.56999998725936
+shader_parameter/opacity = 0.1499999966472
 shader_parameter/emission_energy = 7.999999821184
 shader_parameter/smoke_tiling = 0.68999998830244
 shader_parameter/smoke_scroll_direction = Vector2(0.055, 0.39)

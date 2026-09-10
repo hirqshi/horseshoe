@@ -1,79 +1,23 @@
 [gd_scene format=3 uid="uid://cb4ubiuqlbdoa"]
 
 [ext_resource type="Script" uid="uid://dmuvamcf0p04x" path="res://ui/main_menu/save_slot_entry.gd" id="1_lrblq"]
-[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="1_s3upg"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="3_1jcea"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_s3upg"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s3upg"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0, 0, 0, 0.16862746)
-skew = Vector2(0.1, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 0.25, 0, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jcea"]
-content_margin_left = 4.0
-content_margin_right = 4.0
-bg_color = Color(1, 0.25, 0, 0.34117648)
-skew = Vector2(0.1, 0)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ppg3"]
-content_margin_left = 4.0
-content_margin_right = 4.0
-bg_color = Color(1, 0.25, 0, 0.34117648)
-skew = Vector2(0.1, 0)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1, 0.25, 0, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_42jxf"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0, 0, 0, 0.3019608)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
 
 [sub_resource type="LabelSettings" id="LabelSettings_6m30h"]
 font = ExtResource("3_s3upg")
 font_size = 25
-font_color = Color(1, 0.25, 0, 1)
+font_color = Color(1, 0, 0.8999996, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_s3upg"]
 font = ExtResource("3_s3upg")
 font_size = 28
-font_color = Color(1, 0, 0, 1)
+font_color = Color(0, 0.9833336, 1, 1)
 
 [node name="SaveSlotEntry" type="Control" unique_id=1477017188 node_paths=PackedStringArray("title_label", "stats_label", "select_button", "clear_button")]
 layout_mode = 3
 anchors_preset = 0
-theme = ExtResource("1_s3upg")
+theme = ExtResource("3_1jcea")
 script = ExtResource("1_lrblq")
 title_label = NodePath("TitleLabel")
 stats_label = NodePath("StatusLabel")
@@ -93,6 +37,7 @@ offset_right = 110.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("3_1jcea")
 text = "select"
 
 [node name="ClearButton" type="Button" parent="." unique_id=2006741703]
@@ -108,13 +53,7 @@ offset_right = 194.0
 offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(1, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(1, 0, 0, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_s3upg")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_1jcea")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8ppg3")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_42jxf")
+theme = ExtResource("3_1jcea")
 text = "clear slot"
 
 [node name="TitleLabel" type="Label" parent="." unique_id=1369189091]

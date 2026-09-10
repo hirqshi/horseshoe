@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://dpnrfx2d0de3w"]
+
+[ext_resource type="Script" uid="uid://d0odvi1tubeso" path="res://ui/common/menu_3d_preview.gd" id="1_ghmp2"]
+[ext_resource type="PackedScene" uid="uid://dfu6nq3nr5gke" path="res://ui/common/menu_preview/cube_preview.tscn" id="2_6sqlx"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6sqlx"]
+viewport_path = NodePath("PreviewViewport")
+
+[node name="Menu3dPreview" type="Control" unique_id=971206668 node_paths=PackedStringArray("output_texture", "preview_viewport", "preview_anchor")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ghmp2")
+preview_scene = ExtResource("2_6sqlx")
+output_texture = NodePath("OutputTexture")
+preview_viewport = NodePath("PreviewViewport")
+preview_anchor = NodePath("PreviewViewport/PreviewAnchor")
+
+[node name="OutputTexture" type="TextureRect" parent="." unique_id=1808493707]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = SubResource("ViewportTexture_6sqlx")
+
+[node name="PreviewViewport" type="SubViewport" parent="." unique_id=444140572]
+transparent_bg = true
+
+[node name="PreviewCamera" type="Camera3D" parent="PreviewViewport" unique_id=839115054]
+
+[node name="PreviewAnchor" type="Node3D" parent="PreviewViewport" unique_id=924035544]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.4362543)

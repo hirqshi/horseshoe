@@ -46,6 +46,7 @@
 [ext_resource type="Script" uid="uid://cnysd0y1ix7ng" path="res://ui/hud/compass_hud.gd" id="38_281ou"]
 [ext_resource type="Script" uid="uid://bc33ledtvgkms" path="res://ui/hud/pitch_indicator_hud.gd" id="39_nrbry"]
 [ext_resource type="Script" uid="uid://ce1e2jtfbgpol" path="res://ui/hud/world_post.gd" id="40_iswgq"]
+[ext_resource type="PackedScene" uid="uid://dgkjii0yfbg60" path="res://ui/pause_menu/pause_menu.tscn" id="47_7tmf6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
 resource_local_to_scene = true
@@ -86,10 +87,11 @@ shader = ExtResource("17_ln7ps")
 shader_parameter/ui_texture = SubResource("ViewportTexture_ln7ps")
 shader_parameter/ui_texture_pixel_size = Vector2(0.0005208333, 0.0009259259)
 shader_parameter/effect_intensity = 0.999999977648
+shader_parameter/hue_shift_degrees = -43.399997964496066
 shader_parameter/side_pinch_amount = 0.12999999709424
 shader_parameter/pixel_size_px = 2.0
-shader_parameter/bloom_strength = 2.999999932944
-shader_parameter/bloom_radius_px = 2.30000003427276
+shader_parameter/bloom_strength = 2.0999999530608
+shader_parameter/bloom_radius_px = 1.70000002533204
 shader_parameter/bloom_alpha = 0.55999998748288
 shader_parameter/scanline_strength = 0.76999998278896
 shader_parameter/scanline_density = 143.0
@@ -117,8 +119,13 @@ font_size = 31
 font_color = Color(1, 1, 1, 0.5803922)
 
 [sub_resource type="Gradient" id="Gradient_leid8"]
-offsets = PackedFloat32Array(0.001497006, 0.42871487)
-colors = PackedColorArray(1.5120772, 0.22474678, 0, 1, 0.12799999, 0.64, 0.50346667, 1)
+offsets = PackedFloat32Array(0.001497006, 0.437046)
+colors = PackedColorArray(1.5120772, 0, 0.04298628, 1, 0, 1, 0.16666651, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7tmf6"]
+font = ExtResource("12_qf6n1")
+font_size = 40
+font_color = Color(1, 1, 1, 0.5803922)
 
 [sub_resource type="Gradient" id="Gradient_ln7ps"]
 offsets = PackedFloat32Array(0.07539683, 0.19894366, 0.34330985, 0.5299296, 0.72711265, 0.87852114)
@@ -132,7 +139,7 @@ shader = ExtResource("17_4cobl")
 shader_parameter/color_palette = SubResource("GradientTexture1D_ln7ps")
 shader_parameter/effect_intensity = 0.749999983236
 shader_parameter/pixelization_enabled = true
-shader_parameter/pixel_size_px = 2.0
+shader_parameter/pixel_size_px = 1.0
 shader_parameter/chromatic_aberration_px = 2.58999994210832
 shader_parameter/chromatic_edge_start = 0.31999999284736
 shader_parameter/chromatic_edge_end = 0.85
@@ -146,7 +153,7 @@ shader_parameter/light_levels = 8
 shader_parameter/darkness_threshold = 0.3
 shader_parameter/posterization_dither_amount = 0.0
 shader_parameter/bayer_dithering_enabled = true
-shader_parameter/bayer_dither_strength = 0.03999999910592
+shader_parameter/bayer_dither_strength = 0.0
 shader_parameter/bayer_dither_gamma = 2.56999996490736
 shader_parameter/glitch_intensity = 0.0
 shader_parameter/vhs_strength = 0.81999998167136
@@ -185,7 +192,7 @@ shader_parameter/reveal_noise_strength = 0.6
 shader_parameter/reveal_origin = Vector2(0.5, 0.5)
 shader_parameter/radial_reveal_strength = 0.35
 
-[node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("world_container", "in_game_hud", "player_death_controller")]
+[node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("world_container", "in_game_hud", "player_death_controller", "pause_menu")]
 script = ExtResource("1_l8g03")
 allow_direct_scene_start = true
 development_chapter_definition = ExtResource("2_iswgq")
@@ -193,8 +200,10 @@ player_scene = ExtResource("2_h7iqs")
 world_container = NodePath("ScreenSpaceProjection/ProjectionInput/WorldContainer")
 in_game_hud = NodePath("InGameHud")
 player_death_controller = NodePath("PlayerDeathController")
+pause_menu = NodePath("PauseMenu")
 
 [node name="ScreenSpaceProjection" type="Camera3D" parent="." unique_id=2131587968]
+cull_mask = 1047551
 projection = 1
 current = true
 near = 0.5
@@ -301,7 +310,7 @@ element_alpha = 0.66
 is_lag_enabled = false
 
 [node name="Crosshair" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/CenterGroup" unique_id=327126489]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+modulate = Color(0, 1, 0.16666651, 0.4)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -332,7 +341,7 @@ bottom_right = NodePath("BottomRight")
 element_alpha = 0.25
 
 [node name="TopLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=2126119350]
-modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+modulate = Color(0, 1, 0.16666651, 0.4)
 layout_mode = 0
 offset_left = -170.0
 offset_top = -170.0
@@ -342,7 +351,7 @@ scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="TopRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=1419746258]
-modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+modulate = Color(0, 1, 0.16666651, 0.4)
 layout_mode = 0
 offset_left = 170.0
 offset_top = -170.0
@@ -352,7 +361,7 @@ scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="BottomLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=212086050]
-modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+modulate = Color(0, 1, 0.16666651, 0.4)
 layout_mode = 0
 offset_left = -170.0
 offset_top = 170.0
@@ -362,7 +371,7 @@ scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="BottomRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=1703624833]
-modulate = Color(0.12799999, 0.64, 0.50346667, 1)
+modulate = Color(0, 1, 0.16666651, 0.4)
 layout_mode = 0
 offset_left = 170.0
 offset_top = 170.0
@@ -380,7 +389,7 @@ element_alpha = 0.59
 look_offset_multiplier = 1.0
 
 [node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/LeadingCrosshair" unique_id=304666536]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.654902)
+modulate = Color(0, 1, 0.16666651, 0.4)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -414,7 +423,7 @@ right_half = NodePath("RightHalf")
 element_alpha = 0.54
 
 [node name="LeftHalf" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/InnerFrameHud" unique_id=441315965]
-modulate = Color(0.12799999, 0.64, 0.40106666, 0.57254905)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -431,7 +440,7 @@ scale = Vector2(4, 4)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="RightHalf" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/InnerFrameHud" unique_id=1019257647]
-modulate = Color(0.12799999, 0.64, 0.40106666, 0.57254905)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -461,7 +470,7 @@ maximum_rotation_degrees = 180.0
 roll_follow_speed = 30.0
 
 [node name="LeftBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/CameraRollBars" unique_id=915540920]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.32941177)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -479,7 +488,7 @@ pivot_offset_ratio = Vector2(1, 0.5)
 texture = ExtResource("17_0rekh")
 
 [node name="RightBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/CameraRollBars" unique_id=520896536]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.32941177)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -518,7 +527,7 @@ default_icon_alpha = 0.1
 cooldown_rotation_turns = 2.0
 
 [node name="StateIcon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GrappleDistanceHud" unique_id=1497545797]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.654902)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -536,7 +545,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("19_urpib")
 
 [node name="Decor" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GrappleDistanceHud" unique_id=27085233]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 0
 offset_left = 54.0
 offset_top = -61.0
@@ -546,7 +555,7 @@ scale = Vector2(4, 4)
 texture = ExtResource("20_cieqw")
 
 [node name="DistanceLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/GrappleDistanceHud" unique_id=2090368151]
-modulate = Color(1.5120772, 0.22474678, 0, 1)
+modulate = Color(0, 1, 0.16666651, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -588,7 +597,7 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="SpeedCorners" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=958240130]
-modulate = Color(1, 0, 0, 0.3764706)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -607,7 +616,7 @@ mouse_filter = 2
 texture = ExtResource("16_5ywmu")
 
 [node name="SpeedLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/SpeedHud" unique_id=1522808455]
-modulate = Color(1.5120772, 0.22474678, 0, 1)
+modulate = Color(0, 1, 0.16666651, 1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -643,7 +652,7 @@ content = NodePath("Content")
 height_bar = NodePath("Content/HeightBar")
 player_marker = NodePath("Content/PlayerMarker")
 height_label = NodePath("Content/PlayerMarker/HeightLabel")
-danger_color = Color(1.5120772, 0.22474678, 0, 1)
+danger_color = Color(1.5120772, 0, 0.04298628, 1)
 element_alpha = 0.73
 
 [node name="Content" type="Control" parent="InGameHud/UiViewport/HudRoot/FallDangerHud" unique_id=74653954]
@@ -653,7 +662,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="HeightBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/FallDangerHud/Content" unique_id=1419234547]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.57254905)
+modulate = Color(0, 1, 0.16666651, 0.34509805)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -672,7 +681,7 @@ mouse_filter = 2
 texture = ExtResource("23_urpib")
 
 [node name="PlayerMarker" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/FallDangerHud/Content" unique_id=814381601]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+modulate = Color(0, 1, 0.16666651, 0.4509804)
 self_modulate = Color(1, 1, 1, 0.6313726)
 layout_mode = 0
 offset_left = 360.0
@@ -747,7 +756,7 @@ radial_initial_angle = 180.0
 texture_progress = ExtResource("22_5ywmu")
 
 [node name="PercentLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/ReverseStaminaBar" unique_id=32978495]
-modulate = Color(0.37, 1, 0.832, 0.69411767)
+modulate = Color(0, 1, 0.16666651, 0.6901961)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -792,7 +801,7 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=211258633]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -810,7 +819,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("28_posua")
 
 [node name="ChargeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=50151155]
-modulate = Color(1.5120772, 0.22474678, 0, 1)
+modulate = Color(0, 1, 0.16666651, 0.8509804)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -825,11 +834,11 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "4
 "
-label_settings = SubResource("LabelSettings_3vho3")
+label_settings = SubResource("LabelSettings_7tmf6")
 horizontal_alignment = 1
 
 [node name="CooldownLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/DashChargesHud" unique_id=1777278293]
-self_modulate = Color(1.5120772, 0.22474678, 0, 1)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -847,7 +856,7 @@ text = "00.00
 label_settings = SubResource("LabelSettings_3vho3")
 
 [node name="Decor" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/DashChargesHud/CooldownLabel" unique_id=585354071]
-modulate = Color(1, 0, 0, 0.4509804)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -889,7 +898,7 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=289915489]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -907,7 +916,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("29_5ywmu")
 
 [node name="ChargeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/GlideChargesHud" unique_id=522481549]
-modulate = Color(1.5120772, 0.22474678, 0, 1)
+modulate = Color(0, 1, 0.16666651, 0.8509804)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -922,7 +931,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "4
 "
-label_settings = SubResource("LabelSettings_3vho3")
+label_settings = SubResource("LabelSettings_7tmf6")
 horizontal_alignment = 1
 
 [node name="WallJumpChargesHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=235241088 node_paths=PackedStringArray("charge_count_label")]
@@ -950,7 +959,7 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="Icon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=1556718571]
-modulate = Color(0.12799999, 0.64, 0.50346667, 0.6156863)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -968,7 +977,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("29_gvtgv")
 
 [node name="ChargeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/WallJumpChargesHud" unique_id=782315509]
-modulate = Color(1.5120772, 0.22474678, 0, 1)
+modulate = Color(0, 1, 0.16666651, 0.8509804)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -983,7 +992,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "4
 "
-label_settings = SubResource("LabelSettings_3vho3")
+label_settings = SubResource("LabelSettings_7tmf6")
 horizontal_alignment = 1
 
 [node name="RollIndicatorHud" type="Control" parent="InGameHud/UiViewport/HudRoot" unique_id=541923311 node_paths=PackedStringArray("pointer", "angle_label")]
@@ -1005,10 +1014,10 @@ pointer = NodePath("Pointer")
 angle_label = NodePath("AngleLabel")
 arc_radius_px = 101.5
 visible_arc_degrees = 100.0
-tick_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+tick_color = Color(0, 1, 0.16666651, 0.4509804)
 degree_label_font = ExtResource("12_qf6n1")
 degree_label_font_size = 31
-degree_label_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+degree_label_color = Color(0, 1, 0.16666651, 0.4509804)
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -1016,7 +1025,7 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="Pointer" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/RollIndicatorHud" unique_id=202609417]
-modulate = Color(1, 0, 0, 0.5529412)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 0
 offset_top = 28.0
 offset_right = 9.0
@@ -1026,7 +1035,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("34_cieqw")
 
 [node name="AngleLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/RollIndicatorHud" unique_id=98718508]
-modulate = Color(1.5120772, 0.22474678, 0, 0.64705884)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1061,11 +1070,11 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 script = ExtResource("38_281ou")
 pointer = NodePath("Pointer")
 heading_label = NodePath("HeadingLabel")
-tick_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+tick_color = Color(0, 1, 0.16666651, 0.4509804)
 label_font = ExtResource("12_qf6n1")
 label_font_size = 31
 label_offset_px = -22.40000000000001
-label_color = Color(1.5120772, 0.22474678, 0, 0.64705884)
+label_color = Color(0, 1, 0.16666651, 0.4509804)
 label_alpha = 0.71
 element_alpha = 0.7
 lag_sensitivity = 0.269
@@ -1074,7 +1083,7 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="Pointer" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/CompassHud" unique_id=353347043]
-modulate = Color(1, 0, 0, 0.5529412)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1092,7 +1101,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("34_cieqw")
 
 [node name="HeadingLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/CompassHud" unique_id=21671487]
-modulate = Color(1.5120772, 0.22474678, 0, 0.64705884)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1129,7 +1138,7 @@ pointer = NodePath("Pointer")
 angle_label = NodePath("DegreeLabel")
 scale_center_px = Vector2(160, 20)
 visible_range_degrees = 360.0
-tick_color = Color(0.12941177, 0.6392157, 0.5019608, 1)
+tick_color = Color(0, 1, 0.16666651, 1)
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -1137,7 +1146,7 @@ lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="Pointer" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/PitchIndicatorHud" unique_id=1699151999]
-modulate = Color(1, 0, 0, 0.5529412)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1156,7 +1165,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("34_cieqw")
 
 [node name="DegreeLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/PitchIndicatorHud" unique_id=260316386]
-modulate = Color(1.5120772, 0.22474678, 0, 0.64705884)
+modulate = Color(0, 1, 0.16666651, 0.52156866)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1216,3 +1225,7 @@ death_streams = Array[AudioStream]([ExtResource("32_pvdu1")])
 [node name="DeathPlayer" type="AudioStreamPlayer" parent="PlayerDeathController/DeathAudio" unique_id=2067429109]
 volume_db = -29.618
 bus = &"PlayerSfx"
+
+[node name="PauseMenu" parent="." unique_id=1403487296 instance=ExtResource("47_7tmf6")]
+layer = 20
+visible = false

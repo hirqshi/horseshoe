@@ -1,68 +1,113 @@
 [gd_scene format=3 uid="uid://dfn80abk6nen2"]
 
+[ext_resource type="Theme" uid="uid://dw17ompj7dn1v" path="res://assets/themes/buttons_colored.tres" id="1_4e78x"]
 [ext_resource type="Script" uid="uid://qj3gqwlkdbkb" path="res://ui/main_menu/main_menu.gd" id="1_omy8q"]
 [ext_resource type="Shader" uid="uid://cuftvr6vltmnt" path="res://assets/shaders/crt1.gdshader" id="2_i5wg5"]
-[ext_resource type="Theme" uid="uid://3oh8qomayi5p" path="res://assets/themes/buttons.tres" id="3_3c04x"]
-[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="3_i5wg5"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="3_s4pem"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="4_u184e"]
+[ext_resource type="Script" uid="uid://582lvgj7s3rn" path="res://ui/common/menu_entrance_animator.gd" id="5_4e78x"]
 [ext_resource type="PackedScene" uid="uid://b17sbba6eoi4l" path="res://ui/main_menu/save_slot_select.tscn" id="5_joh67"]
+[ext_resource type="ArrayMesh" uid="uid://bqn3c31w0wte3" path="res://assets/models/pickups/cube.obj" id="6_tf5ef"]
 [ext_resource type="PackedScene" uid="uid://cp8e1sbdmqsno" path="res://ui/main_menu/chapter_select.tscn" id="6_u184e"]
+[ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="7_qao3l"]
 [ext_resource type="PackedScene" uid="uid://c5r0jrkyfj0c" path="res://ui/common/confirm_panel.tscn" id="8_6mijq"]
+[ext_resource type="Shader" uid="uid://do8x4s0dvnw4k" path="res://assets/shaders/wireframe.gdshader" id="8_lknku"]
+[ext_resource type="Shader" uid="uid://ce8jfswmwgev8" path="res://gameplay/checkpoints/checkpoint_smoke.gdshader" id="8_qao3l"]
 [ext_resource type="PackedScene" uid="uid://cix8a2p4jmdqt" path="res://ui/settings/settings_menu.tscn" id="9_w2r0d"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u184e"]
-content_margin_left = 5.0
-content_margin_right = 5.0
-bg_color = Color(0, 0, 0, 0.16862746)
-skew = Vector2(0.1, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 0.25, 0, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mijq"]
-content_margin_left = 4.0
-content_margin_right = 4.0
-bg_color = Color(1, 0.25, 0, 0.34117648)
-skew = Vector2(0.1, 0)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2r0d"]
-content_margin_left = 4.0
-content_margin_right = 4.0
-bg_color = Color(1, 0.25, 0, 0.34117648)
-skew = Vector2(0.1, 0)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1, 0.25, 0, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-anti_aliasing = false
+[ext_resource type="PackedScene" uid="uid://df6od8mhphked" path="res://ui/common/cursor_frame.tscn" id="11_s4pem"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6mijq"]
 font = ExtResource("4_u184e")
 font_size = 26
-font_color = Color(1, 0.25, 0, 1)
+font_color = Color(0, 0.9833336, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_u184e"]
 font = ExtResource("4_u184e")
 font_size = 98
-font_color = Color(1, 0.25, 0, 1)
+font_color = Color(0.8666667, 1, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u2jyo"]
+render_priority = 0
+shader = ExtResource("8_lknku")
+shader_parameter/wire_width = 1.5999999642368001
+shader_parameter/wire_smoothness = 0.0010000000475
+shader_parameter/wire_opacity = 1.0
+shader_parameter/emission_energy = 3.0
+shader_parameter/geometry_jitter_m = 0.13600000646
+shader_parameter/geometry_jitter_scale = 20.149999549607198
+shader_parameter/geometry_jitter_step_rate = 4.5000000670553995
+shader_parameter/vertical_fade_strength = 0.999999977648
+shader_parameter/mesh_bottom_y = -1.0
+shader_parameter/mesh_top_y = 0.87999998033024
+shader_parameter/vertical_fade_bottom = 0.02999999932944
+shader_parameter/vertical_fade_top = 0.15999999642368
+shader_parameter/vertical_fade_softness = 0.09200000437
+shader_parameter/distance_thinning_strength = 1.0
+shader_parameter/wire_reference_distance_m = 5.0
+shader_parameter/wire_min_distance_multiplier = 0.1
+shader_parameter/color_a = Color(0.100000024, 0.80499995, 1, 1)
+shader_parameter/color_b = Color(0.18800002, 1, 0.16000003, 1)
+shader_parameter/color_c = Color(1, 0, 0.75, 1)
+shader_parameter/color_direction_local = Vector3(0, 1, 0)
+shader_parameter/color_position_scale = 0.35
+shader_parameter/color_scroll_speed = 0.2599999047804804
+shader_parameter/view_angle_color_influence = 0.35
+shader_parameter/color_offset = 0.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ju8dr"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eu56d"]
+noise = SubResource("FastNoiseLite_ju8dr")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tf5ef"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_u2jyo")
+shader = ExtResource("8_qao3l")
+shader_parameter/smoke_texture = SubResource("NoiseTexture2D_eu56d")
+shader_parameter/primary_color = Color(0.9666667, 1, 0, 1)
+shader_parameter/secondary_color = Color(0, 1, 0.98333335, 1)
+shader_parameter/bottom_color = Color(1, 0, 0.016666412, 1)
+shader_parameter/secondary_color_mix = 0.999999977648
+shader_parameter/opacity = 0.2999999932944
+shader_parameter/emission_energy = 3.97999991103904
+shader_parameter/smoke_tiling = 1.3299999739971602
+shader_parameter/smoke_scroll_direction = Vector2(0.08, -0.05)
+shader_parameter/smoke_sharpness = 0.63999998569472
+shader_parameter/mesh_bottom_y = -0.8
+shader_parameter/mesh_top_y = 0.8
+shader_parameter/bottom_cutoff = 0.0
+shader_parameter/top_cutoff = 0.0
+shader_parameter/cutoff_softness = 0.12
+shader_parameter/geometry_bottom_offset = 0.12
+shader_parameter/pulse_speed = 1.2
+shader_parameter/pulse_strength = 0.1
+shader_parameter/edge_pulse = 0.07
+shader_parameter/geometry_jitter = 0.02
+shader_parameter/geometry_step_rate = 3.0
+shader_parameter/bottom_gradient_height = 0.38
+shader_parameter/bottom_color_strength = 0.65
+shader_parameter/bottom_opacity_multiplier = 1.45
+shader_parameter/bottom_emission_boost = 0.8
+shader_parameter/inner_fresnel_power = 2.0
+shader_parameter/inner_fresnel_strength = 4.0
+shader_parameter/outer_fresnel_power = 5.0
+shader_parameter/outer_fresnel_strength = 2.0
+shader_parameter/wipe_scale = 3.0
+shader_parameter/wipe_speed = 0.5
+shader_parameter/wipe_blend = 0.25
+shader_parameter/signal_scale = 22.0
+shader_parameter/signal_speed = 1.0
+shader_parameter/signal_random_scale = 0.25
+shader_parameter/signal_blend = 0.35
+shader_parameter/flicker_amount = 0.08
+shader_parameter/flicker_speed = 8.0
+shader_parameter/grain_amount = 0.08
+shader_parameter/effect_strength = 0.7
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tf5ef"]
+material = SubResource("ShaderMaterial_tf5ef")
+radial_segments = 7
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_joh67"]
 shader = ExtResource("2_i5wg5")
@@ -88,7 +133,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_3c04x")
+theme = ExtResource("3_s4pem")
 script = ExtResource("1_omy8q")
 main_panel = NodePath("MainPanel")
 save_slot_select = NodePath("SaveSlotSelect")
@@ -112,9 +157,10 @@ offset_right = 27.0
 offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_3c04x")
+theme = ExtResource("3_s4pem")
 
 [node name="StartButton" type="Button" parent="MainPanel" unique_id=388747041]
+z_index = 20
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -127,15 +173,11 @@ offset_right = -500.0
 offset_bottom = -45.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_i5wg5")
-theme_override_colors/font_color = Color(0.37, 1, 0.832, 1)
-theme_override_colors/font_focus_color = Color(0.37, 1, 0.832, 1)
-theme_override_colors/font_pressed_color = Color(0.1887, 0.51, 0.42432, 1)
-theme_override_colors/font_hover_color = Color(0.37, 1, 0.832, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.1887, 0.51, 0.42432, 1)
+theme = ExtResource("3_s4pem")
 text = "start"
 
 [node name="ContinueButton" type="Button" parent="MainPanel" unique_id=1449903922]
+z_index = 20
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -148,51 +190,42 @@ offset_right = -224.0
 offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_i5wg5")
-theme_override_colors/font_color = Color(0.37, 1, 0.832, 1)
-theme_override_colors/font_focus_color = Color(0.37, 1, 0.832, 1)
-theme_override_colors/font_pressed_color = Color(0.1887, 0.51, 0.42432, 1)
-theme_override_colors/font_hover_color = Color(0.37, 1, 0.832, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.1887, 0.51, 0.42432, 1)
+theme = ExtResource("3_s4pem")
 text = "continue
 "
 
 [node name="SettingsButton" type="Button" parent="MainPanel" unique_id=100556173]
+z_index = 20
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -500.0
-offset_top = 17.5
-offset_right = -320.0
-offset_bottom = 187.5
+offset_left = -509.0
+offset_top = 52.5
+offset_right = -329.0
+offset_bottom = 222.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_i5wg5")
-theme_override_styles/normal = SubResource("StyleBoxFlat_u184e")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6mijq")
-theme_override_styles/hover = SubResource("StyleBoxFlat_w2r0d")
+theme = ExtResource("1_4e78x")
 text = "settings"
 
 [node name="QuitButton" type="Button" parent="MainPanel" unique_id=1910378753]
+z_index = 20
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -642.0
-offset_top = -29.5
-offset_right = -516.0
-offset_bottom = 152.5
+offset_left = -651.0
+offset_top = 5.5
+offset_right = -525.0
+offset_bottom = 187.5
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_i5wg5")
-theme_override_styles/normal = SubResource("StyleBoxFlat_u184e")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6mijq")
-theme_override_styles/hover = SubResource("StyleBoxFlat_w2r0d")
+theme = ExtResource("1_4e78x")
 text = "quit
 "
 
@@ -216,8 +249,65 @@ text = "horseshoe"
 label_settings = SubResource("LabelSettings_u184e")
 horizontal_alignment = 1
 
+[node name="MenuEntranceAnimator" type="Node" parent="MainPanel" unique_id=1475485179 node_paths=PackedStringArray("animated_controls")]
+script = ExtResource("5_4e78x")
+animated_controls = [NodePath("../StartButton"), NodePath("../ContinueButton"), NodePath("../SettingsButton"), NodePath("../QuitButton")]
+duration_s = 0.21
+ui_stagger_s = 0.09
+
+[node name="MainMenuPreview" type="Control" parent="MainPanel" unique_id=1232264229]
+z_index = 2
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="MainPanel/MainMenuPreview" unique_id=1829136430]
+modulate = Color(1, 1, 1, 0.4862745)
+layout_mode = 0
+offset_right = 982.0
+offset_bottom = 924.0
+mouse_filter = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="MainPanel/MainMenuPreview/SubViewportContainer" unique_id=1791545114]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(982, 924)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="MainPanel/MainMenuPreview/SubViewportContainer/SubViewport" unique_id=137916244]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainPanel/MainMenuPreview/SubViewportContainer/SubViewport" unique_id=1661846503]
+transform = Transform3D(1.385, 0, 0, 0, 1.385, 0, 0, 0, 1.385, 0, 0, -2.080707)
+mesh = ExtResource("6_tf5ef")
+surface_material_override/0 = ExtResource("7_qao3l")
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="MainPanel/MainMenuPreview" unique_id=1735180855]
+modulate = Color(1, 1, 1, 0.4862745)
+layout_mode = 0
+offset_left = 587.0
+offset_top = -219.0
+offset_right = 2088.0
+offset_bottom = 1356.0
+mouse_filter = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="MainPanel/MainMenuPreview/SubViewportContainer2" unique_id=422793186]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1501, 1575)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport" unique_id=800522609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5859966, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport" unique_id=1539675906]
+transform = Transform3D(1.385, 0, 0, 0, 1.385, 0, 0, 0, 1.385, 7.5859966, 0, -2.080707)
+mesh = SubResource("CylinderMesh_tf5ef")
+
 [node name="Overlay" type="ColorRect" parent="." unique_id=264591978]
-z_index = 11
+z_index = 34
 material = SubResource("ShaderMaterial_joh67")
 layout_mode = 1
 anchors_preset = 15
@@ -243,13 +333,20 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="SaveSlotSelect" parent="." unique_id=1439426941 instance=ExtResource("5_joh67")]
+visible = false
 layout_mode = 1
 
 [node name="ChapterSelect" parent="." unique_id=508456767 instance=ExtResource("6_u184e")]
 layout_mode = 1
 
 [node name="ConfirmPanel" parent="." unique_id=1135098963 instance=ExtResource("8_6mijq")]
+visible = false
 layout_mode = 1
 
 [node name="SettingsMenu" parent="." unique_id=1375424166 instance=ExtResource("9_w2r0d")]
+visible = false
 layout_mode = 1
+
+[node name="CursorFrame" parent="." unique_id=1248730015 node_paths=PackedStringArray("hover_targets") instance=ExtResource("11_s4pem")]
+layout_mode = 0
+hover_targets = [NodePath("../MainPanel/StartButton"), NodePath("../MainPanel/ContinueButton"), NodePath("../MainPanel/SettingsButton"), NodePath("../MainPanel/QuitButton")]

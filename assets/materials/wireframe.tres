@@ -1,0 +1,31 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bp0y8aj8bytlx"]
+
+[ext_resource type="Shader" uid="uid://do8x4s0dvnw4k" path="res://assets/shaders/wireframe.gdshader" id="1_3jjvi"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_3jjvi")
+shader_parameter/wire_width = 0.6999999843536
+shader_parameter/wire_smoothness = 0.0010000000475
+shader_parameter/wire_opacity = 0.52999998815344
+shader_parameter/emission_energy = 3.0
+shader_parameter/geometry_jitter_m = 0.07600000361
+shader_parameter/geometry_jitter_scale = 3.0
+shader_parameter/geometry_jitter_step_rate = 3.20000004768384
+shader_parameter/vertical_fade_strength = 0.999999977648
+shader_parameter/mesh_bottom_y = -1.0
+shader_parameter/mesh_top_y = 0.87999998033024
+shader_parameter/vertical_fade_bottom = 0.02999999932944
+shader_parameter/vertical_fade_top = 0.15999999642368
+shader_parameter/vertical_fade_softness = 0.09200000437
+shader_parameter/distance_thinning_strength = 1.0
+shader_parameter/wire_reference_distance_m = 5.0
+shader_parameter/wire_min_distance_multiplier = 0.1
+shader_parameter/color_a = Color(1, 0.100000024, 0.7899998, 1)
+shader_parameter/color_b = Color(1, 0.16000003, 0.17399979, 1)
+shader_parameter/color_c = Color(1, 0, 0.016666412, 1)
+shader_parameter/color_direction_local = Vector3(0, 1, 0)
+shader_parameter/color_position_scale = 0.35
+shader_parameter/color_scroll_speed = 0.2599999047804804
+shader_parameter/view_angle_color_influence = 0.35
+shader_parameter/color_offset = 0.0

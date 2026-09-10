@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b5415c7t7mnt6"]
 
-[ext_resource type="Theme" uid="uid://dt5c6wjwkisgn" path="res://assets/themes/buttons_skewed.tres" id="1_261u7"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="1_bscbu"]
 [ext_resource type="Script" uid="uid://dunbxsw6m46et" path="res://ui/settings/video_settings_panel.gd" id="1_ygk6v"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_261u7"]
 [ext_resource type="Texture2D" uid="uid://csg0mb81t6mw" path="res://assets/textures/ui/crosshairdot.png" id="4_bscbu"]
@@ -13,15 +13,15 @@ font_color = Color(1, 0.25, 0, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_261u7"]
 font = ExtResource("2_261u7")
 font_size = 26
-font_color = Color(1, 0.25, 0, 1)
+font_color = Color(0.8666667, 1, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bscbu"]
-bg_color = Color(1, 0.25, 0, 1)
+bg_color = Color(0, 0.9833336, 1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.25, 0, 1)
+border_color = Color(0, 0.9833336, 1, 1)
 anti_aliasing = false
 
 [node name="VideoSettingsPanel" type="Control" unique_id=1493508318 node_paths=PackedStringArray("fullscreen_button", "resolution_option_button", "vsync_option_button", "fps_option_button", "brightness_slider", "brightness_value_label")]
@@ -32,7 +32,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme = ExtResource("1_261u7")
+theme = ExtResource("1_bscbu")
 script = ExtResource("1_ygk6v")
 fullscreen_button = NodePath("FullscreenButton")
 resolution_option_button = NodePath("ResolutionOptionButton")
@@ -78,10 +78,10 @@ offset_left = 157.0
 offset_top = 479.0
 offset_right = 333.0
 offset_bottom = 527.0
-theme_override_colors/font_color = Color(1, 0.2509804, 0, 1)
-theme_override_colors/font_focus_color = Color(1, 0.25, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.25, 0, 1)
-theme_override_colors/font_hover_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_color = Color(1, 0, 0.8999996, 1)
+theme_override_colors/font_focus_color = Color(1, 0, 0.8999996, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.9833336, 1, 1)
+theme_override_colors/font_hover_color = Color(0.8666667, 1, 0, 1)
 
 [node name="ResolutionLabel" type="Label" parent="ResolutionOptionButton" unique_id=149645699]
 layout_mode = 0
@@ -98,10 +98,10 @@ offset_left = 157.0
 offset_top = 585.0
 offset_right = 333.0
 offset_bottom = 633.0
-theme_override_colors/font_color = Color(1, 0.2509804, 0, 1)
-theme_override_colors/font_focus_color = Color(1, 0.25, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.25, 0, 1)
-theme_override_colors/font_hover_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_color = Color(1, 0, 0.8999996, 1)
+theme_override_colors/font_focus_color = Color(1, 0, 0.8999996, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.9833336, 1, 1)
+theme_override_colors/font_hover_color = Color(0.8666667, 1, 0, 1)
 
 [node name="VsyncLabel" type="Label" parent="VsyncOptionButton" unique_id=997394258]
 layout_mode = 0
@@ -118,10 +118,10 @@ offset_left = 157.0
 offset_top = 707.0
 offset_right = 333.0
 offset_bottom = 755.0
-theme_override_colors/font_color = Color(1, 0.2509804, 0, 1)
-theme_override_colors/font_focus_color = Color(1, 0.25, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.25, 0, 1)
-theme_override_colors/font_hover_color = Color(1, 0.25, 0, 1)
+theme_override_colors/font_color = Color(1, 0, 0.8999996, 1)
+theme_override_colors/font_focus_color = Color(1, 0, 0.8999996, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.9833336, 1, 1)
+theme_override_colors/font_hover_color = Color(0.8666667, 1, 0, 1)
 
 [node name="FpsLabel" type="Label" parent="FpsOptionButton" unique_id=2020917660]
 layout_mode = 0
