@@ -7,12 +7,12 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81hlo"]
 content_margin_left = 4.0
 content_margin_right = 4.0
-bg_color = Color(0.8666667, 1, 0, 0.043137256)
+bg_color = Color(0, 1, 0.16666651, 0.27058825)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.8666667, 1, 0, 1)
+border_color = Color(0, 1, 0.16666651, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
@@ -27,13 +27,13 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0, 0.8999996, 1)
+border_color = Color(0, 1, 0.16666651, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_12f15"]
 content_margin_left = 4.0
 content_margin_right = 4.0
-bg_color = Color(0, 0.9833336, 1, 0.39215687)
+bg_color = Color(0, 1, 0.16666651, 0.39215687)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -229,11 +229,7 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+border_color = Color(0, 1, 0.16470589, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kfd0t"]
@@ -391,12 +387,12 @@ bg_color = Color(1, 1, 1, 1)
 [resource]
 default_font = ExtResource("1_mgdqf")
 default_font_size = 32
-Button/colors/font_color = Color(0.8666667, 1, 0, 1)
-Button/colors/font_focus_color = Color(0.8666667, 1, 0, 1)
-Button/colors/font_hover_color = Color(0, 0.9833336, 1, 1)
-Button/colors/font_hover_pressed_color = Color(1, 0, 0.8999996, 1)
+Button/colors/font_color = Color(0, 1, 0.16666651, 1)
+Button/colors/font_focus_color = Color(0, 1, 0.16666651, 1)
+Button/colors/font_hover_color = Color(0, 1, 0.16666651, 1)
+Button/colors/font_hover_pressed_color = Color(0, 1, 0.16666651, 1)
 Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0.08, 0.08, 0.08, 1)
 Button/colors/icon_focus_color = Color(1, 1, 1, 1)
 Button/colors/icon_hover_color = Color(1, 1, 1, 1)
 Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)

@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bd15nh48d00m6"]
+
+[ext_resource type="Texture2D" uid="uid://p1duw63a2bpf" path="res://assets/models/character/body.png" id="1_5g5ql"]
+
+[resource]
+specular_mode = 1
+albedo_texture = ExtResource("1_5g5ql")
+subsurf_scatter_strength = 1.0
+subsurf_scatter_transmittance_enabled = true
+subsurf_scatter_transmittance_color = Color(1, 0, 0, 1)
+subsurf_scatter_transmittance_depth = 5.549
+subsurf_scatter_transmittance_boost = 1.0
+refraction_scale = 0.53
+texture_filter = 0
+disable_receive_shadows = true

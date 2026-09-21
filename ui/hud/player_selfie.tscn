@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://bdf3cjrahcj3b"]
+
+[ext_resource type="Script" uid="uid://d1vc05mysinkk" path="res://ui/hud/player_selfie.gd" id="1_b6avp"]
+[ext_resource type="Theme" uid="uid://dw17ompj7dn1v" path="res://assets/themes/buttons_colored.tres" id="1_vp4sm"]
+
+[node name="PlayerSelfie" type="Control" unique_id=1941425470 node_paths=PackedStringArray("portrait_viewport", "portrait_camera")]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_b6avp")
+portrait_viewport = NodePath("Frame/PortraitViewportContainer/PortraitViewport")
+portrait_camera = NodePath("Frame/PortraitViewportContainer/PortraitViewport/PortraitCamera")
+camera_offset_local = Vector3(0.01, -0.03, -0.06)
+look_target_offset_local = Vector3(0, -0.01, 0)
+rotation_follow_speed = 29.9
+horizontal_follow_speed = 74.1
+vertical_follow_speed = 54.0
+depth_follow_speed = 9.2
+
+[node name="Frame" type="Panel" parent="." unique_id=282872014]
+modulate = Color(0, 1.7136636, 0.45631978, 0.22745098)
+layout_mode = 0
+offset_right = 159.0
+offset_bottom = 159.0
+mouse_filter = 2
+theme = ExtResource("1_vp4sm")
+
+[node name="PortraitViewportContainer" type="SubViewportContainer" parent="Frame" unique_id=1486643020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+
+[node name="PortraitViewport" type="SubViewport" parent="Frame/PortraitViewportContainer" unique_id=180364016]
+handle_input_locally = false
+use_hdr_2d = true
+scaling_3d_mode = 5
+scaling_3d_scale = 0.2
+anisotropic_filtering_level = 0
+size = Vector2i(153, 153)
+render_target_update_mode = 4
+
+[node name="PortraitCamera" type="Camera3D" parent="Frame/PortraitViewportContainer/PortraitViewport" unique_id=335180003]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+cull_mask = 1047551
+fov = 60.0

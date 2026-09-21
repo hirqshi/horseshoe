@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://bsfssmv454j38" path="res://data/movement/default_movement_config.tres" id="4_yw30f"]
 [ext_resource type="Script" uid="uid://bbnjlu8xn4wx3" path="res://player/movement/states/grounded_locomotion_state.gd" id="5_boad6"]
 [ext_resource type="Script" uid="uid://qmrstb1ip2xx" path="res://player/actions/grapple/grapple_rope_visual.gd" id="5_fmu53"]
-[ext_resource type="Texture2D" uid="uid://bauxt72fenptq" path="res://assets/textures/world/concrete/albedo/Concrete017_4K_Color.jpg" id="5_jfgyi"]
+[ext_resource type="Texture2D" uid="uid://bauxt72fenptq" path="res://assets/textures/world/albedo/Concrete017_4K_Color.jpg" id="5_jfgyi"]
 [ext_resource type="Script" uid="uid://cpw6cl28g505q" path="res://player/sensors/player_sensors.gd" id="5_qjkh3"]
 [ext_resource type="Script" uid="uid://bgrcyb2s8mgwb" path="res://player/movement/states/airborne_locomotion_state.gd" id="6_rgyib"]
 [ext_resource type="Texture2D" uid="uid://bge4lb2qwktvv" path="res://assets/textures/world/concrete/normal/Concrete017_4K_NormalGL.png" id="6_wpyo2"]
@@ -55,6 +55,7 @@
 [ext_resource type="Texture2D" uid="uid://cfgpwbvj07w2v" path="res://assets/textures/particles/DustCloud2.png" id="42_art4l"]
 [ext_resource type="PackedScene" uid="uid://bhr0u0msaf8v4" path="res://player/particles/slide_start_burst_pool.tscn" id="42_fjxoa"]
 [ext_resource type="PackedScene" uid="uid://dyb3deg1ebaa3" path="res://player/particles/walk_step_burst_pool.tscn" id="43_gswnw"]
+[ext_resource type="PackedScene" uid="uid://c77sxe237irsc" path="res://player/character/portrait_avatar.tscn" id="56_7crtr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
 radius = 0.3
@@ -126,11 +127,13 @@ texture_filter = 0
 material = SubResource("StandardMaterial3D_dx5ib")
 orientation = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=361433541 node_paths=PackedStringArray("look_controller", "camera_visual_rig")]
+[node name="Player" type="CharacterBody3D" unique_id=361433541 node_paths=PackedStringArray("look_controller", "camera_visual_rig", "gameplay_camera", "portrait_avatar")]
 floor_max_angle = 0.9599311
 script = ExtResource("1_g1dw6")
 look_controller = NodePath("PlayerLookController")
 camera_visual_rig = NodePath("Head/CameraVisualRig")
+gameplay_camera = NodePath("Head/CameraVisualRig/Camera3D")
+portrait_avatar = NodePath("PortraitAvatar")
 
 [node name="StandingCollider" type="CollisionShape3D" parent="." unique_id=1632523810]
 shape = SubResource("CapsuleShape3D_6m30h")
@@ -159,7 +162,7 @@ hud_heading_offset_degrees = 45.0
 bob_step_rate_scale = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="Head/CameraVisualRig" unique_id=2116220637]
-cull_mask = 1047551
+cull_mask = 523263
 fov = 130.0
 
 [node name="GrappleAimRay" type="RayCast3D" parent="Head/CameraVisualRig/Camera3D" unique_id=317141585]
@@ -438,3 +441,6 @@ collision_base_size = 0.0
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_pnw6m")
 draw_pass_1 = SubResource("QuadMesh_55jnj")
+
+[node name="PortraitAvatar" parent="." unique_id=57297134 instance=ExtResource("56_7crtr")]
+transform = Transform3D(1.65, 0, 0, 0, 1.65, 0, 0, 0, 1.65, 0, 0, 0)

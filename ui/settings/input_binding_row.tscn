@@ -7,7 +7,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_dfh5v"]
 font = ExtResource("3_w362a")
 font_size = 26
-font_color = Color(0.8666667, 1, 0, 1)
+font_color = Color(0, 1, 0.16666651, 1)
 
 [node name="InputBindingRow" type="Control" unique_id=100186353 node_paths=PackedStringArray("action_label", "primary_bind_button", "secondary_bind_button")]
 layout_mode = 3

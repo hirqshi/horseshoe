@@ -17,6 +17,10 @@ signal instant_death_requested()
 
 @export var camera_visual_rig: CameraVisualRig
 
+@export_group("Portrait")
+@export var gameplay_camera: Camera3D
+@export var portrait_avatar: PortraitAvatar
+
 @onready var movement_motor: MovementMotor = (
 	get_node_or_null("MovementMotor") as MovementMotor
 )
@@ -61,6 +65,18 @@ func _ready() -> void:
 		)
 		return
 		
+	if gameplay_camera == null:
+		push_error(
+			"Player requires a GameplayCamera."
+		)
+		return
+
+	if portrait_avatar == null:
+		push_error(
+			"Player requires a PortraitAvatar."
+		)
+		return
+	
 	fall_tracker.fall_damage_requested.connect(
 		_on_fall_damage_requested
 	)
@@ -107,6 +123,12 @@ func request_instant_death() -> void:
 func get_fall_tracker() -> FallTracker:
 	return fall_tracker
 
+func get_gameplay_camera() -> Camera3D:
+	return gameplay_camera
+
+
+func get_portrait_avatar() -> PortraitAvatar:
+	return portrait_avatar
 
 func get_reverse_stamina() -> ReverseStamina:
 	return reverse_stamina

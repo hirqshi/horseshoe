@@ -7,6 +7,7 @@
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="4_u184e"]
 [ext_resource type="Script" uid="uid://582lvgj7s3rn" path="res://ui/common/menu_entrance_animator.gd" id="5_4e78x"]
 [ext_resource type="PackedScene" uid="uid://b17sbba6eoi4l" path="res://ui/main_menu/save_slot_select.tscn" id="5_joh67"]
+[ext_resource type="FontFile" uid="uid://cr23rhqyy8wly" path="res://assets/fonts/CoralPixels-Regular.ttf" id="5_u2jyo"]
 [ext_resource type="ArrayMesh" uid="uid://bqn3c31w0wte3" path="res://assets/models/pickups/cube.obj" id="6_tf5ef"]
 [ext_resource type="PackedScene" uid="uid://cp8e1sbdmqsno" path="res://ui/main_menu/chapter_select.tscn" id="6_u184e"]
 [ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="7_qao3l"]
@@ -19,22 +20,21 @@
 [sub_resource type="LabelSettings" id="LabelSettings_6mijq"]
 font = ExtResource("4_u184e")
 font_size = 26
-font_color = Color(0, 0.9833336, 1, 1)
+font_color = Color(0, 1, 0.16666651, 0.39215687)
 
 [sub_resource type="LabelSettings" id="LabelSettings_u184e"]
-font = ExtResource("4_u184e")
+font = ExtResource("5_u2jyo")
 font_size = 98
-font_color = Color(0.8666667, 1, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u2jyo"]
 render_priority = 0
 shader = ExtResource("8_lknku")
-shader_parameter/wire_width = 1.5999999642368001
+shader_parameter/wire_width = 1.5999999642368
 shader_parameter/wire_smoothness = 0.0010000000475
 shader_parameter/wire_opacity = 1.0
 shader_parameter/emission_energy = 3.0
 shader_parameter/geometry_jitter_m = 0.13600000646
-shader_parameter/geometry_jitter_scale = 20.149999549607198
+shader_parameter/geometry_jitter_scale = 20.1499995496072
 shader_parameter/geometry_jitter_step_rate = 4.5000000670553995
 shader_parameter/vertical_fade_strength = 0.999999977648
 shader_parameter/mesh_bottom_y = -1.0
@@ -65,11 +65,11 @@ render_priority = 0
 next_pass = SubResource("ShaderMaterial_u2jyo")
 shader = ExtResource("8_qao3l")
 shader_parameter/smoke_texture = SubResource("NoiseTexture2D_eu56d")
-shader_parameter/primary_color = Color(0.9666667, 1, 0, 1)
-shader_parameter/secondary_color = Color(0, 1, 0.98333335, 1)
-shader_parameter/bottom_color = Color(1, 0, 0.016666412, 1)
+shader_parameter/primary_color = Color(0.24, 0.24, 0.24, 1)
+shader_parameter/secondary_color = Color(0.52, 0.52, 0.52, 1)
+shader_parameter/bottom_color = Color(0.08, 0.08, 0.08, 1)
 shader_parameter/secondary_color_mix = 0.999999977648
-shader_parameter/opacity = 0.2999999932944
+shader_parameter/opacity = 0.25999999418848
 shader_parameter/emission_energy = 3.97999991103904
 shader_parameter/smoke_tiling = 1.3299999739971602
 shader_parameter/smoke_scroll_direction = Vector2(0.08, -0.05)
@@ -240,12 +240,13 @@ label_settings = SubResource("LabelSettings_6mijq")
 horizontal_alignment = 1
 
 [node name="TitleLabel" type="Label" parent="MainPanel" unique_id=774673229]
+modulate = Color(0, 2.910947, 0.6618878, 1)
 layout_mode = 0
-offset_left = 257.0
-offset_top = 206.0
-offset_right = 686.0
-offset_bottom = 395.0
-text = "horseshoe"
+offset_left = 161.0
+offset_top = 181.0
+offset_right = 735.0
+offset_bottom = 370.0
+text = "HORSESHOE"
 label_settings = SubResource("LabelSettings_u184e")
 horizontal_alignment = 1
 

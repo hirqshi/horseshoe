@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b8r4q4qgkhodx"]
+
+[ext_resource type="Texture2D" uid="uid://d1mof6axw60s5" path="res://assets/models/character/hair_blurred.png" id="1_ejdfo"]
+
+[resource]
+cull_mode = 2
+depth_draw_mode = 1
+shading_mode = 2
+diffuse_mode = 3
+albedo_texture = ExtResource("1_ejdfo")
+texture_filter = 0

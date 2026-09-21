@@ -30,7 +30,7 @@ shader_parameter/pixel_strength = -0.8909998523225
 [sub_resource type="LabelSettings" id="LabelSettings_fjvxm"]
 font = ExtResource("3_xqw42")
 font_size = 65
-font_color = Color(1, 0, 0.8999996, 1)
+font_color = Color(0, 1, 0.16666651, 0.39215687)
 
 [node name="SettingsMenu" type="Control" unique_id=1375424166 node_paths=PackedStringArray("video_tab_button", "audio_tab_button", "input_tab_button", "video_panel", "audio_panel", "input_panel", "back_button")]
 layout_mode = 3

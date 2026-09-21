@@ -25,6 +25,9 @@ extends CanvasLayer
 @export var hud_root: Control
 @export var ui_composite: TextureRect
 
+@export_category("player selfie")
+@export var player_selfie: PlayerSelfie
+
 var _is_hud_visible: bool = true
 
 var _movement_motor: MovementMotor
@@ -133,6 +136,15 @@ func _ready() -> void:
 	if ui_composite == null:
 		push_error(
 			"InGameHud requires UiComposite."
+		)
+		set_process(false)
+		set_process_input(false)
+		return
+		
+
+	if player_selfie == null:
+		push_error(
+			"InGameHud requires a PlayerSelfie."
 		)
 		set_process(false)
 		set_process_input(false)
@@ -344,7 +356,11 @@ func set_player(
 		)
 		_movement_motor = null
 		return
-
+		
+	player_selfie.setup(
+		player,
+	)
+	
 	_grapple_action = (
 		_movement_motor.get_grapple_action()
 	)

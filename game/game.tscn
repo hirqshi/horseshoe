@@ -46,6 +46,7 @@
 [ext_resource type="Script" uid="uid://cnysd0y1ix7ng" path="res://ui/hud/compass_hud.gd" id="38_281ou"]
 [ext_resource type="Script" uid="uid://bc33ledtvgkms" path="res://ui/hud/pitch_indicator_hud.gd" id="39_nrbry"]
 [ext_resource type="Script" uid="uid://ce1e2jtfbgpol" path="res://ui/hud/world_post.gd" id="40_iswgq"]
+[ext_resource type="PackedScene" uid="uid://bdf3cjrahcj3b" path="res://ui/hud/player_selfie.tscn" id="40_sisia"]
 [ext_resource type="PackedScene" uid="uid://dgkjii0yfbg60" path="res://ui/pause_menu/pause_menu.tscn" id="47_7tmf6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
@@ -87,7 +88,7 @@ shader = ExtResource("17_ln7ps")
 shader_parameter/ui_texture = SubResource("ViewportTexture_ln7ps")
 shader_parameter/ui_texture_pixel_size = Vector2(0.0005208333, 0.0009259259)
 shader_parameter/effect_intensity = 0.999999977648
-shader_parameter/hue_shift_degrees = -43.399997964496066
+shader_parameter/hue_shift_degrees = 0.0
 shader_parameter/side_pinch_amount = 0.12999999709424
 shader_parameter/pixel_size_px = 2.0
 shader_parameter/bloom_strength = 2.0999999530608
@@ -180,9 +181,9 @@ shader_parameter/final_gamma = 1.20999998413008
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bjvpn"]
 shader = ExtResource("20_dxwpq")
 shader_parameter/animation_speed = 1.0
-shader_parameter/color_low = Color(0.09, 0.09, 0.09, 1)
-shader_parameter/color_mid_red = Color(0.11, 0.11, 0.11, 1)
-shader_parameter/color_high = Color(0.09, 0.09, 0.09, 1)
+shader_parameter/color_low = Color(0.056250002, 0.0225, 0.09, 1)
+shader_parameter/color_mid_red = Color(0.028599998, 0.11, 0.058446653, 1)
+shader_parameter/color_high = Color(0.13, 0.0377, 0.0377, 1)
 shader_parameter/reveal_progress = 1.10000002384186
 shader_parameter/reveal_softness = 0.1790000085025
 shader_parameter/use_reveal_texture = false
@@ -236,7 +237,7 @@ render_target_update_mode = 4
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_mhp6k")
 
-[node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud", "reverse_stamina_hud", "dash_charges_hud", "wall_jump_charges_hud", "glide_charges_hud", "grapple_distance_hud", "roll_indicator_hud", "camera_roll_bars_hud", "compass_hud", "pitch_indicator_hud", "ui_viewport", "hud_root", "ui_composite")]
+[node name="InGameHud" type="CanvasLayer" parent="." unique_id=763616554 node_paths=PackedStringArray("crosshair", "speed_hud", "fall_danger_hud", "reverse_stamina_hud", "dash_charges_hud", "wall_jump_charges_hud", "glide_charges_hud", "grapple_distance_hud", "roll_indicator_hud", "camera_roll_bars_hud", "compass_hud", "pitch_indicator_hud", "ui_viewport", "hud_root", "ui_composite", "player_selfie")]
 layer = 20
 script = ExtResource("6_j8tme")
 crosshair = NodePath("UiViewport/HudRoot/Crosshair")
@@ -254,6 +255,7 @@ pitch_indicator_hud = NodePath("UiViewport/HudRoot/PitchIndicatorHud")
 ui_viewport = NodePath("UiViewport")
 hud_root = NodePath("UiViewport/HudRoot")
 ui_composite = NodePath("UiComposite")
+player_selfie = NodePath("UiViewport/HudRoot/PlayerSelfie")
 
 [node name="UiComposite" type="TextureRect" parent="InGameHud" unique_id=729480663]
 material = SubResource("ShaderMaterial_pxxsx")
@@ -341,7 +343,7 @@ bottom_right = NodePath("BottomRight")
 element_alpha = 0.25
 
 [node name="TopLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=2126119350]
-modulate = Color(0, 1, 0.16666651, 0.4)
+modulate = Color(0, 1, 0.16666651, 0.46666667)
 layout_mode = 0
 offset_left = -170.0
 offset_top = -170.0
@@ -1182,6 +1184,13 @@ text = "4
 "
 label_settings = SubResource("LabelSettings_3vho3")
 horizontal_alignment = 2
+
+[node name="PlayerSelfie" parent="InGameHud/UiViewport/HudRoot" unique_id=1941425470 instance=ExtResource("40_sisia")]
+layout_mode = 1
+offset_left = 12.0
+offset_top = 842.0
+offset_right = 12.0
+offset_bottom = 842.0
 
 [node name="WorldPostLayer" type="CanvasLayer" parent="." unique_id=713396926]
 layer = 10

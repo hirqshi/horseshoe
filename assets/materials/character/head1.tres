@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dtjc8ijp5qskh"]
+
+[ext_resource type="Texture2D" uid="uid://cu57wwbwovlyw" path="res://assets/models/character/head1_posterized.png" id="1_vkiv1"]
+
+[resource]
+shading_mode = 2
+albedo_texture = ExtResource("1_vkiv1")
+texture_filter = 0
+disable_receive_shadows = true

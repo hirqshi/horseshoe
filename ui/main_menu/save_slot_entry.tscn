@@ -7,12 +7,12 @@
 [sub_resource type="LabelSettings" id="LabelSettings_6m30h"]
 font = ExtResource("3_s3upg")
 font_size = 25
-font_color = Color(1, 0, 0.8999996, 1)
+font_color = Color(0, 1, 0.16666651, 0.39215687)
 
 [sub_resource type="LabelSettings" id="LabelSettings_s3upg"]
 font = ExtResource("3_s3upg")
 font_size = 28
-font_color = Color(0, 0.9833336, 1, 1)
+font_color = Color(0, 1, 0.16666651, 0.7137255)
 
 [node name="SaveSlotEntry" type="Control" unique_id=1477017188 node_paths=PackedStringArray("title_label", "stats_label", "select_button", "clear_button")]
 layout_mode = 3

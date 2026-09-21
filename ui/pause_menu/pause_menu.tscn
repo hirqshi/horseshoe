@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b5dpgrhsmvt5i" path="res://ui/pause_menu/pause_menu.gd" id="1_b4b0p"]
 [ext_resource type="Shader" uid="uid://cuftvr6vltmnt" path="res://assets/shaders/crt1.gdshader" id="3_uraes"]
-[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="4_ihaig"]
+[ext_resource type="FontFile" uid="uid://cr23rhqyy8wly" path="res://assets/fonts/CoralPixels-Regular.ttf" id="4_lhp7q"]
 [ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="5_ihaig"]
 [ext_resource type="Theme" uid="uid://dw17ompj7dn1v" path="res://assets/themes/buttons_colored.tres" id="5_umsyg"]
 [ext_resource type="PackedScene" uid="uid://cix8a2p4jmdqt" path="res://ui/settings/settings_menu.tscn" id="5_uraes"]
@@ -31,9 +31,11 @@ shader_parameter/scan_line_strength = -7.19199977162
 shader_parameter/pixel_strength = -0.8909998523225
 
 [sub_resource type="LabelSettings" id="LabelSettings_3qrb2"]
-font = ExtResource("4_ihaig")
-font_size = 40
-font_color = Color(0, 0.9833336, 1, 1)
+font = ExtResource("4_lhp7q")
+font_size = 55
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.5254902)
+shadow_offset = Vector2(6.12, 22.445)
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1403487296 node_paths=PackedStringArray("pause_panel", "settings_menu", "confirm_panel", "resume_button", "settings_button", "restart_button", "main_menu_button")]
 process_mode = 3
@@ -78,14 +80,14 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.5058824)
 
 [node name="TitleLabel" type="Label" parent="PausePanel" unique_id=1986569799]
+modulate = Color(0, 2.910947, 0.6618878, 1)
 layout_mode = 0
-offset_left = 74.0
-offset_top = 140.0
-offset_right = 489.0
-offset_bottom = 198.0
+offset_left = 107.0
+offset_top = 139.0
+offset_right = 522.0
+offset_bottom = 310.0
 text = "Game Paused"
 label_settings = SubResource("LabelSettings_3qrb2")
-horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="ResumeButton" type="Button" parent="PausePanel" unique_id=1304459517]

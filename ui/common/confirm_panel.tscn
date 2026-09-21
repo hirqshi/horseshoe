@@ -4,6 +4,8 @@
 [ext_resource type="Theme" uid="uid://3oh8qomayi5p" path="res://assets/themes/buttons.tres" id="2_h5asi"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_ocox1"]
 [ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="4_ocox1"]
+[ext_resource type="ArrayMesh" uid="uid://c7a8eaon6pe6h" path="res://assets/models/pickups/trigon.obj" id="5_dhwyj"]
+[ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="6_slhxl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ocox1"]
 bg_color = Color(0, 0, 0, 1)
@@ -11,19 +13,19 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 0, 0.8999996, 1)
+border_color = Color(0, 1, 0.16666651, 0.39215687)
 corner_detail = 1
 anti_aliasing = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_ocox1"]
 font = ExtResource("3_ocox1")
 font_size = 40
-font_color = Color(1, 0, 0.8999996, 1)
+font_color = Color(0, 1, 0.16666651, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_4yfcj"]
 font = ExtResource("3_ocox1")
 font_size = 26
-font_color = Color(0, 0.9833336, 1, 1)
+font_color = Color(0, 1, 0.16666651, 0.7137255)
 
 [node name="ConfirmPanel" type="Control" unique_id=1135098963 node_paths=PackedStringArray("title_label", "message_label", "confirm_button", "cancel_button")]
 layout_mode = 3
@@ -136,3 +138,27 @@ grow_vertical = 2
 theme = ExtResource("4_ocox1")
 text = "confirm
 "
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Dialog/Frame" unique_id=874331491]
+modulate = Color(1, 1, 1, 0.33333334)
+layout_mode = 0
+offset_left = -276.5
+offset_top = -292.0
+offset_right = 482.5
+offset_bottom = 351.0
+mouse_filter = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Dialog/Frame/SubViewportContainer" unique_id=2115225221]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(759, 643)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Dialog/Frame/SubViewportContainer/SubViewport" unique_id=1197947745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5568724, 3.8911495, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Dialog/Frame/SubViewportContainer/SubViewport" unique_id=1744254818]
+transform = Transform3D(1.2096045, 0.30014825, -0.6041459, 0, 1.2403581, 0.6162275, 0.67459714, -0.53818893, 1.0832802, 7.5568724, 3.8911495, -1.5686501)
+mesh = ExtResource("5_dhwyj")
+surface_material_override/0 = ExtResource("6_slhxl")

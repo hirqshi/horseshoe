@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://c77sxe237irsc"]
+
+[ext_resource type="Script" uid="uid://dmun4hkc8ow0i" path="res://player/character/portrait_avatar.gd" id="1_axntv"]
+[ext_resource type="ArrayMesh" uid="uid://gv4c4xqoogs6" path="res://assets/models/character/imago.obj" id="2_l6h1c"]
+[ext_resource type="Material" uid="uid://bd15nh48d00m6" path="res://assets/materials/character/body.tres" id="3_b2cyo"]
+[ext_resource type="Material" uid="uid://dtjc8ijp5qskh" path="res://assets/materials/character/head1.tres" id="4_wnp01"]
+[ext_resource type="Material" uid="uid://b8r4q4qgkhodx" path="res://assets/materials/character/hair.tres" id="5_b2cyo"]
+[ext_resource type="Script" uid="uid://ege8pu7qgrtm" path="res://player/character/portrait_blinker.gd" id="6_3crbv"]
+[ext_resource type="Texture2D" uid="uid://dy4utru4qehi3" path="res://assets/models/character/imago_head1_posterized.png" id="7_1db8r"]
+[ext_resource type="Texture2D" uid="uid://befku5eok2jqj" path="res://assets/models/character/head2_posterized.png" id="8_m6wbu"]
+
+[node name="PortraitAvatar" type="Node3D" unique_id=57297134 node_paths=PackedStringArray("face_anchor")]
+script = ExtResource("1_axntv")
+face_anchor = NodePath("FaceAnchor")
+position_follow_multiplier = 0.7
+rotation_follow_multiplier = 0.49
+
+[node name="BodyMesh" type="MeshInstance3D" parent="." unique_id=520512160]
+layers = 524288
+mesh = ExtResource("2_l6h1c")
+surface_material_override/0 = ExtResource("3_b2cyo")
+surface_material_override/1 = ExtResource("4_wnp01")
+surface_material_override/2 = ExtResource("5_b2cyo")
+
+[node name="FaceAnchor" type="Marker3D" parent="." unique_id=419320107]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26844776, -0.10562508)
+
+[node name="PortraitBlinker" type="Node" parent="." unique_id=988255554 node_paths=PackedStringArray("face_mesh")]
+script = ExtResource("6_3crbv")
+face_mesh = NodePath("../BodyMesh")
+material_surface = 1
+open_eyes_texture = ExtResource("7_1db8r")
+closed_eyes_texture = ExtResource("8_m6wbu")

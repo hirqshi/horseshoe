@@ -10,23 +10,23 @@
 [ext_resource type="PackedScene" uid="uid://bsjb1ybje7of0" path="res://ui/settings/input_capture_panel.tscn" id="7_pimbu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_im7d2"]
-bg_color = Color(0, 0.9833336, 1, 1)
+bg_color = Color(0, 1, 0.16666651, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0, 0.9833336, 1, 1)
+border_color = Color(0, 1, 0.16666651, 1)
 anti_aliasing = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_i2kok"]
 font = ExtResource("2_vrqxf")
 font_size = 26
-font_color = Color(0, 0.9833336, 1, 1)
+font_color = Color(0, 1, 0.16666651, 0.7137255)
 
 [sub_resource type="LabelSettings" id="LabelSettings_im7d2"]
 font = ExtResource("2_vrqxf")
 font_size = 26
-font_color = Color(0, 0.9833336, 1, 1)
+font_color = Color(0, 1, 0.16666651, 0.7137255)
 
 [node name="InputSettingsPanel" type="Control" unique_id=310161234 node_paths=PackedStringArray("sensitivity_slider", "sensitivity_value_label", "invert_horizontal_button", "invert_vertical_button", "binding_rows", "reset_defaults_button", "input_capture_panel", "confirm_panel")]
 layout_mode = 3

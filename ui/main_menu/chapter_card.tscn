@@ -9,12 +9,12 @@
 [sub_resource type="LabelSettings" id="LabelSettings_7cbmi"]
 font = ExtResource("4_5vomk")
 font_size = 38
-font_color = Color(1, 0, 0.8999996, 1)
+font_color = Color(0, 1, 0.16666651, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_jf2dt"]
 font = ExtResource("4_5vomk")
 font_size = 26
-font_color = Color(0, 0.9833336, 1, 1)
+font_color = Color(0, 1, 0.16666651, 0.7137255)
 
 [node name="ChapterCard" type="Control" unique_id=1448361952 node_paths=PackedStringArray("preview_texture_rect", "title_label", "status_label", "lock_overlay", "select_button")]
 layout_mode = 3
