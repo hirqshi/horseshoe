@@ -18,6 +18,12 @@ enum VisualState {
 @export var hook_origin: Marker3D
 @export var hook_mesh: MeshInstance3D
 
+@export_category("audio")
+@export var hook_attach_audio_player: AudioStreamPlayer3D
+@export var hook_attach_streams: Array[AudioStream] = []
+@export_range(0.1, 3.0, 0.01) var hook_attach_pitch_min: float = 0.96
+@export_range(0.1, 3.0, 0.01) var hook_attach_pitch_max: float = 1.04
+
 @export_category("hook orientation")
 @export var hook_local_rotation_offset_deg: Vector3 = Vector3(
 	-90.0,
@@ -54,6 +60,8 @@ var _return_duration_s: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("grapple_visual")
+
 	if movement_motor == null:
 		push_error(
 			"GrappleVisual requires MovementMotor."
@@ -197,7 +205,37 @@ func _on_hook_attached(
 		_anchor_normal
 	)
 
+	_play_hook_attach_sound()
+
 	hook_attached.emit()
+
+
+func _play_hook_attach_sound() -> void:
+	if hook_attach_audio_player == null:
+		return
+
+	if hook_attach_streams.is_empty():
+		return
+
+	hook_attach_audio_player.global_position = (
+		hook_mesh.global_position
+	)
+
+	var stream_index: int = randi_range(
+		0,
+		hook_attach_streams.size() - 1
+	)
+
+	hook_attach_audio_player.stream = (
+		hook_attach_streams[stream_index]
+	)
+
+	hook_attach_audio_player.pitch_scale = randf_range(
+		hook_attach_pitch_min,
+		hook_attach_pitch_max
+	)
+
+	hook_attach_audio_player.play()
 
 
 func _on_hook_finished(

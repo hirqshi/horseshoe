@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bpo2tposf4y87" path="res://gameplay/checkpoints/checkpoint_visual.gd" id="3_scmly"]
 [ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="4_dtj1p"]
 [ext_resource type="Script" uid="uid://bp1ofatp42q1a" path="res://gameplay/checkpoints/checkpoint_audio.gd" id="4_q5aef"]
-[ext_resource type="AudioStream" uid="uid://bas0njc5y5dvv" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Apply.wav" id="5_4bk82"]
+[ext_resource type="AudioStream" uid="uid://bvm1m5n83bgxb" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Checkpoint_Save.wav" id="7_4bk82"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_lfved"]
 height = 3.0
@@ -43,9 +43,9 @@ active_secondary_color = Color(1, 0, 0.3000002, 1)
 script = ExtResource("4_q5aef")
 activation_player = NodePath("ActivationPlayer")
 hum_player = NodePath("HumPlayer")
-activation_streams = Array[AudioStream]([ExtResource("5_4bk82")])
-activation_pitch_min = 1.0
-activation_pitch_max = 1.0
+activation_streams = Array[AudioStream]([ExtResource("7_4bk82")])
+activation_pitch_min = 0.9299999999999999
+activation_pitch_max = 1.08
 
 [node name="HumPlayer" type="AudioStreamPlayer3D" parent="CheckpointAudio" unique_id=325643860]
 stream = ExtResource("4_dtj1p")
@@ -55,5 +55,6 @@ max_distance = 7.0
 bus = &"WorldSfx"
 
 [node name="ActivationPlayer" type="AudioStreamPlayer3D" parent="CheckpointAudio" unique_id=288599747]
+stream = ExtResource("7_4bk82")
 max_distance = 35.83
 bus = &"Sfx"

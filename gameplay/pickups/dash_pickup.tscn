@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dhbpwms4rmg8r"]
 
 [ext_resource type="PackedScene" uid="uid://bbvbp7wldlmmy" path="res://gameplay/pickups/pickup.tscn" id="1_tfn68"]
-[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="2_5t2sq"]
-[ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="2_ji4c3"]
+[ext_resource type="AudioStream" uid="uid://1l30k5g7prrf" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Pickme_Noise_2.wav" id="2_ji4c3"]
 [ext_resource type="ArrayMesh" uid="uid://cka5gcuwt17n8" path="res://assets/models/pickups/icosahedron.obj" id="2_vucmp"]
 [ext_resource type="Script" uid="uid://clpdgyaaeu8a" path="res://gameplay/pickups/pickup_definition.gd" id="2_ww8mj"]
+[ext_resource type="AudioStream" uid="uid://c3luu44v0etpf" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/PickMe_Yes_I_Pick.wav" id="3_4lonb"]
 [ext_resource type="Material" uid="uid://drj5cuy3a75nm" path="res://assets/materials/pickups/dash_pickup.tres" id="4_5t2sq"]
 
 [sub_resource type="Resource" id="Resource_ugal6"]
@@ -14,7 +14,7 @@ charge_amount = 4
 speed_multiplier = 1.0
 speed_boost_duration_s = 0.1
 impulse_minimum_speed_mps = 0.0
-pickup_streams = Array[AudioStream]([ExtResource("2_5t2sq")])
+pickup_streams = Array[AudioStream]([ExtResource("3_4lonb")])
 hum_stream = ExtResource("2_ji4c3")
 metadata/_custom_type_script = "uid://clpdgyaaeu8a"
 

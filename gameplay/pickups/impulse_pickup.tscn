@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cqt33ud2kdjcf"]
 
 [ext_resource type="PackedScene" uid="uid://bbvbp7wldlmmy" path="res://gameplay/pickups/pickup.tscn" id="1_jtrys"]
-[ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="2_htr17"]
-[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="3_bhh7y"]
+[ext_resource type="AudioStream" uid="uid://omq0gtwgkqip" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/PickMe_Noise.wav" id="2_bhh7y"]
+[ext_resource type="AudioStream" uid="uid://c3luu44v0etpf" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/PickMe_Yes_I_Pick.wav" id="3_adsgq"]
 [ext_resource type="Script" uid="uid://clpdgyaaeu8a" path="res://gameplay/pickups/pickup_definition.gd" id="4_adsgq"]
 [ext_resource type="ArrayMesh" uid="uid://bqn3c31w0wte3" path="res://assets/models/pickups/cube.obj" id="5_jc6lw"]
 [ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="6_bhh7y"]
@@ -13,8 +13,8 @@ script = ExtResource("4_adsgq")
 effect_type = 3
 speed_multiplier = 1.0
 speed_boost_duration_s = 0.1
-pickup_streams = Array[AudioStream]([ExtResource("3_bhh7y")])
-hum_stream = ExtResource("2_htr17")
+pickup_streams = Array[AudioStream]([ExtResource("3_adsgq")])
+hum_stream = ExtResource("2_bhh7y")
 metadata/_custom_type_script = "uid://clpdgyaaeu8a"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_htr17"]

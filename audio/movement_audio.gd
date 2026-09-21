@@ -21,6 +21,18 @@ extends Node
 
 @export var wind_player: AudioStreamPlayer
 
+@export_category("glide audio players")
+@export var glide_deploy_player: AudioStreamPlayer
+@export var glide_loop_player: AudioStreamPlayer
+@export var glide_close_player: AudioStreamPlayer
+@export var glide_fail_player: AudioStreamPlayer
+
+@export_category("grapple audio players")
+@export var grapple_fire_player: AudioStreamPlayer
+@export var grapple_loop_player: AudioStreamPlayer
+@export var grapple_return_player: AudioStreamPlayer
+@export var grapple_fail_player: AudioStreamPlayer
+
 @export_category("polyphony")
 @export_range(1, 16, 1) var footstep_max_polyphony: int = 3
 @export_range(1, 16, 1) var one_shot_max_polyphony: int = 5
@@ -49,6 +61,18 @@ extends Node
 
 @export_category("wind")
 @export var wind_stream: AudioStream
+
+@export_category("glide streams")
+@export var glide_deploy_streams: Array[AudioStream] = []
+@export var glide_loop_stream: AudioStream
+@export var glide_close_streams: Array[AudioStream] = []
+@export var glide_fail_streams: Array[AudioStream] = []
+
+@export_category("grapple streams")
+@export var grapple_fire_streams: Array[AudioStream] = []
+@export var grapple_loop_stream: AudioStream
+@export var grapple_return_streams: Array[AudioStream] = []
+@export var grapple_fail_streams: Array[AudioStream] = []
 
 @export_category("footsteps")
 @export_range(0.0, 100.0, 0.01, "suffix:m/s") var footstep_min_speed_mps: float = 1.0
@@ -92,6 +116,18 @@ extends Node
 @export_range(0.1, 3.0, 0.01) var wind_pitch_max: float = 1.18
 @export_range(0.1, 100.0, 0.1, "suffix:1/s") var wind_follow_speed: float = 7.0
 
+@export_category("glide loop")
+@export_range(-80.0, 6.0, 0.1, "suffix:dB") var glide_loop_silent_volume_db: float = -70.0
+@export_range(-80.0, 6.0, 0.1, "suffix:dB") var glide_loop_max_volume_db: float = -6.0
+@export_range(0.05, 3.0, 0.01, "suffix:s") var glide_loop_fade_in_s: float = 0.35
+@export_range(0.05, 3.0, 0.01, "suffix:s") var glide_loop_fade_out_s: float = 0.25
+
+@export_category("grapple loop")
+@export_range(-80.0, 6.0, 0.1, "suffix:dB") var grapple_loop_silent_volume_db: float = -70.0
+@export_range(-80.0, 6.0, 0.1, "suffix:dB") var grapple_loop_max_volume_db: float = -5.0
+@export_range(0.05, 3.0, 0.01, "suffix:s") var grapple_loop_fade_in_s: float = 0.15
+@export_range(0.05, 3.0, 0.01, "suffix:s") var grapple_loop_fade_out_s: float = 0.2
+
 @onready var _player: Player = get_parent() as Player
 
 @onready var _movement_motor: MovementMotor = (
@@ -109,7 +145,16 @@ var _step_timer_s: float = 0.0
 var _is_sliding: bool = false
 var _is_wallrunning: bool = false
 
+var _is_gliding: bool = false
+var _glide_loop_target_db: float = -80.0
+
+var _is_grappling: bool = false
+var _grapple_loop_target_db: float = -80.0
+
 var _skip_next_ground_jump_sound: bool = false
+
+var _grapple_action: GrappleAction
+var _grapple_visual: GrappleVisual
 
 
 func _ready() -> void:
@@ -132,6 +177,35 @@ func _ready() -> void:
 	_connect_movement_signals()
 	_setup_loop_players()
 	_connect_camera_visual_signals()
+	call_deferred("_connect_grapple_signals")
+
+
+func _connect_grapple_signals() -> void:
+	if _movement_motor.has_method("get_grapple_action"):
+		_grapple_action = _movement_motor.get_grapple_action()
+
+	if _grapple_action != null:
+		_grapple_action.hook_fired.connect(_on_hook_fired)
+		_grapple_action.hook_finished.connect(_on_hook_finished)
+		_grapple_action.grapple_failed.connect(_on_grapple_failed)
+	else:
+		push_warning(
+			"MovementAudio could not find GrappleAction; "
+			+ "grapple sounds will not play."
+		)
+
+	_grapple_visual = get_tree().get_first_node_in_group(
+		"grapple_visual"
+	) as GrappleVisual
+
+	if _grapple_visual != null:
+		_grapple_visual.hook_hidden.connect(_on_hook_returned)
+	else:
+		push_warning(
+			"MovementAudio could not find GrappleVisual "
+			+ "(missing group 'grapple_visual'); "
+			+ "grapple return sound will not play."
+		)
 
 
 func _process(delta: float) -> void:
@@ -139,6 +213,7 @@ func _process(delta: float) -> void:
 		return
 
 	var horizontal_speed_mps: float = _get_horizontal_speed_mps()
+	var full_speed_mps: float = _get_full_speed_mps()
 
 	_update_footsteps(
 		delta,
@@ -152,8 +227,12 @@ func _process(delta: float) -> void:
 
 	_update_wind_loop(
 		delta,
-		horizontal_speed_mps
+		full_speed_mps
 	)
+
+	_update_glide_loop(delta)
+
+	_update_grapple_loop(delta)
 
 
 func _connect_movement_signals() -> void:
@@ -197,6 +276,18 @@ func _connect_movement_signals() -> void:
 		_on_wall_jump_failed
 	)
 
+	_movement_motor.glide_started.connect(
+		_on_glide_started
+	)
+
+	_movement_motor.glide_finished.connect(
+		_on_glide_finished
+	)
+
+	_movement_motor.glide_failed.connect(
+		_on_glide_failed
+	)
+
 
 func _setup_loop_players() -> void:
 	if slide_loop_player != null:
@@ -211,6 +302,14 @@ func _setup_loop_players() -> void:
 
 		if wind_player.stream != null:
 			wind_player.play()
+
+	if glide_loop_player != null:
+		glide_loop_player.volume_db = glide_loop_silent_volume_db
+		_glide_loop_target_db = glide_loop_silent_volume_db
+
+	if grapple_loop_player != null:
+		grapple_loop_player.volume_db = grapple_loop_silent_volume_db
+		_grapple_loop_target_db = grapple_loop_silent_volume_db
 
 
 func _update_footsteps(
@@ -331,7 +430,7 @@ func _update_slide_loop(
 
 func _update_wind_loop(
 	delta: float,
-	horizontal_speed_mps: float
+	full_speed_mps: float
 ) -> void:
 	if wind_player == null:
 		return
@@ -343,7 +442,7 @@ func _update_wind_loop(
 		wind_player.play()
 
 	var speed_progress: float = _get_speed_progress(
-		horizontal_speed_mps,
+		full_speed_mps,
 		wind_start_speed_mps,
 		wind_speed_cap_mps
 	)
@@ -371,6 +470,72 @@ func _update_wind_loop(
 		wind_pitch_max,
 		speed_progress
 	)
+
+
+func _update_glide_loop(delta: float) -> void:
+	if glide_loop_player == null:
+		return
+
+	if _is_gliding and glide_loop_player.stream == null:
+		glide_loop_player.stream = glide_loop_stream
+
+	if _is_gliding and not glide_loop_player.playing \
+	and glide_loop_player.stream != null:
+		glide_loop_player.play()
+
+	var fade_speed: float = (
+		1.0 / glide_loop_fade_in_s
+		if _is_gliding
+		else 1.0 / glide_loop_fade_out_s
+	)
+
+	var follow_weight: float = 1.0 - exp(-fade_speed * delta)
+
+	glide_loop_player.volume_db = lerpf(
+		glide_loop_player.volume_db,
+		_glide_loop_target_db,
+		follow_weight
+	)
+
+	if not _is_gliding \
+	and glide_loop_player.playing \
+	and glide_loop_player.volume_db <= (
+		glide_loop_silent_volume_db + 1.0
+	):
+		glide_loop_player.stop()
+
+
+func _update_grapple_loop(delta: float) -> void:
+	if grapple_loop_player == null:
+		return
+
+	if _is_grappling and grapple_loop_player.stream == null:
+		grapple_loop_player.stream = grapple_loop_stream
+
+	if _is_grappling and not grapple_loop_player.playing \
+	and grapple_loop_player.stream != null:
+		grapple_loop_player.play()
+
+	var fade_speed: float = (
+		1.0 / grapple_loop_fade_in_s
+		if _is_grappling
+		else 1.0 / grapple_loop_fade_out_s
+	)
+
+	var follow_weight: float = 1.0 - exp(-fade_speed * delta)
+
+	grapple_loop_player.volume_db = lerpf(
+		grapple_loop_player.volume_db,
+		_grapple_loop_target_db,
+		follow_weight
+	)
+
+	if not _is_grappling \
+	and grapple_loop_player.playing \
+	and grapple_loop_player.volume_db <= (
+		grapple_loop_silent_volume_db + 1.0
+	):
+		grapple_loop_player.stop()
 
 
 func _on_landed(
@@ -457,11 +622,6 @@ func _on_wall_jump_failed() -> void:
 func _on_slide_started() -> void:
 	_is_sliding = true
 
-	print(
-		"slide audio started | stream=",
-		slide_loop_player.stream
-	)
-
 	_play_random_stream(
 		slide_start_player,
 		slide_start_streams,
@@ -493,11 +653,94 @@ func _on_wallrun_finished() -> void:
 	_is_wallrunning = false
 
 
+func _on_glide_started() -> void:
+	_is_gliding = true
+	_glide_loop_target_db = glide_loop_max_volume_db
+
+	_play_random_stream(
+		glide_deploy_player,
+		glide_deploy_streams,
+		false,
+		action_pitch_min,
+		action_pitch_max
+	)
+
+
+func _on_glide_finished() -> void:
+	_is_gliding = false
+	_glide_loop_target_db = glide_loop_silent_volume_db
+
+	_play_random_stream(
+		glide_close_player,
+		glide_close_streams,
+		false,
+		action_pitch_min,
+		action_pitch_max
+	)
+
+
+func _on_glide_failed() -> void:
+	_play_random_stream(
+		glide_fail_player,
+		glide_fail_streams,
+		false,
+		1.0,
+		1.0
+	)
+
+
+func _on_hook_fired(
+	_target_position: Vector3,
+	_travel_duration_s: float
+) -> void:
+	_is_grappling = true
+	_grapple_loop_target_db = grapple_loop_max_volume_db
+
+	_play_random_stream(
+		grapple_fire_player,
+		grapple_fire_streams,
+		false,
+		action_pitch_min,
+		action_pitch_max
+	)
+
+
+func _on_hook_finished(
+	_was_cancelled: bool
+) -> void:
+	_is_grappling = false
+	_grapple_loop_target_db = grapple_loop_silent_volume_db
+
+
+func _on_hook_returned() -> void:
+	_play_random_stream(
+		grapple_return_player,
+		grapple_return_streams,
+		false,
+		action_pitch_min,
+		action_pitch_max
+	)
+
+
+func _on_grapple_failed() -> void:
+	_play_random_stream(
+		grapple_fail_player,
+		grapple_fail_streams,
+		false,
+		1.0,
+		1.0
+	)
+
+
 func _get_horizontal_speed_mps() -> float:
 	return Vector2(
 		_player.velocity.x,
 		_player.velocity.z
 	).length()
+
+
+func _get_full_speed_mps() -> float:
+	return _player.velocity.length()
 
 
 func _get_step_interval_s(
@@ -662,6 +905,47 @@ func _validate_players() -> void:
 			"MovementAudio has no WindPlayer."
 		)
 
+	if glide_deploy_player == null:
+		push_warning(
+			"MovementAudio has no GlideDeployPlayer."
+		)
+
+	if glide_loop_player == null:
+		push_warning(
+			"MovementAudio has no GlideLoopPlayer."
+		)
+
+	if glide_close_player == null:
+		push_warning(
+			"MovementAudio has no GlideClosePlayer."
+		)
+
+	if glide_fail_player == null:
+		push_warning(
+			"MovementAudio has no GlideFailPlayer."
+		)
+
+	if grapple_fire_player == null:
+		push_warning(
+			"MovementAudio has no GrappleFirePlayer."
+		)
+
+	if grapple_loop_player == null:
+		push_warning(
+			"MovementAudio has no GrappleLoopPlayer."
+		)
+
+	if grapple_return_player == null:
+		push_warning(
+			"MovementAudio has no GrappleReturnPlayer."
+		)
+
+	if grapple_fail_player == null:
+		push_warning(
+			"MovementAudio has no GrappleFailPlayer."
+		)
+
+
 func _configure_audio_players() -> void:
 	_configure_one_shot_player(
 		footstep_player,
@@ -718,12 +1002,50 @@ func _configure_audio_players() -> void:
 		fail_sound_max_polyphony
 	)
 
+	_configure_one_shot_player(
+		glide_deploy_player,
+		one_shot_max_polyphony
+	)
+
+	_configure_one_shot_player(
+		glide_close_player,
+		one_shot_max_polyphony
+	)
+
+	_configure_one_shot_player(
+		glide_fail_player,
+		fail_sound_max_polyphony
+	)
+
+	_configure_one_shot_player(
+		grapple_fire_player,
+		one_shot_max_polyphony
+	)
+
+	_configure_one_shot_player(
+		grapple_return_player,
+		one_shot_max_polyphony
+	)
+
+	_configure_one_shot_player(
+		grapple_fail_player,
+		fail_sound_max_polyphony
+	)
+
 	_configure_loop_player(
 		slide_loop_player
 	)
 
 	_configure_loop_player(
 		wind_player
+	)
+
+	_configure_loop_player(
+		glide_loop_player
+	)
+
+	_configure_loop_player(
+		grapple_loop_player
 	)
 
 

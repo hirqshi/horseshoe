@@ -43,6 +43,7 @@ signal glide_availability_changed(
 
 signal glide_started()
 signal glide_finished()
+signal glide_failed()
 
 signal speed_boost_started(
 	speed_multiplier: float,
@@ -229,6 +230,10 @@ func _ready() -> void:
 
 	_glide_state.glide_finished.connect(
 		_on_glide_finished
+	)
+
+	_glide_state.glide_failed.connect(
+		_on_glide_failed
 	)
 	
 	_body.floor_max_angle = deg_to_rad(config.max_floor_angle_deg)
@@ -1068,6 +1073,10 @@ func _on_glide_started() -> void:
 
 func _on_glide_finished() -> void:
 	glide_finished.emit()
+
+
+func _on_glide_failed() -> void:
+	glide_failed.emit()
 
 
 func get_grapple_action() -> GrappleAction:

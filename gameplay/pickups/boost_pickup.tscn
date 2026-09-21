@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://bbvbp7wldlmmy" path="res://gameplay/pickups/pickup.tscn" id="1_u8xt0"]
 [ext_resource type="ArrayMesh" uid="uid://bpw2w6cn7i8t0" path="res://assets/models/pickups/octahedron.obj" id="2_a6neh"]
-[ext_resource type="AudioStream" uid="uid://bvpfhwjjq62p3" path="res://audio/checkpoint_loop.tres" id="2_p6qee"]
-[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="3_m2nol"]
+[ext_resource type="AudioStream" uid="uid://omq0gtwgkqip" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/PickMe_Noise.wav" id="2_p6qee"]
+[ext_resource type="AudioStream" uid="uid://c3luu44v0etpf" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/PickMe_Yes_I_Pick.wav" id="3_m2nol"]
 [ext_resource type="Script" uid="uid://clpdgyaaeu8a" path="res://gameplay/pickups/pickup_definition.gd" id="4_dv5k3"]
 [ext_resource type="Material" uid="uid://b6rpr1fybcpgs" path="res://assets/materials/pickups/boost_pickup.tres" id="6_p6qee"]
 

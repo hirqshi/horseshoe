@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://bsfssmv454j38" path="res://data/movement/default_movement_config.tres" id="4_yw30f"]
 [ext_resource type="Script" uid="uid://bbnjlu8xn4wx3" path="res://player/movement/states/grounded_locomotion_state.gd" id="5_boad6"]
 [ext_resource type="Script" uid="uid://qmrstb1ip2xx" path="res://player/actions/grapple/grapple_rope_visual.gd" id="5_fmu53"]
-[ext_resource type="Texture2D" uid="uid://bauxt72fenptq" path="res://assets/textures/world/albedo/Concrete017_4K_Color.jpg" id="5_jfgyi"]
+[ext_resource type="Texture2D" uid="uid://bauxt72fenptq" path="res://assets/textures/world/concrete/albedo/Concrete017_4K_Color.jpg" id="5_jfgyi"]
 [ext_resource type="Script" uid="uid://cpw6cl28g505q" path="res://player/sensors/player_sensors.gd" id="5_qjkh3"]
 [ext_resource type="Script" uid="uid://bgrcyb2s8mgwb" path="res://player/movement/states/airborne_locomotion_state.gd" id="6_rgyib"]
 [ext_resource type="Texture2D" uid="uid://bge4lb2qwktvv" path="res://assets/textures/world/concrete/normal/Concrete017_4K_NormalGL.png" id="6_wpyo2"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://y5oaj8gqj3l8" path="res://player/actions/action_controller.gd" id="8_8t03j"]
 [ext_resource type="Resource" uid="uid://je7gkx0v4tn1" path="res://data/movement/default_wallrun_config.tres" id="8_c35mf"]
 [ext_resource type="Script" uid="uid://dcg5etkq4idhh" path="res://player/actions/dash/dash_action.gd" id="9_2ieo8"]
+[ext_resource type="AudioStream" uid="uid://drgwapxbmdeqh" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Hook_Anchoring_To_Concrete.wav" id="9_3dxkp"]
 [ext_resource type="Script" uid="uid://dx1e22ufcmubo" path="res://player/actions/grounding/grounding_action.gd" id="10_32hag"]
 [ext_resource type="Resource" uid="uid://bti7l146y8ekq" path="res://data/movement/default_dash_config.tres" id="10_ebec5"]
 [ext_resource type="Script" uid="uid://bta70wfmqfxy8" path="res://player/movement/states/glide_state.gd" id="10_j55il"]
@@ -41,8 +42,6 @@
 [ext_resource type="AudioStream" uid="uid://d0m5uqkb13jbw" path="res://assets/sound/sfx/Sounds_Packet_First/Wings_Open.wav" id="28_b8hi5"]
 [ext_resource type="AudioStream" uid="uid://dlsy4hkx3k5jp" path="res://assets/sound/sfx/Sounds_Packet_First/Step4.wav" id="28_n0b8q"]
 [ext_resource type="AudioStream" uid="uid://ck3juq7i8xoy" path="res://audio/slide_loop.tres" id="28_pnw6m"]
-[ext_resource type="AudioStream" uid="uid://dmv4qpbvuod0p" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Choose.wav" id="29_2uvqg"]
-[ext_resource type="AudioStream" uid="uid://bas0njc5y5dvv" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Apply.wav" id="32_5ejfk"]
 [ext_resource type="AudioStream" uid="uid://mukc3hjif5rx" path="res://assets/sound/sfx/Sounds_Packet_First/Heavy_Step1.wav" id="33_jd2rm"]
 [ext_resource type="AudioStream" uid="uid://ba4snfor6ftn2" path="res://assets/sound/sfx/Sounds_Packet_First/Little_step1.wav" id="34_a1u5o"]
 [ext_resource type="Script" uid="uid://dpirrcjgvfj4a" path="res://gameplay/particles/player_movement_particles.gd" id="36_pnw6m"]
@@ -51,10 +50,18 @@
 [ext_resource type="PackedScene" uid="uid://cr6vckkd0xma8" path="res://player/particles/ground_jump_burst_pool.tscn" id="37_pnw6m"]
 [ext_resource type="PackedScene" uid="uid://bpu8h0bp63okg" path="res://player/particles/wall_jump_burst_pool.tscn" id="39_55jnj"]
 [ext_resource type="PackedScene" uid="uid://dre6w3vf874gu" path="res://player/particles/light_landing_burst_pool.tscn" id="40_dx5ib"]
+[ext_resource type="AudioStream" uid="uid://bh72lxbwodhsi" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Dash.wav" id="41_7crtr"]
 [ext_resource type="PackedScene" uid="uid://ck5u03uputdco" path="res://player/particles/heavy_landing_burst_pool.tscn" id="41_a2xo5"]
 [ext_resource type="Texture2D" uid="uid://cfgpwbvj07w2v" path="res://assets/textures/particles/DustCloud2.png" id="42_art4l"]
 [ext_resource type="PackedScene" uid="uid://bhr0u0msaf8v4" path="res://player/particles/slide_start_burst_pool.tscn" id="42_fjxoa"]
+[ext_resource type="AudioStream" uid="uid://cgos5un18i255" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Impossible_Use_2.wav" id="42_vgvch"]
 [ext_resource type="PackedScene" uid="uid://dyb3deg1ebaa3" path="res://player/particles/walk_step_burst_pool.tscn" id="43_gswnw"]
+[ext_resource type="AudioStream" uid="uid://dtnirfikebne4" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Impossible_Use_1.wav" id="44_a1u5o"]
+[ext_resource type="AudioStream" uid="uid://dm7dn64wrg0v6" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Hook_Shoot_From_Nest.wav" id="47_a1u5o"]
+[ext_resource type="AudioStream" uid="uid://dyt66b446tdai" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Hook_Close.wav" id="48_3dxkp"]
+[ext_resource type="AudioStream" uid="uid://4mo0eqiq2mqf" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Wings_Close.wav" id="49_p5tca"]
+[ext_resource type="AudioStream" uid="uid://ctuwu52qphjlh" path="res://audio/glide_loop.tres" id="49_s3g0c"]
+[ext_resource type="AudioStream" uid="uid://ba2nqyjveo7jd" path="res://audio/grapple_loop.tres" id="52_35wys"]
 [ext_resource type="PackedScene" uid="uid://c77sxe237irsc" path="res://player/character/portrait_avatar.tscn" id="56_7crtr"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m30h"]
@@ -176,11 +183,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43744934, -0.7816684, 0)
 mesh = ExtResource("4_jfgyi")
 surface_material_override/0 = SubResource("StandardMaterial3D_e4s7s")
 
-[node name="GrappleVisual" type="Node3D" parent="Head/CameraVisualRig" unique_id=184746267 node_paths=PackedStringArray("movement_motor", "hook_origin", "hook_mesh")]
+[node name="HookAttachPlayer" type="AudioStreamPlayer3D" parent="Head/CameraVisualRig/HookMesh" unique_id=1856953090]
+stream = ExtResource("9_3dxkp")
+unit_size = 15.08
+max_distance = 40.0
+bus = &"PlayerSfx"
+
+[node name="GrappleVisual" type="Node3D" parent="Head/CameraVisualRig" unique_id=184746267 node_paths=PackedStringArray("movement_motor", "hook_origin", "hook_mesh", "hook_attach_audio_player")]
 script = ExtResource("4_8pxes")
 movement_motor = NodePath("../../../MovementMotor")
 hook_origin = NodePath("../HookOrigin")
 hook_mesh = NodePath("../HookMesh")
+hook_attach_audio_player = NodePath("../HookMesh/HookAttachPlayer")
+hook_attach_streams = Array[AudioStream]([ExtResource("9_3dxkp")])
 hook_local_rotation_offset_deg = Vector3(-180, 0, 0)
 
 [node name="GrappleRope" type="MeshInstance3D" parent="Head/CameraVisualRig" unique_id=222163440 node_paths=PackedStringArray("grapple_visual", "hook_origin", "movement_motor")]
@@ -295,7 +310,7 @@ idle_drain_per_second = 3.95
 slow_movement_drain_per_second = 1.79
 slowdown_grace_duration = 5.0
 
-[node name="MovementAudio" type="Node" parent="." unique_id=1465264965 node_paths=PackedStringArray("footstep_player", "crouch_footstep_player", "slide_start_player", "slide_loop_player", "slide_end_player", "dash_player", "dash_fail_player", "ground_jump_player", "wall_jump_player", "wall_jump_fail_player", "light_landing_player", "heavy_landing_player", "wind_player", "camera_visual_rig")]
+[node name="MovementAudio" type="Node" parent="." unique_id=1465264965 node_paths=PackedStringArray("footstep_player", "crouch_footstep_player", "slide_start_player", "slide_loop_player", "slide_end_player", "dash_player", "dash_fail_player", "ground_jump_player", "wall_jump_player", "wall_jump_fail_player", "light_landing_player", "heavy_landing_player", "wind_player", "glide_deploy_player", "glide_loop_player", "glide_close_player", "glide_fail_player", "grapple_fire_player", "grapple_loop_player", "grapple_return_player", "grapple_fail_player", "camera_visual_rig")]
 script = ExtResource("24_knn7v")
 footstep_player = NodePath("FootstepPlayer")
 crouch_footstep_player = NodePath("CrouchFootstepPlayer")
@@ -310,6 +325,14 @@ wall_jump_fail_player = NodePath("WallJumpFailPlayer")
 light_landing_player = NodePath("LightLandingPlayer")
 heavy_landing_player = NodePath("HeavyLandingPlayer")
 wind_player = NodePath("WindPlayer")
+glide_deploy_player = NodePath("GlideDeployPlayer")
+glide_loop_player = NodePath("GlideLoopPlayer")
+glide_close_player = NodePath("GlideClosePlayer")
+glide_fail_player = NodePath("GlideFailPlayer")
+grapple_fire_player = NodePath("GrappleFirePlayer")
+grapple_loop_player = NodePath("GrappleLoopPlayer")
+grapple_return_player = NodePath("GrappleReturnPlayer")
+grapple_fail_player = NodePath("GrappleFailPlayer")
 footstep_max_polyphony = 16
 one_shot_max_polyphony = 16
 walk_run_streams = Array[AudioStream]([ExtResource("28_n0b8q")])
@@ -317,14 +340,22 @@ crouch_streams = Array[AudioStream]([ExtResource("34_a1u5o")])
 slide_start_streams = Array[AudioStream]([ExtResource("25_uw77l")])
 slide_loop_stream = ExtResource("28_pnw6m")
 slide_end_streams = Array[AudioStream]([ExtResource("27_rptt4")])
-dash_streams = Array[AudioStream]([ExtResource("28_b8hi5")])
-dash_fail_streams = Array[AudioStream]([ExtResource("29_2uvqg")])
+dash_streams = Array[AudioStream]([ExtResource("41_7crtr")])
+dash_fail_streams = Array[AudioStream]([ExtResource("42_vgvch")])
 ground_jump_streams = Array[AudioStream]([ExtResource("25_8pxes")])
 wall_jump_streams = Array[AudioStream]([ExtResource("25_8pxes")])
-wall_jump_fail_streams = Array[AudioStream]([ExtResource("32_5ejfk")])
+wall_jump_fail_streams = Array[AudioStream]([ExtResource("44_a1u5o")])
 light_landing_streams = Array[AudioStream]([ExtResource("33_jd2rm")])
 heavy_landing_streams = Array[AudioStream]([ExtResource("33_jd2rm")])
 wind_stream = ExtResource("37_1so5t")
+glide_deploy_streams = Array[AudioStream]([ExtResource("28_b8hi5")])
+glide_loop_stream = ExtResource("49_s3g0c")
+glide_close_streams = Array[AudioStream]([ExtResource("49_p5tca")])
+glide_fail_streams = Array[AudioStream]([ExtResource("42_vgvch")])
+grapple_fire_streams = Array[AudioStream]([ExtResource("47_a1u5o")])
+grapple_loop_stream = ExtResource("52_35wys")
+grapple_return_streams = Array[AudioStream]([ExtResource("48_3dxkp")])
+grapple_fail_streams = Array[AudioStream]([ExtResource("44_a1u5o")])
 walk_step_interval_s = 0.38
 run_step_interval_s = 0.12
 crouch_step_interval_s = 0.43
@@ -348,6 +379,8 @@ wind_max_volume_db = -5.299999999999997
 wind_pitch_min = 0.72
 wind_pitch_max = 1.52
 wind_follow_speed = 15.5
+glide_loop_silent_volume_db = -18.700000000000003
+glide_loop_max_volume_db = -1.5999999999999943
 camera_visual_rig = NodePath("../Head/CameraVisualRig")
 uses_bob_synced_footsteps = true
 
@@ -387,6 +420,32 @@ volume_db = -3.0
 [node name="WindPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1968365916]
 stream = ExtResource("37_1so5t")
 volume_db = -6.614
+bus = &"PlayerSfx"
+
+[node name="GlideDeployPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=118207704]
+bus = &"PlayerSfx"
+
+[node name="GlideLoopPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=607020315]
+volume_db = 10.667
+max_polyphony = 2
+bus = &"PlayerSfx"
+
+[node name="GlideClosePlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=86366814]
+bus = &"PlayerSfx"
+
+[node name="GlideFailPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=826769599]
+bus = &"PlayerSfx"
+
+[node name="GrappleFirePlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=260006616]
+bus = &"PlayerSfx"
+
+[node name="GrappleLoopPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=1340074690]
+bus = &"PlayerSfx"
+
+[node name="GrappleReturnPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=902306580]
+bus = &"PlayerSfx"
+
+[node name="GrappleFailPlayer" type="AudioStreamPlayer" parent="MovementAudio" unique_id=579323705]
 bus = &"PlayerSfx"
 
 [node name="PlayerMovementParticles" type="Node3D" parent="." unique_id=1803029965 node_paths=PackedStringArray("movement_motor", "camera_visual_rig", "ground_jump_burst_pool", "wall_jump_burst_pool", "light_landing_burst_pool", "heavy_landing_burst_pool", "slide_start_burst_pool", "walk_step_burst_pool", "slide_trail_particles")]

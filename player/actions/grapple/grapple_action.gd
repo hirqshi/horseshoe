@@ -28,6 +28,8 @@ signal cooldown_started(
 	duration_s: float
 )
 
+signal grapple_failed()
+
 enum GrappleState {
 	READY,
 	OUTGOING,
@@ -61,6 +63,8 @@ var _cooldown_until_s: float = -INF
 var _is_active: bool = false
 
 var _has_reached_pull_target: bool = false
+
+var _was_grapple_pressed: bool = false
 
 
 func setup(
@@ -108,19 +112,39 @@ func update(
 func can_start(
 	context: MovementContext
 ) -> bool:
-	if not context.player_input.is_grapple_pressed:
+	var is_pressed: bool = (
+		context.player_input.is_grapple_pressed
+	)
+
+	var was_just_pressed: bool = (
+		is_pressed
+		and not _was_grapple_pressed
+	)
+
+	_was_grapple_pressed = is_pressed
+
+	if not is_pressed:
 		return false
 
 	if is_on_cooldown(
 		context.time_s
 	):
+		if was_just_pressed:
+			grapple_failed.emit()
+
 		return false
 
 	_update_target(
 		context
 	)
 
-	return _has_valid_target
+	if not _has_valid_target:
+		if was_just_pressed:
+			grapple_failed.emit()
+
+		return false
+
+	return true
 
 
 func start(
@@ -498,11 +522,11 @@ func _update_target(
 	var collision_position: Vector3 = (
 		aim_ray.get_collision_point()
 	)
-	
+
 	var collision_normal: Vector3 = (
 		aim_ray.get_collision_normal()
 	)
-	
+
 	var target_distance_m: float = aim_ray.global_position.distance_to(
 		collision_position
 	)

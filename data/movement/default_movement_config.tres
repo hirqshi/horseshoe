@@ -7,6 +7,7 @@ script = ExtResource("1_cx8r7")
 run_speed_forward_mps = 9.0
 continuous_run_delay_s = 0.7
 air_control_acceleration_mps2 = 42.0
+air_excess_speed_decay_exponent = 1.31
 momentum_grace_minimum_saved_speed_mps = 16.96
 coyote_time_s = 0.2
 floor_snap_length_m = 0.6

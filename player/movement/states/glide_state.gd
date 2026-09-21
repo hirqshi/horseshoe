@@ -10,6 +10,7 @@ signal glide_charges_changed(
 
 signal glide_started()
 signal glide_finished()
+signal glide_failed()
 
 @export var config: GlideConfig
 @export var look_controller: PlayerLookController
@@ -23,6 +24,8 @@ var _is_active: bool = false
 var _flight_rotation: Quaternion = Quaternion.IDENTITY
 var _bank_angle_rad: float = 0.0
 var _bank_target_rad: float = 0.0
+
+var _was_glide_held: bool = false
 
 
 func _ready() -> void:
@@ -79,10 +82,25 @@ func is_deploy_available(
 func can_enter(
 	context: MovementContext
 ) -> bool:
-	if not context.player_input.is_glide_held:
+	var is_held: bool = context.player_input.is_glide_held
+	var was_just_pressed: bool = (
+		is_held
+		and not _was_glide_held
+	)
+
+	_was_glide_held = is_held
+
+	if not is_held:
 		return false
 
-	return is_deploy_available(context)
+	var is_available: bool = is_deploy_available(
+		context
+	)
+
+	if not is_available and was_just_pressed:
+		glide_failed.emit()
+
+	return is_available
 
 
 func can_continue(

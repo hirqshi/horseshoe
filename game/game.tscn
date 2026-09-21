@@ -181,10 +181,10 @@ shader_parameter/final_gamma = 1.20999998413008
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bjvpn"]
 shader = ExtResource("20_dxwpq")
 shader_parameter/animation_speed = 1.0
-shader_parameter/color_low = Color(0.056250002, 0.0225, 0.09, 1)
-shader_parameter/color_mid_red = Color(0.028599998, 0.11, 0.058446653, 1)
-shader_parameter/color_high = Color(0.13, 0.0377, 0.0377, 1)
-shader_parameter/reveal_progress = 1.10000002384186
+shader_parameter/color_low = Color(0.11, 0.028599998, 0.028599998, 1)
+shader_parameter/color_mid_red = Color(0.0225, 0.09, 0.037125003, 1)
+shader_parameter/color_high = Color(0.036399987, 0.025999997, 0.13, 1)
+shader_parameter/reveal_progress = 0.0
 shader_parameter/reveal_softness = 0.1790000085025
 shader_parameter/use_reveal_texture = false
 shader_parameter/reveal_texture_scale = 1.13999997824404
