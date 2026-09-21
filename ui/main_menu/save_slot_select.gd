@@ -39,6 +39,8 @@ func _ready() -> void:
 			_on_back_button_pressed
 		)
 
+	_connect_ui_audio()
+
 
 func refresh() -> void:
 	for slot_index: int in range(
@@ -61,6 +63,14 @@ func refresh() -> void:
 			slot_index,
 			summary
 		)
+
+
+func _connect_ui_audio() -> void:
+	if UiAudio == null:
+		return
+
+	if back_button != null:
+		UiAudio.connect_button(back_button)
 
 
 func _on_slot_entry_selected(

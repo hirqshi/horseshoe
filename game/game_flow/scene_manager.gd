@@ -281,6 +281,9 @@ func _transition_to_chapter(
 
 	await get_tree().process_frame
 
+	if UiAudio != null:
+		UiAudio.play_game_start()
+
 	chapter_scene_loaded.emit(
 		launch_request.chapter_definition,
 		launch_request.start_mode

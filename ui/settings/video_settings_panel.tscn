@@ -4,11 +4,12 @@
 [ext_resource type="Script" uid="uid://dunbxsw6m46et" path="res://ui/settings/video_settings_panel.gd" id="1_ygk6v"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_261u7"]
 [ext_resource type="Texture2D" uid="uid://csg0mb81t6mw" path="res://assets/textures/ui/crosshairdot.png" id="4_bscbu"]
+[ext_resource type="PackedScene" uid="uid://bdsctf6j4px2n" path="res://ui/settings/hud_toggle_row.tscn" id="5_ul2lx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bscbu"]
 font = ExtResource("2_261u7")
 font_size = 55
-font_color = Color(1, 0.25, 0, 1)
+font_color = Color(0, 1, 0.16666651, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_261u7"]
 font = ExtResource("2_261u7")
@@ -24,7 +25,7 @@ border_width_bottom = 2
 border_color = Color(0, 1, 0.16666651, 1)
 anti_aliasing = false
 
-[node name="VideoSettingsPanel" type="Control" unique_id=1493508318 node_paths=PackedStringArray("fullscreen_button", "resolution_option_button", "vsync_option_button", "fps_option_button", "brightness_slider", "brightness_value_label")]
+[node name="VideoSettingsPanel" type="Control" unique_id=1493508318 node_paths=PackedStringArray("fullscreen_button", "resolution_option_button", "vsync_option_button", "fps_option_button", "brightness_slider", "brightness_value_label", "hud_toggle_rows")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -40,6 +41,7 @@ vsync_option_button = NodePath("VsyncOptionButton")
 fps_option_button = NodePath("FpsOptionButton")
 brightness_slider = NodePath("BrightnessSlider")
 brightness_value_label = NodePath("BrightnessValueLabel")
+hud_toggle_rows = [NodePath("HudToggleRow"), NodePath("HudToggleRow2"), NodePath("HudToggleRow3"), NodePath("HudToggleRow4"), NodePath("HudToggleRow5"), NodePath("HudToggleRow6"), NodePath("HudToggleRow7"), NodePath("HudToggleRow8"), NodePath("HudToggleRow9"), NodePath("HudToggleRow10"), NodePath("HudToggleRow11"), NodePath("HudToggleRow12"), NodePath("HudToggleRow13"), NodePath("HudToggleRow14"), NodePath("HudToggleRow15"), NodePath("HudToggleRow16")]
 
 [node name="SectionTitleLabel" type="Label" parent="." unique_id=2058391388]
 visible = false
@@ -161,3 +163,131 @@ theme_override_icons/grabber_highlight = ExtResource("4_bscbu")
 theme_override_icons/grabber_disabled = ExtResource("4_bscbu")
 theme_override_styles/slider = SubResource("StyleBoxFlat_bscbu")
 value = 42.0
+
+[node name="HudToggleRow" parent="." unique_id=100186353 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 856.0
+offset_top = 460.0
+offset_right = 856.0
+offset_bottom = 460.0
+element_id = &"pitch_indicator"
+
+[node name="HudToggleRow2" parent="." unique_id=116864326 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 856.0
+offset_top = 558.0
+offset_right = 856.0
+offset_bottom = 558.0
+element_id = &"compass"
+
+[node name="HudToggleRow3" parent="." unique_id=366266888 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 856.0
+offset_top = 660.0
+offset_right = 856.0
+offset_bottom = 660.0
+element_id = &"roll_indicator"
+
+[node name="HudToggleRow4" parent="." unique_id=541490998 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 856.0
+offset_top = 762.0
+offset_right = 856.0
+offset_bottom = 762.0
+element_id = &"walljump_indicator"
+
+[node name="HudToggleRow5" parent="." unique_id=1481860060 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 856.0
+offset_top = 864.0
+offset_right = 856.0
+offset_bottom = 864.0
+element_id = &"glide_indicator"
+
+[node name="HudToggleRow6" parent="." unique_id=1783296435 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 856.0
+offset_top = 970.0
+offset_right = 856.0
+offset_bottom = 970.0
+element_id = &"dash_indicator"
+
+[node name="HudToggleRow7" parent="." unique_id=628755378 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1175.0
+offset_top = 507.0
+offset_right = 1175.0
+offset_bottom = 507.0
+element_id = &"reverse_stamina_bar"
+
+[node name="HudToggleRow8" parent="." unique_id=2123195138 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1175.0
+offset_top = 605.0
+offset_right = 1175.0
+offset_bottom = 605.0
+element_id = &"fall_danger_indicator"
+
+[node name="HudToggleRow9" parent="." unique_id=798763992 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1175.0
+offset_top = 707.0
+offset_right = 1175.0
+offset_bottom = 707.0
+element_id = &"speed_indicator"
+
+[node name="HudToggleRow10" parent="." unique_id=1888521721 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1175.0
+offset_top = 809.0
+offset_right = 1175.0
+offset_bottom = 809.0
+element_id = &"grapple_indicator"
+
+[node name="HudToggleRow11" parent="." unique_id=937143947 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1175.0
+offset_top = 911.0
+offset_right = 1175.0
+offset_bottom = 911.0
+element_id = &"camera_roll_bars"
+
+[node name="HudToggleRow12" parent="." unique_id=166251929 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1175.0
+offset_top = 1017.0
+offset_right = 1175.0
+offset_bottom = 1017.0
+element_id = &"small_frame"
+
+[node name="HudToggleRow13" parent="." unique_id=1503013412 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1491.0
+offset_top = 456.0
+offset_right = 1491.0
+offset_bottom = 456.0
+element_id = &"leading_cross"
+
+[node name="HudToggleRow14" parent="." unique_id=1752787588 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1491.0
+offset_top = 558.0
+offset_right = 1491.0
+offset_bottom = 558.0
+element_id = &"frame"
+
+[node name="HudToggleRow15" parent="." unique_id=416146819 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1491.0
+offset_top = 664.0
+offset_right = 1491.0
+offset_bottom = 664.0
+element_id = &"crosshair"
+
+[node name="HudToggleRow16" parent="." unique_id=1035546445 instance=ExtResource("5_ul2lx")]
+layout_mode = 1
+offset_left = 1491.0
+offset_top = 762.0
+offset_right = 1491.0
+offset_bottom = 762.0
+element_id = &"player_selfie"

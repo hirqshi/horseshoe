@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bdsctf6j4px2n"]
+
+[ext_resource type="Script" uid="uid://bue75akyc8fbf" path="res://ui/settings/hud_toggle_row.gd" id="1_07ior"]
+[ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="2_pr8pv"]
+[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_lktr7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dfh5v"]
+font = ExtResource("3_lktr7")
+font_size = 26
+font_color = Color(0, 1, 0.16666651, 1)
+
+[node name="HudToggleRow" type="Control" unique_id=100186353 node_paths=PackedStringArray("element_label", "enabled_checkbox")]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_07ior")
+element_label = NodePath("ElementLabel")
+enabled_checkbox = NodePath("PrimaryBindButton")
+
+[node name="PrimaryBindButton" type="CheckBox" parent="." unique_id=1615924501]
+layout_mode = 0
+offset_left = -158.0
+offset_top = -74.0
+offset_right = -87.0
+offset_bottom = -26.0
+theme = ExtResource("2_pr8pv")
+
+[node name="ElementLabel" type="Label" parent="." unique_id=403725529]
+layout_mode = 0
+offset_left = -75.0
+offset_top = -68.0
+offset_right = 404.0
+offset_bottom = 11.0
+text = "action"
+label_settings = SubResource("LabelSettings_dfh5v")
+autowrap_mode = 2

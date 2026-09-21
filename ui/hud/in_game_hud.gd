@@ -675,6 +675,55 @@ func _on_player_slide_started() -> void:
 func _on_viewport_size_changed() -> void:
 	_sync_ui_viewport_size()
 
+func _assign_hud_settings_ids() -> void:
+	if crosshair != null:
+		if crosshair.center_group != null:
+			crosshair.center_group.settings_id = &"crosshair"
+
+		if crosshair.leading_cross_group != null:
+			crosshair.leading_cross_group.settings_id = &"leading_cross"
+
+		if crosshair.outer_frame_hud != null:
+			crosshair.outer_frame_hud.settings_id = &"frame"
+
+		if crosshair.inner_frame_hud != null:
+			crosshair.inner_frame_hud.settings_id = &"small_frame"
+
+	if speed_hud != null:
+		speed_hud.settings_id = &"speed_indicator"
+
+	if fall_danger_hud != null:
+		fall_danger_hud.settings_id = &"fall_danger_indicator"
+
+	if reverse_stamina_hud != null:
+		reverse_stamina_hud.settings_id = &"reverse_stamina_bar"
+
+	if dash_charges_hud != null:
+		dash_charges_hud.settings_id = &"dash_indicator"
+
+	if wall_jump_charges_hud != null:
+		wall_jump_charges_hud.settings_id = &"walljump_indicator"
+
+	if glide_charges_hud != null:
+		glide_charges_hud.settings_id = &"glide_indicator"
+
+	if grapple_distance_hud != null:
+		grapple_distance_hud.settings_id = &"grapple_indicator"
+
+	if roll_indicator_hud != null:
+		roll_indicator_hud.settings_id = &"roll_indicator"
+
+	if camera_roll_bars_hud != null:
+		camera_roll_bars_hud.settings_id = &"camera_roll_bars"
+
+	if compass_hud != null:
+		compass_hud.settings_id = &"compass"
+
+	if pitch_indicator_hud != null:
+		pitch_indicator_hud.settings_id = &"pitch_indicator"
+
+	if player_selfie != null:
+		player_selfie.settings_id = &"player_selfie"
 
 func _sync_ui_viewport_size() -> void:
 	if ui_viewport == null:

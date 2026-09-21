@@ -8,6 +8,9 @@ extends Control
 @export var brightness_slider: HSlider
 @export var brightness_value_label: Label
 
+@export_category("hud toggles")
+@export var hud_toggle_rows: Array[HudToggleRow] = []
+
 var _is_refreshing: bool = false
 
 var _resolution_options: Array[Vector2i] = [
@@ -66,6 +69,8 @@ func refresh() -> void:
 	_refresh_brightness_label()
 
 	_is_refreshing = false
+
+	_refresh_hud_toggles()
 
 
 func _validate_references() -> void:
@@ -169,6 +174,12 @@ func _setup_controls() -> void:
 				label,
 				fps_value
 			)
+
+	for hud_toggle_row: HudToggleRow in hud_toggle_rows:
+		if hud_toggle_row == null:
+			continue
+
+		hud_toggle_row.setup()
 
 
 func _connect_signals() -> void:
@@ -294,6 +305,14 @@ func _refresh_brightness_label() -> void:
 			brightness_slider.value * 100.0
 		)
 	)
+
+
+func _refresh_hud_toggles() -> void:
+	for hud_toggle_row: HudToggleRow in hud_toggle_rows:
+		if hud_toggle_row == null:
+			continue
+
+		hud_toggle_row.refresh()
 
 
 func _on_fullscreen_toggled(

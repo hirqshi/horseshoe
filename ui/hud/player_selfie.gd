@@ -1,6 +1,9 @@
 class_name PlayerSelfie
 extends Control
 
+@export_category("settings")
+@export var settings_id: StringName = &"player_selfie"
+
 @export_group("References")
 @export var portrait_viewport: SubViewport
 @export var portrait_camera: Camera3D
@@ -30,6 +33,9 @@ var _face_anchor: Node3D = null
 var _has_camera_transform: bool = false
 var _smoothed_camera_local_position: Vector3 = Vector3.ZERO
 
+var _is_element_enabled: bool = true
+
+
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
@@ -56,6 +62,9 @@ func _ready() -> void:
 	)
 
 	portrait_camera.make_current()
+
+	_connect_settings()
+	_apply_settings_visibility()
 
 
 func setup(
@@ -130,6 +139,9 @@ func setup(
 func _process(
 	delta: float
 ) -> void:
+	if not _is_element_enabled:
+		return
+
 	if _face_anchor == null:
 		return
 
@@ -284,4 +296,60 @@ func _update_portrait_camera(
 			smoothed_rotation
 		),
 		smoothed_camera_position
+	)
+
+
+func set_element_enabled(
+	value: bool
+) -> void:
+	_is_element_enabled = value
+
+	visible = value
+
+	if portrait_viewport != null:
+		portrait_viewport.render_target_update_mode = (
+			SubViewport.UPDATE_ALWAYS
+			if value
+			else SubViewport.UPDATE_DISABLED
+		)
+
+
+func _connect_settings() -> void:
+	if settings_id == &"":
+		return
+
+	if GameSettings == null:
+		return
+
+	if not GameSettings.hud_element_visibility_changed.is_connected(
+		_on_hud_element_visibility_changed
+	):
+		GameSettings.hud_element_visibility_changed.connect(
+			_on_hud_element_visibility_changed
+		)
+
+
+func _apply_settings_visibility() -> void:
+	if settings_id == &"":
+		return
+
+	if GameSettings == null:
+		return
+
+	set_element_enabled(
+		GameSettings.is_hud_element_enabled(
+			settings_id
+		)
+	)
+
+
+func _on_hud_element_visibility_changed(
+	element_id: StringName,
+	is_enabled: bool
+) -> void:
+	if element_id != settings_id:
+		return
+
+	set_element_enabled(
+		is_enabled
 	)

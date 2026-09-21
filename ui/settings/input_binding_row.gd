@@ -30,6 +30,8 @@ func _ready() -> void:
 			_on_secondary_bind_button_pressed
 		)
 
+	_connect_ui_audio()
+
 	refresh()
 
 
@@ -63,6 +65,17 @@ func refresh() -> void:
 					1
 				)
 			)
+
+
+func _connect_ui_audio() -> void:
+	if UiAudio == null:
+		return
+
+	if primary_bind_button != null:
+		UiAudio.connect_button(primary_bind_button)
+
+	if secondary_bind_button != null:
+		UiAudio.connect_button(secondary_bind_button)
 
 
 func _get_display_label() -> String:

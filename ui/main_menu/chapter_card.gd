@@ -27,6 +27,9 @@ func _ready() -> void:
 		_on_select_button_pressed
 	)
 
+	if UiAudio != null:
+		UiAudio.connect_button(select_button)
+
 
 func refresh() -> void:
 	if chapter_definition == null:

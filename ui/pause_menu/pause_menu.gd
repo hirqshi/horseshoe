@@ -35,6 +35,7 @@ func _ready() -> void:
 
 	_validate_references()
 	_connect_signals()
+	_connect_ui_audio()
 
 	visible = false
 
@@ -121,6 +122,9 @@ func open() -> void:
 	if resume_button != null:
 		resume_button.grab_focus()
 
+	if UiAudio != null:
+		UiAudio.play_pause_open()
+
 
 func resume() -> void:
 	if not is_open:
@@ -150,6 +154,9 @@ func resume() -> void:
 
 	is_open = false
 	visible = false
+
+	if UiAudio != null:
+		UiAudio.play_pause_close()
 
 
 func _close_for_scene_change() -> void:
@@ -245,6 +252,20 @@ func _connect_signals() -> void:
 		)
 
 
+func _connect_ui_audio() -> void:
+	if UiAudio == null:
+		return
+
+	var buttons: Array[Button] = [
+		resume_button,
+		settings_button,
+		restart_button,
+		main_menu_button,
+	]
+
+	UiAudio.connect_buttons(buttons)
+
+
 func _on_resume_button_pressed() -> void:
 	resume()
 
@@ -300,6 +321,9 @@ func _on_main_menu_button_pressed() -> void:
 
 
 func _on_settings_menu_closed() -> void:
+	if UiAudio != null:
+		UiAudio.play_settings_close()
+
 	if not is_open:
 		return
 
@@ -325,6 +349,9 @@ func _on_confirm_panel_confirmed() -> void:
 		== ConfirmationAction.RETURN_TO_MAIN_MENU
 	):
 		_close_for_scene_change()
+
+		if UiAudio != null:
+			UiAudio.play_quit_to_menu()
 
 		SceneManager.return_to_main_menu()
 		return

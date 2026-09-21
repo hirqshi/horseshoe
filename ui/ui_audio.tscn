@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bmnfcnuddthgy"]
+
+[ext_resource type="Script" uid="uid://wnwf3gjlydnj" path="res://ui/ui_audio.gd" id="1_plmox"]
+[ext_resource type="AudioStream" uid="uid://blmfem643aqgj" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/UI_Click_Accept.wav" id="2_deiw6"]
+[ext_resource type="AudioStream" uid="uid://c23x6tdqsensj" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/UI_Mouse_Hover_Sand.wav" id="3_pvrty"]
+[ext_resource type="AudioStream" uid="uid://ckmop3dc82fsh" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/Begins_2.wav" id="4_3rwjt"]
+[ext_resource type="AudioStream" uid="uid://bas0njc5y5dvv" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Apply.wav" id="5_t63vu"]
+[ext_resource type="AudioStream" uid="uid://cdcrh35uqgm1" path="res://assets/sound/sfx/Sounds_Packet_First/UI_Back.wav" id="6_bvtib"]
+[ext_resource type="AudioStream" uid="uid://b6e4tp8kl1ugs" path="res://assets/sound/sfx/Whoreshoe_Sounds_Packet_Second/UI_Click_Back.wav" id="7_82wgt"]
+
+[node name="UiAudio" type="Node" unique_id=312531395 node_paths=PackedStringArray("click_player", "hover_player", "game_start_player", "pause_open_player", "pause_close_player", "quit_to_menu_player", "settings_close_player")]
+script = ExtResource("1_plmox")
+click_player = NodePath("Click")
+hover_player = NodePath("Hover")
+game_start_player = NodePath("GameStart")
+pause_open_player = NodePath("PauseOpen")
+pause_close_player = NodePath("PauseClose")
+quit_to_menu_player = NodePath("QuitToMenu")
+settings_close_player = NodePath("SettingsClose")
+click_streams = Array[AudioStream]([ExtResource("2_deiw6")])
+hover_streams = Array[AudioStream]([ExtResource("3_pvrty")])
+game_start_streams = Array[AudioStream]([ExtResource("4_3rwjt")])
+pause_open_streams = Array[AudioStream]([ExtResource("5_t63vu")])
+pause_close_streams = Array[AudioStream]([ExtResource("6_bvtib")])
+quit_to_menu_streams = Array[AudioStream]([ExtResource("6_bvtib")])
+settings_close_streams = Array[AudioStream]([ExtResource("7_82wgt")])
+global_click_bus = &"Sfx"
+
+[node name="Click" type="AudioStreamPlayer" parent="." unique_id=24172018]
+
+[node name="Hover" type="AudioStreamPlayer" parent="." unique_id=844780488]
+
+[node name="GameStart" type="AudioStreamPlayer" parent="." unique_id=1661144020]
+
+[node name="PauseOpen" type="AudioStreamPlayer" parent="." unique_id=603992226]
+
+[node name="PauseClose" type="AudioStreamPlayer" parent="." unique_id=1829901001]
+
+[node name="QuitToMenu" type="AudioStreamPlayer" parent="." unique_id=2070950967]
+
+[node name="SettingsClose" type="AudioStreamPlayer" parent="." unique_id=350873830]

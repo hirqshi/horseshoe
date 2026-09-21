@@ -38,6 +38,11 @@ signal last_selected_save_slot_changed(
 	slot_index: int
 )
 
+signal hud_element_visibility_changed(
+	element_id: StringName,
+	is_enabled: bool
+)
+
 const SETTINGS_PATH: String = (
 	"user://horseshoe/settings.cfg"
 )
@@ -75,6 +80,27 @@ const DEFAULT_MOUSE_SENSITIVITY: float = 0.0025
 const MIN_MOUSE_SENSITIVITY: float = 0.0005
 const MAX_MOUSE_SENSITIVITY: float = 0.015
 
+const SETTINGS_SECTION_HUD: String = "hud"
+
+const HUD_ELEMENT_IDS: PackedStringArray = [
+	"pitch_indicator",
+	"compass",
+	"roll_indicator",
+	"walljump_indicator",
+	"glide_indicator",
+	"dash_indicator",
+	"reverse_stamina_bar",
+	"fall_danger_indicator",
+	"speed_indicator",
+	"grapple_indicator",
+	"camera_roll_bars",
+	"small_frame",
+	"leading_cross",
+	"frame",
+	"crosshair",
+	"player_selfie",
+]
+
 var is_fullscreen: bool = false
 var windowed_size: Vector2i = Vector2i(
 	1920,
@@ -92,6 +118,8 @@ var is_vertical_look_inverted: bool = false
 var last_selected_save_slot_index: int = -1
 
 var _bus_volume_db_by_name: Dictionary[StringName, float] = {}
+
+var _hud_element_enabled_by_id: Dictionary[StringName, bool] = {}
 
 var _default_input_events_by_action: Dictionary[StringName, InputEventList] = {}
 
@@ -312,6 +340,39 @@ func set_bus_volume_db(
 		clamped_volume_db
 	)
 
+func set_hud_element_enabled(
+	element_id: StringName,
+	is_enabled: bool
+) -> void:
+	var previous_value: bool = _hud_element_enabled_by_id.get(
+		element_id,
+		true
+	)
+
+	if previous_value == is_enabled:
+		return
+
+	_hud_element_enabled_by_id[element_id] = is_enabled
+
+	save_settings()
+
+	hud_element_visibility_changed.emit(
+		element_id,
+		is_enabled
+	)
+
+
+func is_hud_element_enabled(
+	element_id: StringName
+) -> bool:
+	return _hud_element_enabled_by_id.get(
+		element_id,
+		true
+	)
+
+
+func get_hud_element_ids() -> PackedStringArray:
+	return HUD_ELEMENT_IDS
 
 func get_bus_volume_db(
 	bus_name: StringName
@@ -451,6 +512,13 @@ func save_settings() -> bool:
 			SETTINGS_SECTION_AUDIO,
 			String(bus_name),
 			_bus_volume_db_by_name[bus_name]
+		)
+		
+	for element_id: StringName in _hud_element_enabled_by_id:
+		config.set_value(
+			SETTINGS_SECTION_HUD,
+			String(element_id),
+			_hud_element_enabled_by_id[element_id]
 		)
 		
 	for action_id_text: String in REBINDABLE_ACTION_IDS:
@@ -651,7 +719,16 @@ func _load_settings() -> void:
 		)
 
 		_bus_volume_db_by_name[bus_name] = loaded_volume_db
-
+		
+	for element_id: StringName in _hud_element_enabled_by_id:
+		_hud_element_enabled_by_id[element_id] = bool(
+			config.get_value(
+				SETTINGS_SECTION_HUD,
+				String(element_id),
+				true
+			)
+		)
+		
 	_apply_all_settings()
 
 	settings_loaded.emit()
@@ -676,7 +753,12 @@ func _set_runtime_defaults() -> void:
 	last_selected_save_slot_index = -1
 
 	_bus_volume_db_by_name.clear()
+	
+	_hud_element_enabled_by_id.clear()
 
+	for element_id_text: String in HUD_ELEMENT_IDS:
+		_hud_element_enabled_by_id[StringName(element_id_text)] = true
+		
 	for bus_index: int in AudioServer.get_bus_count():
 		var bus_name: StringName = AudioServer.get_bus_name(
 			bus_index

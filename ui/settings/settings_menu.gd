@@ -28,6 +28,7 @@ var _current_page: int = Page.VIDEO
 func _ready() -> void:
 	_validate_references()
 	_connect_signals()
+	_connect_ui_audio()
 
 	visible = false
 
@@ -156,6 +157,20 @@ func _connect_signals() -> void:
 		back_button.pressed.connect(
 			_on_back_button_pressed
 		)
+
+
+func _connect_ui_audio() -> void:
+	if UiAudio == null:
+		return
+
+	var buttons: Array[Button] = [
+		video_tab_button,
+		audio_tab_button,
+		input_tab_button,
+		back_button,
+	]
+
+	UiAudio.connect_buttons(buttons)
 
 
 func _refresh_current_page() -> void:

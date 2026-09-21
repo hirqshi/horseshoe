@@ -50,37 +50,25 @@ anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20cor"]
 bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 0.16666651, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p767a"]
 bg_color = Color(0, 0, 0, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_macfy"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3tnt"]
-bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 0.16666651, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwo6o"]
 bg_color = Color(0, 0, 0, 1)
 anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekwyu"]
-bg_color = Color(0, 0, 0, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjsd8"]
-bg_color = Color(0, 0, 0, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gl7s1"]
-bg_color = Color(0, 0, 0, 1)
-anti_aliasing = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcn8l"]
-bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_26ww3"]
 content_margin_left = 2.0
@@ -422,13 +410,13 @@ CheckBox/icons/radio_unchecked = null
 CheckBox/icons/unchecked = null
 CheckBox/styles/focus = SubResource("StyleBoxFlat_20cor")
 CheckBox/styles/hover = SubResource("StyleBoxFlat_p767a")
-CheckBox/styles/hover_mirrored = SubResource("StyleBoxFlat_macfy")
-CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_q3tnt")
+CheckBox/styles/hover_mirrored = SubResource("StyleBoxFlat_p767a")
+CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_p767a")
 CheckBox/styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_bwo6o")
-CheckBox/styles/normal = SubResource("StyleBoxFlat_ekwyu")
-CheckBox/styles/normal_mirrored = SubResource("StyleBoxFlat_hjsd8")
-CheckBox/styles/pressed = SubResource("StyleBoxFlat_gl7s1")
-CheckBox/styles/pressed_mirrored = SubResource("StyleBoxFlat_lcn8l")
+CheckBox/styles/normal = SubResource("StyleBoxFlat_20cor")
+CheckBox/styles/normal_mirrored = SubResource("StyleBoxFlat_20cor")
+CheckBox/styles/pressed = SubResource("StyleBoxFlat_20cor")
+CheckBox/styles/pressed_mirrored = SubResource("StyleBoxFlat_20cor")
 CheckButton/colors/font_color = Color(1, 1, 1, 1)
 CheckButton/colors/font_focus_color = Color(1, 1, 1, 1)
 CheckButton/colors/font_hover_color = Color(1, 1, 1, 1)

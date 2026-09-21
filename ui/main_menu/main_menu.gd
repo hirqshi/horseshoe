@@ -27,6 +27,7 @@ var _pending_clear_slot_index: int = -1
 func _ready() -> void:
 	_validate_references()
 	_connect_signals()
+	_connect_ui_audio()
 
 	_show_main_panel()
 
@@ -72,12 +73,12 @@ func _validate_references() -> void:
 		push_error(
 			"MainMenu requires a ChapterSelect."
 		)
-		
+
 	if settings_menu == null:
 		push_error(
 			"MainMenu requires a SettingsMenu."
 		)
-		
+
 	if continue_button == null:
 		push_error(
 			"MainMenu requires a ContinueButton."
@@ -142,12 +143,12 @@ func _connect_signals() -> void:
 		chapter_select.back_requested.connect(
 			_show_save_slot_select
 		)
-		
+
 	if settings_menu != null:
 		settings_menu.closed.connect(
 			_on_settings_menu_closed
 		)
-		
+
 	if confirm_panel != null:
 		confirm_panel.confirmed.connect(
 			_on_confirm_panel_confirmed
@@ -163,10 +164,24 @@ func _connect_signals() -> void:
 		)
 
 
+func _connect_ui_audio() -> void:
+	if UiAudio == null:
+		return
+
+	var buttons: Array[Button] = [
+		continue_button,
+		start_button,
+		settings_button,
+		quit_button,
+	]
+
+	UiAudio.connect_buttons(buttons)
+
+
 func _show_main_panel() -> void:
 	if main_panel != null:
 		main_panel.visible = true
-		
+
 	if save_slot_select != null:
 		save_slot_select.visible = false
 
@@ -174,7 +189,7 @@ func _show_main_panel() -> void:
 		chapter_select.visible = false
 
 	_pending_clear_slot_index = -1
-	
+
 	if main_menu_preview != null:
 		main_menu_preview.set_active(
 			true
@@ -189,7 +204,7 @@ func _show_main_panel() -> void:
 		chapter_select_preview.set_active(
 			false
 		)
-	
+
 	_set_status_text(
 		""
 	)
@@ -212,7 +227,7 @@ func _show_save_slot_select() -> void:
 
 	if chapter_select != null:
 		chapter_select.visible = false
-		
+
 	if main_menu_preview != null:
 		main_menu_preview.set_active(
 			false
@@ -227,7 +242,7 @@ func _show_save_slot_select() -> void:
 		chapter_select_preview.set_active(
 			false
 		)
-		
+
 	_pending_clear_slot_index = -1
 
 
@@ -241,7 +256,7 @@ func _show_chapter_select() -> void:
 	if chapter_select != null:
 		chapter_select.visible = true
 		chapter_select.refresh()
-		
+
 	if main_menu_preview != null:
 		main_menu_preview.set_active(
 			false
@@ -256,7 +271,7 @@ func _show_chapter_select() -> void:
 		chapter_select_preview.set_active(
 			true
 		)
-		
+
 	_pending_clear_slot_index = -1
 
 
@@ -388,8 +403,8 @@ func _on_confirm_panel_confirmed() -> void:
 			)
 		)
 
-		if save_slot_select != null:
-			save_slot_select.refresh()
+	if save_slot_select != null:
+		save_slot_select.refresh()
 
 	_refresh_continue_button()
 
@@ -407,4 +422,7 @@ func _on_last_selected_save_slot_changed(
 
 
 func _on_settings_menu_closed() -> void:
+	if UiAudio != null:
+		UiAudio.play_settings_close()
+
 	_show_main_panel()

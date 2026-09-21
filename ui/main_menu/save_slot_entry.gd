@@ -38,6 +38,10 @@ func _ready() -> void:
 		_on_clear_button_pressed
 	)
 
+	if UiAudio != null:
+		UiAudio.connect_button(select_button)
+		UiAudio.connect_button(clear_button)
+
 
 func set_slot_summary(
 	slot_index: int,

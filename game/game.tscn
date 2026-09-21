@@ -308,6 +308,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_y36n6")
+settings_id = &"crosshair"
 element_alpha = 0.66
 is_lag_enabled = false
 
@@ -340,6 +341,7 @@ top_left = NodePath("TopLeft")
 top_right = NodePath("TopRight")
 bottom_left = NodePath("BottomLeft")
 bottom_right = NodePath("BottomRight")
+settings_id = &"frame"
 element_alpha = 0.25
 
 [node name="TopLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=2126119350]
@@ -387,6 +389,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_y36n6")
+settings_id = &"leading_cross"
 element_alpha = 0.59
 look_offset_multiplier = 1.0
 
@@ -422,6 +425,7 @@ script = ExtResource("16_ta815")
 frame_texture = ExtResource("17_64wtb")
 left_half = NodePath("LeftHalf")
 right_half = NodePath("RightHalf")
+settings_id = &"small_frame"
 element_alpha = 0.54
 
 [node name="LeftHalf" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/InnerFrameHud" unique_id=441315965]
@@ -470,6 +474,7 @@ right_bar = NodePath("RightBar")
 rotation_multiplier = 1.0
 maximum_rotation_degrees = 180.0
 roll_follow_speed = 30.0
+settings_id = &"camera_roll_bars"
 
 [node name="LeftBar" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/CameraRollBars" unique_id=915540920]
 modulate = Color(0, 1, 0.16666651, 0.34509805)
@@ -527,6 +532,7 @@ distance_prefix = "dst: "
 distance_suffix = "m"
 default_icon_alpha = 0.1
 cooldown_rotation_turns = 2.0
+settings_id = &"grapple_indicator"
 
 [node name="StateIcon" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/GrappleDistanceHud" unique_id=1497545797]
 modulate = Color(0, 1, 0.16666651, 0.34509805)
@@ -592,6 +598,7 @@ script = ExtResource("11_3vho3")
 speed_label = NodePath("SpeedLabel")
 use_total_speed_in_air = false
 label_prefix = "speed: "
+settings_id = &"speed_indicator"
 element_alpha = 0.8
 lag_sensitivity = 0.269
 lag_max_distance_px = 6.1
@@ -655,6 +662,7 @@ height_bar = NodePath("Content/HeightBar")
 player_marker = NodePath("Content/PlayerMarker")
 height_label = NodePath("Content/PlayerMarker/HeightLabel")
 danger_color = Color(1.5120772, 0, 0.04298628, 1)
+settings_id = &"fall_danger_indicator"
 element_alpha = 0.73
 
 [node name="Content" type="Control" parent="InGameHud/UiViewport/HudRoot/FallDangerHud" unique_id=74653954]
@@ -730,6 +738,7 @@ progress_bar = NodePath("ProgressBar")
 percent_label = NodePath("PercentLabel")
 bar_follow_speed = 22.700000000000003
 stamina_gradient = SubResource("Gradient_leid8")
+settings_id = &"reverse_stamina_bar"
 element_color = Color(1, 1, 1, 0.6627451)
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -796,6 +805,7 @@ is_cooldown_display_enabled = true
 default_alpha = 0.9
 unavailable_alpha = 0.5
 empty_alpha = 0.2
+settings_id = &"dash_indicator"
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -893,6 +903,7 @@ charge_count_label = NodePath("ChargeLabel")
 default_alpha = 0.9
 unavailable_alpha = 0.5
 empty_alpha = 0.2
+settings_id = &"glide_indicator"
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -954,6 +965,7 @@ charge_count_label = NodePath("ChargeLabel")
 default_alpha = 0.9
 unavailable_alpha = 0.5
 empty_alpha = 0.2
+settings_id = &"walljump_indicator"
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -1020,6 +1032,7 @@ tick_color = Color(0, 1, 0.16666651, 0.4509804)
 degree_label_font = ExtResource("12_qf6n1")
 degree_label_font_size = 31
 degree_label_color = Color(0, 1, 0.16666651, 0.4509804)
+settings_id = &"roll_indicator"
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -1078,6 +1091,7 @@ label_font_size = 31
 label_offset_px = -22.40000000000001
 label_color = Color(0, 1, 0.16666651, 0.4509804)
 label_alpha = 0.71
+settings_id = &"compass"
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -1141,6 +1155,7 @@ angle_label = NodePath("DegreeLabel")
 scale_center_px = Vector2(160, 20)
 visible_range_degrees = 360.0
 tick_color = Color(0, 1, 0.16666651, 1)
+settings_id = &"pitch_indicator"
 element_alpha = 0.7
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
@@ -1238,3 +1253,4 @@ bus = &"PlayerSfx"
 [node name="PauseMenu" parent="." unique_id=1403487296 instance=ExtResource("47_7tmf6")]
 layer = 20
 visible = false
+pause_action = null

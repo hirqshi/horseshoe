@@ -21,6 +21,9 @@ func _ready() -> void:
 			_on_back_button_pressed
 		)
 
+	if UiAudio != null:
+		UiAudio.connect_button(back_button)
+
 
 func refresh() -> void:
 	for chapter_card: ChapterCard in chapter_cards:

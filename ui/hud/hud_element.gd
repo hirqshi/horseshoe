@@ -1,6 +1,15 @@
 class_name HudElement
 extends Control
 
+@export_category("settings")
+@export var settings_id: StringName = &"":
+	set(value):
+		settings_id = value
+
+		if is_inside_tree():
+			_connect_settings()
+			_apply_settings_visibility()
+
 @export_category("visibility")
 @export var is_element_enabled: bool = true
 @export var element_color: Color = Color.WHITE
@@ -60,6 +69,8 @@ func _ready() -> void:
 
 	_base_position = position
 
+	_connect_settings()
+	_apply_settings_visibility()
 	_apply_visual_settings()
 
 
@@ -200,4 +211,45 @@ func _apply_visual_settings() -> void:
 		element_color.b,
 		element_color.a
 		* element_alpha
+	)
+
+
+func _connect_settings() -> void:
+	if settings_id == &"":
+		return
+
+	if GameSettings == null:
+		return
+
+	if not GameSettings.hud_element_visibility_changed.is_connected(
+		_on_hud_element_visibility_changed
+	):
+		GameSettings.hud_element_visibility_changed.connect(
+			_on_hud_element_visibility_changed
+		)
+
+
+func _apply_settings_visibility() -> void:
+	if settings_id == &"":
+		return
+
+	if GameSettings == null:
+		return
+
+	set_element_enabled(
+		GameSettings.is_hud_element_enabled(
+			settings_id
+		)
+	)
+
+
+func _on_hud_element_visibility_changed(
+	element_id: StringName,
+	is_enabled: bool
+) -> void:
+	if element_id != settings_id:
+		return
+
+	set_element_enabled(
+		is_enabled
 	)
