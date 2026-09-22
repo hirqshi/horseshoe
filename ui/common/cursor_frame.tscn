@@ -33,6 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
 texture = ExtResource("1_h50qy")
 
 [node name="TopRight" type="TextureRect" parent="." unique_id=2034247406]
@@ -51,6 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
 texture = ExtResource("2_nr0nj")
 
 [node name="BottomLeft" type="TextureRect" parent="." unique_id=1499595471]
@@ -69,6 +71,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
 texture = ExtResource("3_826f4")
 
 [node name="BottomRight" type="TextureRect" parent="." unique_id=964450191]
@@ -87,4 +90,5 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
 texture = ExtResource("4_m1t3q")

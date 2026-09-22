@@ -1,0 +1,203 @@
+[gd_scene format=3 uid="uid://cnxvtk521ysnm"]
+
+[ext_resource type="AudioStream" uid="uid://drd8jfevd0lfs" path="res://assets/sound/вмым.mp3" id="1_beo5b"]
+[ext_resource type="Script" uid="uid://dbuwhef56fbo6" path="res://ui/intro_splash/intro_splash.gd" id="1_l5qym"]
+[ext_resource type="Texture2D" uid="uid://dtebywtcf0wrx" path="res://ui/intro_splash/ava2.jpg" id="2_p8pyp"]
+[ext_resource type="Shader" uid="uid://cuftvr6vltmnt" path="res://assets/shaders/crt1.gdshader" id="3_j0b5v"]
+
+[sub_resource type="Animation" id="Animation_j0b5v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.545, 0.545)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Overlay:material:shader_parameter/resolution")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 400)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AudioStreamPlayer:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer:pitch_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_p8pyp"]
+resource_name = "intro"
+length = 3.3333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.4),
+"transitions": PackedFloat32Array(0.1830108, 0.1830108),
+"update": 0,
+"values": [Vector2(0.545, 0.545), Vector2(0.865, 0.865)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.3333334, 2.8, 3.2633333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Overlay:material:shader_parameter/resolution")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4, 1.3, 2.5666666, 3.1333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(80, 80), Vector2(400, 400), Vector2(400, 400), Vector2(80, 80)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AudioStreamPlayer:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(0.12500016),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AudioStreamPlayer:pitch_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.73333335, 1.6666666),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.29000000000000004, 0.66]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j0b5v"]
+_data = {
+&"RESET": SubResource("Animation_j0b5v"),
+&"intro": SubResource("Animation_p8pyp")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l5qym"]
+shader = ExtResource("3_j0b5v")
+shader_parameter/resolution = Vector2(400, 400)
+shader_parameter/scan_line_amount = 1.0
+shader_parameter/warp_amount = 0.0
+shader_parameter/noise_amount = 0.038000001805
+shader_parameter/interference_amount = 1.0
+shader_parameter/grille_amount = 0.306000014535
+shader_parameter/grille_size = 1.4430000210425
+shader_parameter/vignette_amount = 1.09600005206
+shader_parameter/vignette_intensity = 0.08
+shader_parameter/aberation_amount = 1.0
+shader_parameter/roll_line_amount = 0.0
+shader_parameter/roll_speed = 0.08500038403749954
+shader_parameter/scan_line_strength = -7.19199977162
+shader_parameter/pixel_strength = -0.8909998523225
+
+[node name="IntroSplash" type="Control" unique_id=1514590424 node_paths=PackedStringArray("animation_player")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l5qym")
+animation_player = NodePath("AnimationPlayer")
+logo_animation_name = &"intro"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=378628057]
+libraries/ = SubResource("AnimationLibrary_j0b5v")
+autoplay = &"intro"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=95859180]
+stream = ExtResource("1_beo5b")
+volume_db = -5.157
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=870918996]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(0, 0.56, 0.0653334, 1)
+position = Vector2(951.00006, 522)
+scale = Vector2(0.545, 0.545)
+texture = ExtResource("2_p8pyp")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=285066367]
+z_index = -12
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=1381565278]
+z_index = 34
+material = SubResource("ShaderMaterial_l5qym")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

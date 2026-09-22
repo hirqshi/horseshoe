@@ -15,6 +15,7 @@
 [ext_resource type="Shader" uid="uid://do8x4s0dvnw4k" path="res://assets/shaders/wireframe.gdshader" id="8_lknku"]
 [ext_resource type="Shader" uid="uid://ce8jfswmwgev8" path="res://gameplay/checkpoints/checkpoint_smoke.gdshader" id="8_qao3l"]
 [ext_resource type="PackedScene" uid="uid://cix8a2p4jmdqt" path="res://ui/settings/settings_menu.tscn" id="9_w2r0d"]
+[ext_resource type="Material" uid="uid://cgxaqibhsy48o" path="res://assets/textures/world/concrete_material.tres" id="11_bpbph"]
 [ext_resource type="PackedScene" uid="uid://df6od8mhphked" path="res://ui/common/cursor_frame.tscn" id="11_s4pem"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6mijq"]
@@ -108,6 +109,16 @@ shader_parameter/effect_strength = 0.7
 [sub_resource type="CylinderMesh" id="CylinderMesh_tf5ef"]
 material = SubResource("ShaderMaterial_tf5ef")
 radial_segments = 7
+
+[sub_resource type="Environment" id="Environment_6m30h"]
+background_mode = 1
+background_color = Color(0.47, 0.47, 0.47, 1)
+background_energy_multiplier = 0.26
+glow_enabled = true
+glow_bloom = 1.0
+fog_enabled = true
+fog_light_color = Color(0.44, 0.44, 0.44, 1)
+fog_light_energy = 0.48
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_joh67"]
 shader = ExtResource("2_i5wg5")
@@ -258,9 +269,12 @@ ui_stagger_s = 0.09
 
 [node name="MainMenuPreview" type="Control" parent="MainPanel" unique_id=1232264229]
 z_index = 2
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="MainPanel/MainMenuPreview" unique_id=1829136430]
@@ -278,6 +292,7 @@ size = Vector2i(982, 924)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="MainPanel/MainMenuPreview/SubViewportContainer/SubViewport" unique_id=137916244]
+cull_mask = 1048447
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MainPanel/MainMenuPreview/SubViewportContainer/SubViewport" unique_id=1661846503]
 transform = Transform3D(1.385, 0, 0, 0, 1.385, 0, 0, 0, 1.385, 0, 0, -2.080707)
@@ -286,26 +301,426 @@ surface_material_override/0 = ExtResource("7_qao3l")
 
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="MainPanel/MainMenuPreview" unique_id=1735180855]
 modulate = Color(1, 1, 1, 0.4862745)
-layout_mode = 0
-offset_left = 587.0
-offset_top = -219.0
-offset_right = 2088.0
-offset_bottom = 1356.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="MainPanel/MainMenuPreview/SubViewportContainer2" unique_id=422793186]
-transparent_bg = true
 handle_input_locally = false
-size = Vector2i(1501, 1575)
+size = Vector2i(1974, 1135)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport" unique_id=800522609]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5859966, 0, 0)
+transform = Transform3D(0.94915617, -0.041021325, 0.3121217, -0.08817636, 0.91714364, 0.38868037, -0.3022046, -0.39644012, 0.8668954, 5.83141, 31.052425, 77.92424)
+cull_mask = 1047680
+fov = 83.3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport" unique_id=1539675906]
 transform = Transform3D(1.385, 0, 0, 0, 1.385, 0, 0, 0, 1.385, 7.5859966, 0, -2.080707)
 mesh = SubResource("CylinderMesh_tf5ef")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport" unique_id=571040194]
+environment = SubResource("Environment_6m30h")
+
+[node name="Test" type="Node3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport" unique_id=1542208758]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.411602, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1489428097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16461182, 0.951416)
+layers = 128
+use_collision = true
+size = Vector3(800, 0.671, 800)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=557878570]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9639282, -3.3754904, 0.951416)
+layers = 128
+use_collision = true
+size = Vector3(4.0721436, 10, 10)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=658591681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.72274, 0.07455683, 0.951416)
+layers = 128
+use_collision = true
+size = Vector3(8.553528, 2.3300781, 10)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=221054306]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.410011, 3.7083235, 0.951416)
+layers = 128
+use_collision = true
+size = Vector3(3.1789856, 2.1484375, 10)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1380736211]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.410672, -3.036135, -0.3322754)
+layers = 128
+use_collision = true
+size = Vector3(4.0721436, 10.678711, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=755051008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.114499, -3.036135, 9.737734)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 10.678711, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=718123259]
+transform = Transform3D(0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0, 0, 1, 16.703228, -0.20132518, 9.737734)
+layers = 128
+use_collision = true
+size = Vector3(9.8107605, 2.6201172, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1563680201]
+transform = Transform3D(0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0, 0, 1, 2.2010717, 1.9302826, 9.737734)
+layers = 128
+use_collision = true
+size = Vector3(9.8107605, 2.6201172, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=22840237]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0062933, 4.6360455, 9.737734)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 26.023071, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1427353277]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 13.481398, -0.8785982)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 43.713776, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D51" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=663021197]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.522346, 13.481398, 5.210431)
+layers = 128
+use_collision = true
+size = Vector3(26.822968, 43.713776, 26.434326)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D17" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1117779216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 6.990629, 26.178204)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 30.732239, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D20" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=329032476]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 14.553713, 43.114803)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 45.67189, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D18" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1262419880]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 6.990629, 26.178204)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 30.732239, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D21" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1775508790]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 17.59199, 43.626022)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 51.748444, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D46" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1689329921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.55801, 40.192047, 36.112106)
+layers = 128
+use_collision = true
+size = Vector3(25.533539, 96.94856, 22.46045)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D47" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=45652522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.55136, 40.192047, 36.112106)
+layers = 128
+use_collision = true
+size = Vector3(25.533539, 96.94856, 22.46045)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D48" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1897945505]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.949436, 68.30439, 21.92015)
+layers = 128
+use_collision = true
+size = Vector3(84.73739, 6.555744, 8.780151)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D49" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1474731672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.639153, 68.30439, 38.38282)
+layers = 128
+use_collision = true
+size = Vector3(103.357956, 6.555744, 8.780151)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D22" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=16804248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 21.695253, 44.90411)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D23" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=85472747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 18.36914, 44.90411)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D34" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1284157366]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 14.889139, 44.90411)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D24" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=401685778]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 11.804575, 63.50819)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 40.173615, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D25" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=546203986]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 15.536409, 64.01941)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 47.637283, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D26" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=812193636]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 21.695253, 65.2975)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D27" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=562470145]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 18.36914, 65.2975)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D28" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1541162533]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.221215, 19.407114, 83.37935)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 55.378693, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D29" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=349886556]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5887156, 18.503366, 83.890564)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 53.571198, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D30" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=343823067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 21.695253, 85.168655)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D32" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1498034655]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3572907, 21.695253, 55.42476)
+layers = 128
+use_collision = true
+size = Vector3(2.4211254, 1.3017349, 60.703613)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D33" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=446693770]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.188575, 21.695253, 55.34102)
+layers = 128
+use_collision = true
+size = Vector3(2.4211254, 1.3017349, 60.871094)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D31" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1638766616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 18.36914, 85.168655)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D35" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=706970295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 32.920437, 44.90411)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D36" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1402722072]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 29.440435, 44.90411)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D37" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1050757397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 28.509544, 65.2975)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D38" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=2012249301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 25.18343, 65.2975)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D39" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=760569792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 36.24655, 85.168655)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D40" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=72909048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6873007, 32.920437, 85.168655)
+layers = 128
+use_collision = true
+size = Vector3(23.216522, 1.3017349, 1.2158203)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D19" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=920933099]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.396778, 6.000082, 62.158474)
+layers = 128
+use_collision = true
+size = Vector3(10.751144, 3.1585846, 79.39316)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D41" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1442097609]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2604084, 49.081593, 62.158474)
+layers = 128
+use_collision = true
+size = Vector3(47.51164, 23.837105, 79.39316)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D42" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=194238063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 41.907227, 63.44816)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D52" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=985604655]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.03328, 11.692116, 48.55752)
+layers = 128
+use_collision = true
+size = Vector3(47.51164, 23.837105, 79.39316)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D43" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1457637427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 47.467033, 63.44816)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=172635745]
+transform = Transform3D(0.70710677, -0.70710677, 0, 0.70710677, 0.70710677, 0, 0, 0, 1, -31.628677, 13.972823, 4.263402)
+layers = 128
+use_collision = true
+size = Vector3(6.6644897, 50.480865, 7.432617)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D44" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1409802480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 52.96678, 63.44816)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D53" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=951820653]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 4.51775, 49.847206)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D45" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=167604732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2616787, 57.891052, 63.44816)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D54" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=609233690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 10.077557, 49.847206)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D55" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1309269644]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 15.577305, 49.847206)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D56" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1180393587]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.032005, 20.501575, 49.847206)
+layers = 128
+use_collision = true
+size = Vector3(54.098248, 2.7928944, 88.636986)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=182102053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.352098, 9.536322, -13.458255)
+layers = 128
+use_collision = true
+size = Vector3(32.149582, 35.823624, 14.312012)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1968615948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.75877, 3.8226452, -1.7159386)
+layers = 128
+use_collision = true
+size = Vector3(5.74028, 24.39627, 12.181213)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D15" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=895799138]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 57.00177, 15.134622, -1.7159386)
+layers = 128
+use_collision = true
+size = Vector3(5.74028, 56.391373, 12.181213)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=423981180]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.88005, 13.224066, 12.107536)
+layers = 128
+use_collision = true
+size = Vector3(21.288464, 43.199112, 2.0886536)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D50" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=1707908859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.88005, 37.0457, 3.0501099)
+layers = 128
+use_collision = true
+size = Vector3(21.288464, 19.453356, 20.203506)
+material = ExtResource("11_bpbph")
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="MainPanel/MainMenuPreview/SubViewportContainer2/SubViewport/Test" unique_id=55817006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.74426, 3.8226452, 15.9879)
+layers = 128
+use_collision = true
+size = Vector3(17.769299, 24.39627, 2.0886536)
+material = ExtResource("11_bpbph")
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=264591978]
 z_index = 34

@@ -156,7 +156,29 @@ func return_to_main_menu() -> bool:
 		)
 		return false
 
-	_transition_to_main_menu()
+	_transition_to_main_menu(
+		true
+	)
+
+	return true
+
+
+func go_to_main_menu_from_boot() -> bool:
+	if _is_scene_transition_active:
+		push_warning(
+			"SceneManager: a scene transition is already active."
+		)
+		return false
+
+	if _screen_transition == null:
+		push_error(
+			"SceneManager: ScreenTransition is missing."
+		)
+		return false
+
+	_transition_to_main_menu(
+		false
+	)
 
 	return true
 
@@ -297,7 +319,9 @@ func _transition_to_chapter(
 	scene_transition_finished.emit()
 
 
-func _transition_to_main_menu() -> void:
+func _transition_to_main_menu(
+	should_save_active_profile: bool
+) -> void:
 	_is_scene_transition_active = true
 	scene_transition_started.emit()
 
@@ -305,7 +329,7 @@ func _transition_to_main_menu() -> void:
 		TRANSITION_COVER_DURATION_S
 	)
 
-	if SaveManager.has_active_profile():
+	if should_save_active_profile and SaveManager.has_active_profile():
 		SaveManager.save_active_profile()
 
 	_pending_chapter_launch_request = null

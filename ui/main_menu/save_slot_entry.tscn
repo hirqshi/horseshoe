@@ -17,6 +17,7 @@ font_color = Color(0, 1, 0.16666651, 0.7137255)
 [node name="SaveSlotEntry" type="Control" unique_id=1477017188 node_paths=PackedStringArray("title_label", "stats_label", "select_button", "clear_button")]
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 2
 theme = ExtResource("3_1jcea")
 script = ExtResource("1_lrblq")
 title_label = NodePath("TitleLabel")

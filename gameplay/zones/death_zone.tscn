@@ -14,6 +14,7 @@ script = ExtResource("1_12ota")
 shape = SubResource("BoxShape3D_uppji")
 
 [node name="ZoneVisual" type="MeshInstance3D" parent="." unique_id=66693322 node_paths=PackedStringArray("collision_shape")]
+visible = false
 script = ExtResource("2_r3nqn")
 collision_shape = NodePath("../CollisionShape3D")
 base_material = ExtResource("3_r3nqn")
