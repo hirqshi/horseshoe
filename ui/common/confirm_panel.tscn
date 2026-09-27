@@ -157,6 +157,7 @@ render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Dialog/Frame/SubViewportContainer/SubViewport" unique_id=1197947745]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5568724, 3.8911495, 0)
+cull_mask = 1048447
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Dialog/Frame/SubViewportContainer/SubViewport" unique_id=1744254818]
 transform = Transform3D(1.2096045, 0.30014825, -0.6041459, 0, 1.2403581, 0.6162275, 0.67459714, -0.53818893, 1.0832802, 7.5568724, 3.8911495, -1.5686501)

@@ -20,9 +20,21 @@ var entry_upward_velocity_retention: float = 0.35
 
 @export_category("contact")
 @export_range(-1.0, 1.0, 0.01) var minimum_normal_alignment: float = 0.65
+@export_range(
+	0.1,
+	60.0,
+	0.1,
+	"suffix:1/s"
+) var wall_normal_follow_speed: float = 18.0
 
 @export_category("wall jump")
 @export_range(1, 4, 1) var max_wall_jump_charges: int = 1
+@export_range(
+	1.0,
+	179.0,
+	1.0,
+	"suffix:deg"
+) var wall_jump_surface_refresh_angle_deg: float = 28.0
 @export_range(0.0, 1.0, 0.01) var toward_wall_threshold: float = 0.35
 @export var wall_jump_upward_speed_mps: float = 8.0
 @export_range(0.0, 1.5, 0.01)

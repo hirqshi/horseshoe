@@ -28,12 +28,62 @@ var _id_rng: RandomNumberGenerator = RandomNumberGenerator.new()
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		_id_rng.randomize()
+
+		if not get_tree().node_added.is_connected(
+			_on_tree_node_added
+		):
+			get_tree().node_added.connect(
+				_on_tree_node_added
+			)
+
 		call_deferred(
 			"_connect_checkpoints"
 		)
+
 		return
 
 	_connect_checkpoints()
+
+
+func _on_tree_node_added(
+	node: Node
+) -> void:
+	if not Engine.is_editor_hint():
+		return
+
+	var checkpoint: Checkpoint = (
+		node as Checkpoint
+	)
+
+	if checkpoint == null:
+		return
+
+	call_deferred(
+		"_register_editor_checkpoint",
+		checkpoint
+	)
+
+
+func _register_editor_checkpoint(
+	checkpoint: Checkpoint
+) -> void:
+	if not Engine.is_editor_hint():
+		return
+
+	if not is_instance_valid(checkpoint):
+		return
+
+	if checkpoints_root == null:
+		return
+
+	if not checkpoints_root.is_ancestor_of(
+		checkpoint
+	):
+		return
+
+	_register_checkpoint_id(
+		checkpoint
+	)
 
 
 func setup(
@@ -111,7 +161,16 @@ func _connect_checkpoints() -> void:
 
 	_checkpoint_by_id.clear()
 
-	for checkpoint_node: Node in checkpoints_root.get_children():
+	var checkpoint_nodes: Array[Node] = (
+		checkpoints_root.find_children(
+			"*",
+			"",
+			true,
+			false
+		)
+	)
+
+	for checkpoint_node: Node in checkpoint_nodes:
 		var checkpoint: Checkpoint = (
 			checkpoint_node as Checkpoint
 		)
@@ -201,6 +260,14 @@ func _register_checkpoint_id(
 				checkpoint.checkpoint_id,
 			]
 		)
+	if (
+		Engine.is_editor_hint()
+		and (
+			was_generated
+			or was_regenerated_after_duplicate
+		)
+	):
+		EditorInterface.mark_scene_as_unsaved()
 
 
 func _generate_unique_checkpoint_id() -> StringName:
@@ -276,4 +343,18 @@ func _on_checkpoint_presence_changed(
 
 	player_exited_checkpoint_zone.emit(
 		checkpoint
+	)
+
+
+func _exit_tree() -> void:
+	if not Engine.is_editor_hint():
+		return
+
+	if not get_tree().node_added.is_connected(
+		_on_tree_node_added
+	):
+		return
+
+	get_tree().node_added.disconnect(
+		_on_tree_node_added
 	)

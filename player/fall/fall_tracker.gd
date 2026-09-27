@@ -71,6 +71,63 @@ func _hide_fall_ui() -> void:
 	_is_fall_ui_visible = false
 	fall_ui_hidden.emit()
 
+func get_downward_speed_mps() -> float:
+	if _body == null:
+		return 0.0
+
+	return maxf(
+		-_body.velocity.y,
+		0.0
+	)
+
+
+func get_live_risk_ratio() -> float:
+	if config == null:
+		return 0.0
+
+	if not _is_tracking_fall:
+		return 0.0
+
+	if not _is_falling:
+		return 0.0
+
+	var fall_distance_m: float = (
+		_get_current_fall_distance_m()
+	)
+
+	var downward_speed_mps: float = (
+		get_downward_speed_mps()
+	)
+
+	var distance_ratio: float = clampf(
+		inverse_lerp(
+			config.damage_start_distance_m,
+			config.lethal_distance_m,
+			fall_distance_m
+		),
+		0.0,
+		1.0
+	)
+
+	var speed_ratio: float = clampf(
+		inverse_lerp(
+			config.damage_start_impact_speed_mps,
+			config.lethal_impact_speed_mps,
+			downward_speed_mps
+		),
+		0.0,
+		1.0
+	)
+
+	return minf(
+		distance_ratio,
+		speed_ratio
+	)
+
+
+func is_live_fall_lethal() -> bool:
+	return get_live_risk_ratio() >= 1.0
+
 func _physics_process(delta: float) -> void:
 	if not _is_tracking_fall:
 		return

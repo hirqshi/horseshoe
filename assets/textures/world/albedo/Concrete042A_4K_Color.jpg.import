@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://hrdnw45tvr1e"
 path.s3tc="res://.godot/imported/Concrete042A_4K_Color.jpg-d0d4888973e9ffcc1fd4e35b007bfe17.s3tc.ctex"
+path.etc2="res://.godot/imported/Concrete042A_4K_Color.jpg-d0d4888973e9ffcc1fd4e35b007bfe17.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/textures/world/albedo/Concrete042A_4K_Color.jpg"
-dest_files=["res://.godot/imported/Concrete042A_4K_Color.jpg-d0d4888973e9ffcc1fd4e35b007bfe17.s3tc.ctex"]
+dest_files=["res://.godot/imported/Concrete042A_4K_Color.jpg-d0d4888973e9ffcc1fd4e35b007bfe17.s3tc.ctex", "res://.godot/imported/Concrete042A_4K_Color.jpg-d0d4888973e9ffcc1fd4e35b007bfe17.etc2.ctex"]
 
 [params]
 

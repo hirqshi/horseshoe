@@ -1,0 +1,54 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bn33348pwwpvk"]
+
+[ext_resource type="Shader" uid="uid://bt7stlse11pkk" path="res://ui/retinal_hud/organs/retinal_fly.gdshader" id="1_yi72u"]
+
+[resource]
+shader = ExtResource("1_yi72u")
+shader_parameter/organism_size_px = Vector2(320, 320)
+shader_parameter/membrane_offset_px = Vector2(0, 0)
+shader_parameter/core_offset_px = Vector2(0, 0)
+shader_parameter/turn_speed = 0.0
+shader_parameter/is_gliding = false
+shader_parameter/preview_enabled = false
+shader_parameter/preview_direction = Vector2(1.7, 0.555)
+shader_parameter/preview_membrane_lag_px = 15.015
+shader_parameter/preview_core_lead_px = 97.25
+shader_parameter/preview_turn_speed = 2.39
+shader_parameter/preview_is_gliding = false
+shader_parameter/membrane_color = Color(7.105993, 7.105993, 7.105993, 0.63529414)
+shader_parameter/membrane_edge_color = Color(1, 1, 1, 0.49019608)
+shader_parameter/core_color = Color(1, 0.2, 0.68, 1)
+shader_parameter/core_hot_color = Color(1, 0.62, 0.08, 1)
+shader_parameter/tether_root_color = Color(0.96, 0.1, 0.49, 1)
+shader_parameter/tether_middle_color = Color(1, 0.57, 0.08, 1)
+shader_parameter/tether_tip_color = Color(0.92, 0.85636663, 0.15640002, 1)
+shader_parameter/branch_root_color = Color(10.5787325, 0, 0.60990655, 1)
+shader_parameter/branch_tip_color = Color(0.67200005, 1, 0.18, 1)
+shader_parameter/outline_color = Color(0.6333333, 1, 0, 1)
+shader_parameter/membrane_radius = 0.335
+shader_parameter/membrane_opacity = 0.08
+shader_parameter/membrane_edge_width = 0.03
+shader_parameter/membrane_edge_opacity = 0.945
+shader_parameter/core_radius = 0.08
+shader_parameter/core_opacity = 0.85
+shader_parameter/branch_turn_speed_multiplier = 5.0
+shader_parameter/branch_start_turn_speed = 1.5
+shader_parameter/branch_full_turn_speed = 18.0
+shader_parameter/growth_length_bonus = 0.045
+shader_parameter/base_tissue_half_width = 0.021
+shader_parameter/growth_spread_width = 0.005
+shader_parameter/diagonal_bias = 0.43
+shader_parameter/ridged_scale_along = 0.1
+shader_parameter/ridged_scale_across = 4.49
+shader_parameter/ridged_threshold = 0.41
+shader_parameter/ridged_softness = 0.115
+shader_parameter/macro_noise_scale = 5.475
+shader_parameter/edge_noise_scale = 17.54
+shader_parameter/grain_noise_scale = 8.995
+shader_parameter/flow_warp_strength = 0.16
+shader_parameter/edge_warp_strength = 0.885
+shader_parameter/outline_width = 0.17
+shader_parameter/outline_noise_strength = 1.54
+shader_parameter/pulse_speed = 1.25
+shader_parameter/tissue_opacity = 0.82
+shader_parameter/outline_opacity = 1.1400000000000001

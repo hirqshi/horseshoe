@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://dy4dop5tu7dao"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_utr5e"]
+animation = &"airborne"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kewli"]
+animation = &"dash"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_do7qw"]
+fadein_time = 0.1
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2h6tc"]
+animation = &"grapple"
+
+[sub_resource type="Curve" id="Curve_dtdtq"]
+_data = [Vector2(0, 0), 0.0, -0.036601286, 0, 0, Vector2(0.5183585, 0.49382716), 3.1914613, 3.1914613, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_8rogd"]
+xfade_time = 0.2
+xfade_curve = SubResource("Curve_dtdtq")
+input_0/name = "run"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "slide"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+input_2/name = "airborne"
+input_2/auto_advance = false
+input_2/break_loop_at_end = false
+input_2/reset = true
+input_3/name = "grapple"
+input_3/auto_advance = false
+input_3/break_loop_at_end = false
+input_3/reset = true
+input_4/name = "wallrun_left"
+input_4/auto_advance = false
+input_4/break_loop_at_end = false
+input_4/reset = true
+input_5/name = "wallrun_right"
+input_5/auto_advance = false
+input_5/break_loop_at_end = false
+input_5/reset = true
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_48p26"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_anp34"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jdjat"]
+animation = &"slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j420s"]
+animation = &"walljump_front"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_kcq4v"]
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qavcc"]
+animation = &"walljump_left"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_bd26m"]
+fadein_time = 0.1
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lufic"]
+animation = &"walljump_right"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_nxclr"]
+fadein_time = 0.1
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_onxu2"]
+animation = &"wallrun_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gci7n"]
+animation = &"wallrun_right"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_6m30h"]
+graph_offset = Vector2(396.42392, 90.41255)
+nodes/output/position = Vector2(1280, 112)
+nodes/loop_transition/node = SubResource("AnimationNodeTransition_8rogd")
+nodes/loop_transition/position = Vector2(96, 96)
+nodes/run/node = SubResource("AnimationNodeAnimation_48p26")
+nodes/run/position = Vector2(-320, 32)
+nodes/airborne/node = SubResource("AnimationNodeAnimation_utr5e")
+nodes/airborne/position = Vector2(-240, 480)
+nodes/run_timescale/node = SubResource("AnimationNodeTimeScale_anp34")
+nodes/run_timescale/position = Vector2(-160, 48)
+nodes/dash/node = SubResource("AnimationNodeAnimation_kewli")
+nodes/dash/position = Vector2(992, 384)
+nodes/slide/node = SubResource("AnimationNodeAnimation_jdjat")
+nodes/slide/position = Vector2(-256, 272)
+nodes/grapple/node = SubResource("AnimationNodeAnimation_2h6tc")
+nodes/grapple/position = Vector2(-256, 672)
+nodes/walljump_front/node = SubResource("AnimationNodeAnimation_j420s")
+nodes/walljump_front/position = Vector2(272, 432)
+nodes/walljump_left/node = SubResource("AnimationNodeAnimation_qavcc")
+nodes/walljump_left/position = Vector2(768, 384)
+nodes/walljump_right/node = SubResource("AnimationNodeAnimation_lufic")
+nodes/walljump_right/position = Vector2(512, 400)
+nodes/wallrun_left/node = SubResource("AnimationNodeAnimation_onxu2")
+nodes/wallrun_left/position = Vector2(-160, 848)
+nodes/wallrun_right/node = SubResource("AnimationNodeAnimation_gci7n")
+nodes/wallrun_right/position = Vector2(16, 848)
+nodes/dash_oneshot/node = SubResource("AnimationNodeOneShot_do7qw")
+nodes/dash_oneshot/position = Vector2(992, 96)
+nodes/walljump_left_oneshot/node = SubResource("AnimationNodeOneShot_bd26m")
+nodes/walljump_left_oneshot/position = Vector2(752, 96)
+nodes/walljump_right_oneshot/node = SubResource("AnimationNodeOneShot_nxclr")
+nodes/walljump_right_oneshot/position = Vector2(496, 96)
+nodes/walljump_front_oneshot/node = SubResource("AnimationNodeOneShot_kcq4v")
+nodes/walljump_front_oneshot/position = Vector2(256, 96)
+node_connections = [&"output", 0, &"dash_oneshot", &"loop_transition", 0, &"run_timescale", &"loop_transition", 1, &"slide", &"loop_transition", 2, &"airborne", &"loop_transition", 3, &"grapple", &"loop_transition", 4, &"wallrun_left", &"loop_transition", 5, &"wallrun_right", &"run_timescale", 0, &"run", &"dash_oneshot", 0, &"walljump_left_oneshot", &"dash_oneshot", 1, &"dash", &"walljump_left_oneshot", 0, &"walljump_right_oneshot", &"walljump_left_oneshot", 1, &"walljump_left", &"walljump_right_oneshot", 0, &"walljump_front_oneshot", &"walljump_right_oneshot", 1, &"walljump_right", &"walljump_front_oneshot", 0, &"loop_transition", &"walljump_front_oneshot", 1, &"walljump_front"]
+
+[node name="AnimationTree" type="AnimationTree" unique_id=1375875588]
+root_node = NodePath("../arms2")
+tree_root = SubResource("AnimationNodeBlendTree_6m30h")
+anim_player = NodePath("../arms2/AnimationPlayer")
+parameters/loop_transition/current_state = "wallrun_right"
+parameters/loop_transition/transition_request = ""
+parameters/loop_transition/current_index = 5
+parameters/run_timescale/scale = 1.0
+parameters/dash_oneshot/active = false
+parameters/dash_oneshot/internal_active = false
+parameters/dash_oneshot/request = 0
+parameters/walljump_left_oneshot/active = false
+parameters/walljump_left_oneshot/internal_active = false
+parameters/walljump_left_oneshot/request = 0
+parameters/walljump_right_oneshot/active = false
+parameters/walljump_right_oneshot/internal_active = false
+parameters/walljump_right_oneshot/request = 0
+parameters/walljump_front_oneshot/active = false
+parameters/walljump_front_oneshot/internal_active = false
+parameters/walljump_front_oneshot/request = 0

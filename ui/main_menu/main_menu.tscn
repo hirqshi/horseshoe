@@ -6,8 +6,8 @@
 [ext_resource type="Theme" uid="uid://cpidpprqmmuh7" path="res://assets/themes/buttons_colored_skewed.tres" id="3_s4pem"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="4_u184e"]
 [ext_resource type="Script" uid="uid://582lvgj7s3rn" path="res://ui/common/menu_entrance_animator.gd" id="5_4e78x"]
+[ext_resource type="FontFile" uid="uid://8rmfq8dt81ff" path="res://assets/textures/pixel_ui/SankofaDisplay-Regular.ttf" id="5_bpbph"]
 [ext_resource type="PackedScene" uid="uid://b17sbba6eoi4l" path="res://ui/main_menu/save_slot_select.tscn" id="5_joh67"]
-[ext_resource type="FontFile" uid="uid://cr23rhqyy8wly" path="res://assets/fonts/CoralPixels-Regular.ttf" id="5_u2jyo"]
 [ext_resource type="ArrayMesh" uid="uid://bqn3c31w0wte3" path="res://assets/models/pickups/cube.obj" id="6_tf5ef"]
 [ext_resource type="PackedScene" uid="uid://cp8e1sbdmqsno" path="res://ui/main_menu/chapter_select.tscn" id="6_u184e"]
 [ext_resource type="Material" uid="uid://crte43mxj12rj" path="res://assets/materials/pickup_wireframe.tres" id="7_qao3l"]
@@ -24,8 +24,9 @@ font_size = 26
 font_color = Color(0, 1, 0.16666651, 0.39215687)
 
 [sub_resource type="LabelSettings" id="LabelSettings_u184e"]
-font = ExtResource("5_u2jyo")
+font = ExtResource("5_bpbph")
 font_size = 98
+outline_size = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u2jyo"]
 render_priority = 0
@@ -251,7 +252,7 @@ label_settings = SubResource("LabelSettings_6mijq")
 horizontal_alignment = 1
 
 [node name="TitleLabel" type="Label" parent="MainPanel" unique_id=774673229]
-modulate = Color(0, 2.910947, 0.6618878, 1)
+modulate = Color(0, 1, 0.16666651, 1)
 layout_mode = 0
 offset_left = 161.0
 offset_top = 181.0

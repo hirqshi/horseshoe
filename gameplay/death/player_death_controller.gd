@@ -64,6 +64,94 @@ func setup(
 	)
 
 
+func _unhandled_input(
+	event: InputEvent
+) -> void:
+	if is_dying:
+		return
+
+	if get_tree().paused:
+		return
+
+	if not event.is_action_pressed(
+		&"respawn"
+	):
+		return
+
+	request_instant_respawn()
+
+	get_viewport().set_input_as_handled()
+
+
+func _respawn_player_at_checkpoint() -> bool:
+	if _player == null:
+		push_error(
+			"PlayerDeathController has no Player."
+		)
+		return false
+
+	if _world == null:
+		push_error(
+			"PlayerDeathController has no World."
+		)
+		return false
+
+	var respawn_transform: Transform3D = (
+		_world.get_respawn_transform()
+	)
+
+	_player.global_transform = respawn_transform
+	_player.velocity = Vector3.ZERO
+
+	_player.reset_after_respawn()
+
+	_world.reset_player_zone_state()
+
+	return true
+
+
+func request_instant_respawn() -> void:
+	if is_dying:
+		return
+
+	if _player == null:
+		push_error(
+			"PlayerDeathController has not been set up."
+		)
+		return
+
+	if _world == null:
+		push_error(
+			"PlayerDeathController has no World."
+		)
+		return
+
+	is_dying = true
+
+	if SaveManager.has_active_profile():
+		SaveManager.register_death()
+
+	var previous_process_mode: Node.ProcessMode = (
+		_player.process_mode
+	)
+
+	_player.process_mode = (
+		Node.PROCESS_MODE_DISABLED
+	)
+
+	_player.velocity = Vector3.ZERO
+
+	if not _respawn_player_at_checkpoint():
+		_player.process_mode = previous_process_mode
+		_finish_death()
+		return
+
+	_player.process_mode = previous_process_mode
+	_player.velocity = Vector3.ZERO
+
+	_finish_death()
+
+
 func request_death() -> void:
 	if is_dying:
 		return
@@ -106,15 +194,9 @@ func request_death() -> void:
 		_finish_death()
 		return
 
-	var respawn_transform: Transform3D = (
-		_world.get_respawn_transform()
-	)
-
-	_player.global_transform = respawn_transform
-	_player.velocity = Vector3.ZERO
-
-	_player.reset_after_respawn()
-	_world.reset_player_zone_state()
+	if not _respawn_player_at_checkpoint():
+		_finish_death()
+		return
 
 	await get_tree().physics_frame
 

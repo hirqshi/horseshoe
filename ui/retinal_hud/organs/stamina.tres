@@ -1,0 +1,36 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b45x8cgrmqaft"]
+
+[ext_resource type="Shader" uid="uid://c0iyrfp5svn47" path="res://ui/retinal_hud/organs/stamina_helix.gdshader" id="1_ovtiu"]
+
+[resource]
+shader = ExtResource("1_ovtiu")
+shader_parameter/preview_enabled = false
+shader_parameter/preview_charge_ratio = 0.72
+shader_parameter/charge_ratio = 1.0
+shader_parameter/strand_root_color = Color(0.70199996, 0.9, 0.8769, 1)
+shader_parameter/strand_middle_color = Color(1, 1, 1, 0.5137255)
+shader_parameter/strand_tip_color = Color(0.72, 0.18, 1, 1)
+shader_parameter/healthy_outline_color = Color(0.75, 1, 0, 1)
+shader_parameter/danger_inner_color = Color(1, 0.96, 1, 1)
+shader_parameter/danger_outer_color = Color(1, 0.1, 0.62, 1)
+shader_parameter/danger_pulse_color = Color(1, 0.42, 0.04, 1)
+shader_parameter/danger_outline_color = Color(1, 0, 0.3833332, 1)
+shader_parameter/arc_radius = 0.61
+shader_parameter/helix_turns = 4.315
+shader_parameter/strand_separation = 0.135
+shader_parameter/strand_width = 0.032
+shader_parameter/strand_softness = 0.008
+shader_parameter/rung_width = 0.077
+shader_parameter/rung_softness = 0.234
+shader_parameter/rung_sharpness = 36.375
+shader_parameter/charge_edge_softness = 0.075
+shader_parameter/low_charge_start = 0.46
+shader_parameter/critical_charge_start = 0.2
+shader_parameter/healthy_opacity = 0.48
+shader_parameter/danger_opacity = 0.98
+shader_parameter/pulse_frequency_hz = 2.0
+shader_parameter/pulse_radius_amount = 0.016
+shader_parameter/noise_scale = 12.925
+shader_parameter/outline_noise_scale = 42.385
+shader_parameter/edge_noise_strength = 0.12
+shader_parameter/outline_opacity = 1.255

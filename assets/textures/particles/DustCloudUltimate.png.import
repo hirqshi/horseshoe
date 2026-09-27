@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dferm3hstyi0f"
 path.s3tc="res://.godot/imported/DustCloudUltimate.png-559957e91f3039be1728fdba22825de1.s3tc.ctex"
+path.etc2="res://.godot/imported/DustCloudUltimate.png-559957e91f3039be1728fdba22825de1.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/textures/particles/DustCloudUltimate.png"
-dest_files=["res://.godot/imported/DustCloudUltimate.png-559957e91f3039be1728fdba22825de1.s3tc.ctex"]
+dest_files=["res://.godot/imported/DustCloudUltimate.png-559957e91f3039be1728fdba22825de1.s3tc.ctex", "res://.godot/imported/DustCloudUltimate.png-559957e91f3039be1728fdba22825de1.etc2.ctex"]
 
 [params]
 

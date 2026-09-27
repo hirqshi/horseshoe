@@ -15,6 +15,9 @@ var _wall_normal: Vector3 = Vector3.ZERO
 var _elapsed_time_s: float = 0.0
 var _reentry_cooldown_remaining_s: float = 0.0
 var _wall_jump_charges: int = 0
+var _last_wall_jump_surface_normal: Vector3 = (
+	Vector3.ZERO
+)
 var _last_debug_time_s: float = -INF
 
 func _ready() -> void:
@@ -283,9 +286,15 @@ func can_continue(context: MovementContext) -> bool:
 
 	return normal_alignment >= config.minimum_normal_alignment
 
-func physics_tick(context: MovementContext) -> StringName:
+func physics_tick(
+	context: MovementContext
+) -> StringName:
 	if not can_continue(context):
 		return &""
+
+	_follow_wall_surface(
+		context
+	)
 
 	_elapsed_time_s += context.delta
 
@@ -300,8 +309,95 @@ func update_reentry_cooldown(delta: float) -> void:
 		0.0
 	)
 
+func update_wall_jump_surface(
+	context: MovementContext
+) -> void:
+	if config == null:
+		return
+
+	if context.body.is_on_floor():
+		return
+
+	var wall_contact: WallContact = (
+		context.sensors.get_wall_jump_contact()
+	)
+
+	if not wall_contact.is_valid():
+		return
+
+	var current_normal: Vector3 = (
+		wall_contact.normal.normalized()
+	)
+
+	if current_normal.is_zero_approx():
+		return
+
+	if _last_wall_jump_surface_normal.is_zero_approx():
+		_last_wall_jump_surface_normal = current_normal
+		return
+
+	if _wall_jump_charges >= config.max_wall_jump_charges:
+		_last_wall_jump_surface_normal = current_normal
+		return
+
+	var required_alignment: float = cos(
+		deg_to_rad(
+			config.wall_jump_surface_refresh_angle_deg
+		)
+	)
+
+	var normal_alignment: float = (
+		_last_wall_jump_surface_normal.dot(
+			current_normal
+		)
+	)
+
+	if normal_alignment >= required_alignment:
+		return
+
+	restore_wall_jump_charges()
+
+	_last_wall_jump_surface_normal = current_normal
+
 func get_wall_normal() -> Vector3:
 	return _wall_normal
+
+func _follow_wall_surface(
+	context: MovementContext
+) -> void:
+	var wall_contact: WallContact = (
+		context.sensors.get_best_wall()
+	)
+
+	if not wall_contact.is_valid():
+		return
+
+	var target_normal: Vector3 = (
+		wall_contact.normal.normalized()
+	)
+
+	if target_normal.is_zero_approx():
+		return
+
+	var follow_weight: float = (
+		1.0
+		- exp(
+			-config.wall_normal_follow_speed
+			* context.delta
+		)
+	)
+
+	var followed_normal: Vector3 = (
+		_wall_normal.lerp(
+			target_normal,
+			follow_weight
+		)
+	)
+
+	if followed_normal.is_zero_approx():
+		return
+
+	_wall_normal = followed_normal.normalized()
 
 func _apply_horizontal_movement(
 	context: MovementContext
@@ -597,6 +693,8 @@ func try_wall_jump(context: MovementContext) -> bool:
 	context.velocity.y = upward_speed_mps
 
 	_wall_jump_charges -= 1
+	_last_wall_jump_surface_normal = jump_normal
+	
 	_reentry_cooldown_remaining_s = maxf(
 		_reentry_cooldown_remaining_s,
 		config.reentry_cooldown_s

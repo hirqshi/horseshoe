@@ -3,7 +3,6 @@ extends MeshInstance3D
 
 @export_category("references")
 @export var grapple_visual: GrappleVisual
-@export var hook_origin: Marker3D
 @export var movement_motor: MovementMotor
 
 @export_category("geometry")
@@ -84,14 +83,6 @@ func _ready() -> void:
 		set_process(false)
 		return
 
-	if hook_origin == null:
-		push_error(
-			"GrappleRopeVisual requires HookOrigin."
-		)
-
-		set_process(false)
-		return
-
 	if movement_motor == null:
 		push_error(
 			"GrappleRopeVisual requires MovementMotor."
@@ -99,6 +90,8 @@ func _ready() -> void:
 
 		set_process(false)
 		return
+
+	process_priority = 60
 
 	mesh = _array_mesh
 
@@ -241,7 +234,7 @@ func _rebuild_rope_mesh() -> void:
 
 func _rebuild_direct_rope_mesh() -> void:
 	var global_origin: Vector3 = (
-		hook_origin.global_position
+		grapple_visual.get_origin_position()
 	)
 
 	var global_hook_position: Vector3 = (
@@ -367,7 +360,7 @@ func _rebuild_wrapped_rope_mesh(
 	)
 
 	global_route_positions.append(
-		hook_origin.global_position
+		grapple_visual.get_origin_position()
 	)
 
 	for wrap_position: Vector3 in global_wrap_positions:

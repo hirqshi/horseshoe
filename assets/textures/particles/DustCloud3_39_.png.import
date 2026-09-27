@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cclsyywxhcb07"
 path.s3tc="res://.godot/imported/DustCloud3_39_.png-e0f24cb5a3875466b0019d81870de311.s3tc.ctex"
+path.etc2="res://.godot/imported/DustCloud3_39_.png-e0f24cb5a3875466b0019d81870de311.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/textures/particles/DustCloud3_39_.png"
-dest_files=["res://.godot/imported/DustCloud3_39_.png-e0f24cb5a3875466b0019d81870de311.s3tc.ctex"]
+dest_files=["res://.godot/imported/DustCloud3_39_.png-e0f24cb5a3875466b0019d81870de311.s3tc.ctex", "res://.godot/imported/DustCloud3_39_.png-e0f24cb5a3875466b0019d81870de311.etc2.ctex"]
 
 [params]
 

@@ -1,0 +1,21 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://t287dy5qg25n"]
+
+[ext_resource type="Shader" uid="uid://j421fyorukbh" path="res://ui/retinal_hud/organs/grapple_ready_organ.gdshader" id="1_hdkmp"]
+
+[resource]
+shader = ExtResource("1_hdkmp")
+shader_parameter/preview_enabled = false
+shader_parameter/preview_ready_amount = 1.445
+shader_parameter/preview_pulse_amount = 0.055
+shader_parameter/ready_amount = 1.04
+shader_parameter/pulse_amount = 0.0
+shader_parameter/inner_color = Color(0.22, 0.92, 0.8, 1)
+shader_parameter/outer_color = Color(0.58, 0.18, 1, 1)
+shader_parameter/outline_color = Color(0.76666665, 1, 0, 1)
+shader_parameter/arc_radius = 0.56
+shader_parameter/arc_width = -0.025
+shader_parameter/arc_softness = 0.058
+shader_parameter/noise_scale = 3.77
+shader_parameter/edge_noise_strength = 0.04
+shader_parameter/outline_width = 0.04
+shader_parameter/opacity = 1.26

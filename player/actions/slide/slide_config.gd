@@ -12,6 +12,12 @@ extends Resource
 @export_range(0.0, 50.0, 0.01, "suffix:1/s") var steering_lerp_per_second: float = 2.5
 @export_range(0.0, 100.0, 0.01, "suffix:m/s") var end_speed_mps: float = 2.0
 
+@export_category("auto slide")
+@export_range(0.0, 89.0, 0.5, "suffix:°") var auto_slide_min_slope_deg: float = 12.0
+
+@export_category("slope deceleration")
+@export_range(0.0, 2.0, 0.01) var uphill_deceleration_multiplier: float = 0.35
+
 @export_category("landing queue")
 @export_range(0.0, 2.0, 0.01, "suffix:s") var landing_queue_window_s: float = 0.25
 @export_range(0.0, 10.0, 0.01, "suffix:m") var landing_queue_distance_m: float = 1.1

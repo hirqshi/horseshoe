@@ -58,39 +58,32 @@ var _return_start_position: Vector3 = Vector3.ZERO
 var _return_elapsed_s: float = 0.0
 var _return_duration_s: float = 0.0
 
+var _cached_origin_position: Vector3 = Vector3.ZERO
+
 
 func _ready() -> void:
 	add_to_group("grapple_visual")
 
 	if movement_motor == null:
-		push_error(
-			"GrappleVisual requires MovementMotor."
-		)
-
+		push_error("GrappleVisual requires MovementMotor.")
 		set_process(false)
 		return
 
 	if hook_origin == null:
-		push_error(
-			"GrappleVisual requires HookOrigin."
-		)
-
+		push_error("GrappleVisual requires HookOrigin.")
 		set_process(false)
 		return
 
 	if hook_mesh == null:
-		push_error(
-			"GrappleVisual requires HookMesh."
-		)
-
+		push_error("GrappleVisual requires HookMesh.")
 		set_process(false)
 		return
 
+	process_priority = 50
+
 	hook_mesh.visible = false
 
-	call_deferred(
-		"_connect_grapple_action"
-	)
+	call_deferred("_connect_grapple_action")
 
 
 func _connect_grapple_action() -> void:
@@ -145,6 +138,8 @@ func _connect_grapple_action() -> void:
 func _process(
 	delta: float
 ) -> void:
+	_cached_origin_position = hook_origin.global_position
+
 	match _visual_state:
 		VisualState.OUTGOING:
 			_update_outgoing(
@@ -294,9 +289,7 @@ func _update_outgoing(
 		outgoing_ease_power
 	)
 
-	var origin_position: Vector3 = (
-		hook_origin.global_position
-	)
+	var origin_position: Vector3 = _cached_origin_position
 
 	hook_mesh.global_position = origin_position.lerp(
 		_target_position,
@@ -345,9 +338,7 @@ func _update_returning(
 		return_ease_power
 	)
 
-	var origin_position: Vector3 = (
-		hook_origin.global_position
-	)
+	var origin_position: Vector3 = _cached_origin_position
 
 	hook_mesh.global_position = _return_start_position.lerp(
 		origin_position,
@@ -474,3 +465,7 @@ func _on_hook_reset() -> void:
 	hook_mesh.visible = false
 
 	hook_hidden.emit()
+
+
+func get_origin_position() -> Vector3:
+	return _cached_origin_position

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_qja0m")
 speed_fov_bonus_deg = 14.0
-speed_fov_cap_mps = 20.0
+speed_fov_cap_mps = 28.200000000000003
 fov_response_speed = 13.0
 breathing_frequency_hz = 0.3
 bob_horizontal_m = 0.16
@@ -20,7 +20,13 @@ landing_max_offset_m = 0.805
 landing_max_speed_mps = 9.0
 landing_spring_strength = 261.4
 landing_spring_damping = 13.1
-slide_fov_pulse_bonus_deg = 6.8
-dash_shake_position_m = 0.0114
+dash_fov_peak_bonus_deg = 19.1
+dash_fov_attack_s = 0.11
+dash_fov_release_s = 0.36
+slide_fov_bonus_deg = 6.3
+slide_fov_pulse_bonus_deg = 9.1
+slide_fov_attack_s = 0.14
+slide_fov_release_s = 0.26
+dash_shake_position_m = 0.0167
 slide_shake_position_m = 0.0068
 metadata/_custom_type_script = "uid://etbfbhx1fg5o"

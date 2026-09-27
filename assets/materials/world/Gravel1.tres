@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dtumyt3hjfa82"]
+
+[ext_resource type="Texture2D" uid="uid://cr3dyosqc5w18" path="res://assets/textures/world/concrete/albedo/Gravel011_4K_Color.jpg" id="1_l0g8v"]
+[ext_resource type="Texture2D" uid="uid://8gdg14w24rjb" path="res://assets/textures/world/concrete/normal/Gravel011_4K_NormalGL.png" id="2_wpvnh"]
+[ext_resource type="Texture2D" uid="uid://chck8nvk2pvpb" path="res://assets/textures/world/concrete/roughness/Gravel011_4K_Roughness.png" id="3_1nf4f"]
+
+[resource]
+albedo_texture = ExtResource("1_l0g8v")
+roughness_texture = ExtResource("3_1nf4f")
+normal_enabled = true
+normal_texture = ExtResource("2_wpvnh")
+uv1_scale = Vector3(0.08, 0.08, 0.08)
+uv1_triplanar = true
+texture_filter = 2

@@ -571,6 +571,10 @@ func _apply_variable_jump(delta: float) -> void:
 	)
 
 func _update_wall_touch_event() -> void:
+	_wallrun_state.update_wall_jump_surface(
+		_context
+	)
+
 	var is_touching_wall: bool = (
 		sensors.get_best_wall().is_valid()
 	)

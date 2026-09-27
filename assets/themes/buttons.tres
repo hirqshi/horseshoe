@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://3oh8qomayi5p"]
 
-[ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="1_as3k4"]
+[ext_resource type="FontFile" uid="uid://8rmfq8dt81ff" path="res://assets/textures/pixel_ui/SankofaDisplay-Regular.ttf" id="1_as3k4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_60qmb"]
 

@@ -68,11 +68,34 @@ func can_start(
 	if has_queued_slide:
 		return true
 
+	if _motor.stance.is_crouching() \
+	and _is_on_auto_slide_slope(context):
+		return true
+
 	var horizontal_speed_mps: float = (
 		context.get_horizontal_velocity().length()
 	)
 
 	return horizontal_speed_mps >= config.minimum_start_speed_mps
+
+
+func _is_on_auto_slide_slope(
+	context: MovementContext
+) -> bool:
+	var floor_normal: Vector3 = (
+		context.body.get_floor_normal()
+	)
+
+	if floor_normal.is_zero_approx():
+		return false
+
+	var slope_angle_rad: float = floor_normal.angle_to(
+		Vector3.UP
+	)
+
+	return slope_angle_rad >= deg_to_rad(
+		config.auto_slide_min_slope_deg
+	)
 
 
 func start(
@@ -238,9 +261,22 @@ func _apply_slope_acceleration(
 
 	downhill_horizontal = downhill_horizontal.normalized()
 
+	var is_moving_uphill: bool = (
+		_slide_velocity.dot(downhill_horizontal) < 0.0
+	)
+
+	var slope_acceleration_mps2: float = (
+		config.downhill_acceleration_mps2
+	)
+
+	if is_moving_uphill:
+		slope_acceleration_mps2 *= (
+			config.uphill_deceleration_multiplier
+		)
+
 	_slide_velocity += (
 		downhill_horizontal
-		* config.downhill_acceleration_mps2
+		* slope_acceleration_mps2
 		* context.delta
 	)
 

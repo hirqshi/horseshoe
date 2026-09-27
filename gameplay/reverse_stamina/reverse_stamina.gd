@@ -130,20 +130,17 @@ func _physics_process(
 			* delta
 		)
 
-		if current_value > 0.0:
-			is_depleted = false
-
+		is_depleted = false
 		return
 
 	if is_depleted:
 		return
 
-	var horizontal_speed_mps: float = Vector2(
-		_player.velocity.x,
-		_player.velocity.z
-	).length()
+	var movement_speed_mps: float = (
+		_player.velocity.length()
+	)
 
-	if horizontal_speed_mps >= safe_speed_mps:
+	if movement_speed_mps >= safe_speed_mps:
 		slowdown_grace_remaining = (
 			slowdown_grace_duration
 		)
@@ -159,7 +156,7 @@ func _physics_process(
 
 	var value_change_per_second: float = (
 		_get_value_change_per_second(
-			horizontal_speed_mps
+			movement_speed_mps
 		)
 	)
 
@@ -173,9 +170,13 @@ func _physics_process(
 		* delta
 	)
 
-	if is_zero_approx(current_value):
-		is_depleted = true
-		depleted.emit()
+	if not is_zero_approx(
+		current_value
+	):
+		return
+
+	is_depleted = true
+	depleted.emit()
 
 
 func get_normalized_value() -> float:

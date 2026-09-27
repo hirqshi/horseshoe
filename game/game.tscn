@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://cjjneqc3d8gjx" path="res://ui/hud/in_game_hud.gd" id="6_j8tme"]
 [ext_resource type="Script" uid="uid://bfef1slmh7ex7" path="res://ui/hud/hud_element.gd" id="6_y36n6"]
 [ext_resource type="Script" uid="uid://bmffdvssuqee0" path="res://ui/hud/speed_hud_element.gd" id="11_3vho3"]
-[ext_resource type="Texture2D" uid="uid://dvt3x61vvm235" path="res://assets/textures/pixel_ui/crosshair.png" id="11_urpib"]
+[ext_resource type="Texture2D" uid="uid://b37gdvhmme5ul" path="res://assets/textures/pixel_ui/crosshair2.png" id="11_sisia"]
 [ext_resource type="FontFile" uid="uid://dulawdmg17u2l" path="res://assets/fonts/Tiny5-Regular.ttf" id="12_qf6n1"]
 [ext_resource type="Script" uid="uid://c0a2ko5lggv55" path="res://ui/hud/corner_frame_hud.gd" id="13_vkvnp"]
 [ext_resource type="Script" uid="uid://fj52ts8fjlcn" path="res://ui/hud/fall_danger_hud.gd" id="14_b686c"]
@@ -31,13 +31,14 @@
 [ext_resource type="Shader" uid="uid://c4yp0wv7qlh2k" path="res://gameplay/death/deathscreen.gdshader" id="20_dxwpq"]
 [ext_resource type="Script" uid="uid://d2xo7tv0mgiaf" path="res://gameplay/death/player_death_controller.gd" id="20_u8s88"]
 [ext_resource type="Script" uid="uid://byxl7c6ke7mde" path="res://ui/hud/charge_frame_hud.gd" id="21_8bboj"]
-[ext_resource type="Texture2D" uid="uid://c6h3ivr3jfbcr" path="res://assets/textures/pixel_ui/reverse_stamina_bar.png" id="22_5ywmu"]
+[ext_resource type="FontFile" uid="uid://8rmfq8dt81ff" path="res://assets/textures/pixel_ui/SankofaDisplay-Regular.ttf" id="23_jbuku"]
 [ext_resource type="Texture2D" uid="uid://cq4lqiws0fgn8" path="res://assets/textures/pixel_ui/fallmetric.png" id="23_urpib"]
 [ext_resource type="Texture2D" uid="uid://4bntjrjst3si" path="res://assets/textures/pixel_ui/labelmarker.png" id="24_urpib"]
 [ext_resource type="Texture2D" uid="uid://ddbab28wo5g1t" path="res://assets/textures/pixel_ui/dash_icon.png" id="28_posua"]
 [ext_resource type="Texture2D" uid="uid://bbgxi4i5qgwd5" path="res://assets/textures/pixel_ui/glide_icon.png" id="29_5ywmu"]
 [ext_resource type="Texture2D" uid="uid://du1xskqkqdlje" path="res://assets/textures/pixel_ui/walljump_icon.png" id="29_gvtgv"]
 [ext_resource type="Texture2D" uid="uid://wgwn247rguxo" path="res://assets/textures/pixel_ui/decor.png" id="29_mhp6k"]
+[ext_resource type="Texture2D" uid="uid://bfpxarrqwe14d" path="res://assets/textures/pixel_ui/reverse_stamina3.png" id="30_sisia"]
 [ext_resource type="Script" uid="uid://thpnlkoka52d" path="res://audio/death_audio.gd" id="32_cf130"]
 [ext_resource type="Material" uid="uid://b1xhixl0uwj7s" path="res://assets/materials/outline.tres" id="32_mhp6k"]
 [ext_resource type="AudioStream" uid="uid://cfrraot688i8o" path="res://assets/sound/sfx/Sounds_Packet_First/Death.wav" id="32_pvdu1"]
@@ -48,6 +49,15 @@
 [ext_resource type="Script" uid="uid://ce1e2jtfbgpol" path="res://ui/hud/world_post.gd" id="40_iswgq"]
 [ext_resource type="PackedScene" uid="uid://bdf3cjrahcj3b" path="res://ui/hud/player_selfie.tscn" id="40_sisia"]
 [ext_resource type="PackedScene" uid="uid://dgkjii0yfbg60" path="res://ui/pause_menu/pause_menu.tscn" id="47_7tmf6"]
+[ext_resource type="Script" uid="uid://yhvm3lmw4uf5" path="res://ui/retinal_hud/retinal_hud.gd" id="49_xorak"]
+[ext_resource type="Material" uid="uid://bn33348pwwpvk" path="res://ui/retinal_hud/organs/fly.tres" id="50_0lgry"]
+[ext_resource type="Script" uid="uid://ddxo47iw07i6n" path="res://ui/retinal_hud/organs/retinal_fly.gd" id="51_h7iu2"]
+[ext_resource type="Script" uid="uid://di7rn4v3ac241" path="res://ui/retinal_hud/organs/grapple_ready_organ.gd" id="52_8sg4y"]
+[ext_resource type="Material" uid="uid://t287dy5qg25n" path="res://ui/retinal_hud/organs/grapple_ready.tres" id="52_vktc5"]
+[ext_resource type="Material" uid="uid://b45x8cgrmqaft" path="res://ui/retinal_hud/organs/stamina.tres" id="54_ohnrv"]
+[ext_resource type="Script" uid="uid://bx0nvmyd5oyue" path="res://ui/retinal_hud/organs/stamina_helix.gd" id="55_kaw54"]
+[ext_resource type="Material" uid="uid://br16ar5kcovol" path="res://ui/retinal_hud/organs/fall.tres" id="56_1paru"]
+[ext_resource type="Script" uid="uid://bi46g6p1bqc7t" path="res://ui/retinal_hud/organs/fall_organ.gd" id="56_kaw54"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_noarx"]
 resource_local_to_scene = true
@@ -61,7 +71,7 @@ shader_parameter/panini_s = 1.0
 shader_parameter/max_major_radius = 5
 shader_parameter/max_minor_radius = 3
 shader_parameter/fov_is_vertical = true
-shader_parameter/fov_deg = 150.0000070775
+shader_parameter/fov_deg = 179.0
 shader_parameter/ca_amount = 0.0
 shader_parameter/ca_amount_spread = 0.5
 shader_parameter/ca_reference_wavelength = 540.0
@@ -115,22 +125,23 @@ shader_parameter/vhs_noise_fps = 15.0
 viewport_path = NodePath("InGameHud/UiViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_3vho3"]
-font = ExtResource("12_qf6n1")
+font = ExtResource("23_jbuku")
 font_size = 31
 font_color = Color(1, 1, 1, 0.5803922)
+outline_size = 1
 
 [sub_resource type="Gradient" id="Gradient_leid8"]
 offsets = PackedFloat32Array(0.001497006, 0.437046)
 colors = PackedColorArray(1.5120772, 0, 0.04298628, 1, 0, 1, 0.16666651, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tmf6"]
-font = ExtResource("12_qf6n1")
+font = ExtResource("23_jbuku")
 font_size = 40
 font_color = Color(1, 1, 1, 0.5803922)
 
 [sub_resource type="Gradient" id="Gradient_ln7ps"]
-offsets = PackedFloat32Array(0.07539683, 0.19894366, 0.34330985, 0.5299296, 0.72711265, 0.87852114)
-colors = PackedColorArray(0.13, 0.13, 0.13, 1, 0.22, 0.22, 0.22, 1, 0.28902334, 0.31, 0.22010002, 1, 0.50166667, 0.7, 0, 1, 0.19, 1, 0.48699993, 1, 0.66999996, 1, 0.85150003, 1)
+offsets = PackedFloat32Array(0.07539683, 0.19894366, 0.34330985, 0.7636656)
+colors = PackedColorArray(0.13, 0.13, 0.13, 1, 0.22, 0.22, 0.22, 1, 0.28902334, 0.31, 0.22010002, 1, 0.88, 1, 0.92399997, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ln7ps"]
 gradient = SubResource("Gradient_ln7ps")
@@ -146,15 +157,15 @@ shader_parameter/chromatic_edge_start = 0.31999999284736
 shader_parameter/chromatic_edge_end = 0.85
 shader_parameter/chromatic_edge_power = 3.48999992571684
 shader_parameter/sharpness = 2.95999993383808
-shader_parameter/palette_enabled = false
-shader_parameter/palette_strength_dark = 0.16999999620016
-shader_parameter/palette_strength_light = 0.0499999988824
+shader_parameter/palette_enabled = true
+shader_parameter/palette_strength_dark = 0.53999998792992
+shader_parameter/palette_strength_light = 0.62999998591824
 shader_parameter/dark_levels = 3
-shader_parameter/light_levels = 8
-shader_parameter/darkness_threshold = 0.3
+shader_parameter/light_levels = 10
+shader_parameter/darkness_threshold = 0.36999999545508
 shader_parameter/posterization_dither_amount = 0.0
 shader_parameter/bayer_dithering_enabled = true
-shader_parameter/bayer_dither_strength = 0.0
+shader_parameter/bayer_dither_strength = 0.10999999754128
 shader_parameter/bayer_dither_gamma = 2.56999996490736
 shader_parameter/glitch_intensity = 0.0
 shader_parameter/vhs_strength = 0.81999998167136
@@ -184,7 +195,7 @@ shader_parameter/animation_speed = 1.0
 shader_parameter/color_low = Color(0.11, 0.028599998, 0.028599998, 1)
 shader_parameter/color_mid_red = Color(0.0225, 0.09, 0.037125003, 1)
 shader_parameter/color_high = Color(0.036399987, 0.025999997, 0.13, 1)
-shader_parameter/reveal_progress = 0.0
+shader_parameter/reveal_progress = 1.10000002384186
 shader_parameter/reveal_softness = 0.1790000085025
 shader_parameter/use_reveal_texture = false
 shader_parameter/reveal_texture_scale = 1.13999997824404
@@ -193,13 +204,14 @@ shader_parameter/reveal_noise_strength = 0.6
 shader_parameter/reveal_origin = Vector2(0.5, 0.5)
 shader_parameter/radial_reveal_strength = 0.35
 
-[node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("world_container", "in_game_hud", "player_death_controller", "pause_menu")]
+[node name="Game" type="Node" unique_id=1690887929 node_paths=PackedStringArray("world_container", "in_game_hud", "retinal_hud", "player_death_controller", "pause_menu")]
 script = ExtResource("1_l8g03")
 allow_direct_scene_start = true
 development_chapter_definition = ExtResource("2_iswgq")
 player_scene = ExtResource("2_h7iqs")
 world_container = NodePath("ScreenSpaceProjection/ProjectionInput/WorldContainer")
 in_game_hud = NodePath("InGameHud")
+retinal_hud = NodePath("RetinalHud")
 player_death_controller = NodePath("PlayerDeathController")
 pause_menu = NodePath("PauseMenu")
 
@@ -210,7 +222,7 @@ current = true
 near = 0.5
 far = 2.0
 script = ExtResource("1_4fuuu")
-strength = 0.2
+strength = 0.25
 
 [node name="_ProjectionOutput" type="MeshInstance3D" parent="ScreenSpaceProjection" unique_id=387850907]
 physics_interpolation_mode = 2
@@ -258,6 +270,7 @@ ui_composite = NodePath("UiComposite")
 player_selfie = NodePath("UiViewport/HudRoot/PlayerSelfie")
 
 [node name="UiComposite" type="TextureRect" parent="InGameHud" unique_id=729480663]
+visible = false
 material = SubResource("ShaderMaterial_pxxsx")
 anchors_preset = 15
 anchor_right = 1.0
@@ -329,7 +342,7 @@ grow_vertical = 2
 scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.58)
 mouse_filter = 2
-texture = ExtResource("11_urpib")
+texture = ExtResource("11_sisia")
 
 [node name="OuterFrameHud" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=1756941354 node_paths=PackedStringArray("top_left", "top_right", "bottom_left", "bottom_right")]
 anchors_preset = 0
@@ -341,6 +354,7 @@ top_left = NodePath("TopLeft")
 top_right = NodePath("TopRight")
 bottom_left = NodePath("BottomLeft")
 bottom_right = NodePath("BottomRight")
+spread_multiplier = 0.6
 settings_id = &"frame"
 element_alpha = 0.25
 
@@ -351,7 +365,7 @@ offset_left = -170.0
 offset_top = -170.0
 offset_right = -130.0
 offset_bottom = -130.0
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="TopRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=1419746258]
@@ -361,7 +375,7 @@ offset_left = 170.0
 offset_top = -170.0
 offset_right = 210.0
 offset_bottom = -130.0
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="BottomLeft" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=212086050]
@@ -371,7 +385,7 @@ offset_left = -170.0
 offset_top = 170.0
 offset_right = -130.0
 offset_bottom = 210.0
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="BottomRight" type="TextureRect" parent="InGameHud/UiViewport/HudRoot/Crosshair/OuterFrameHud" unique_id=1703624833]
@@ -381,7 +395,7 @@ offset_left = 170.0
 offset_top = 170.0
 offset_right = 210.0
 offset_bottom = 210.0
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 
 [node name="LeadingCrosshair" type="Control" parent="InGameHud/UiViewport/HudRoot/Crosshair" unique_id=1750332084]
@@ -407,7 +421,7 @@ offset_right = 2.5
 offset_bottom = 3.5
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("15_urpib")
 
@@ -740,31 +754,34 @@ bar_follow_speed = 22.700000000000003
 stamina_gradient = SubResource("Gradient_leid8")
 settings_id = &"reverse_stamina_bar"
 element_color = Color(1, 1, 1, 0.6627451)
+element_alpha = 0.41
 lag_sensitivity = 0.269
 lag_max_distance_px = 30.0
 lag_follow_speed = 9.6
 lag_return_speed = 7.4
 
 [node name="ProgressBar" type="TextureProgressBar" parent="InGameHud/UiViewport/HudRoot/ReverseStaminaBar" unique_id=417858835]
+self_modulate = Color(1, 1, 1, 0.73333335)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -41.0
-offset_top = 117.0
-offset_right = 42.0
+offset_left = -43.0
+offset_top = 106.0
+offset_right = 44.0
 offset_bottom = 131.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 step = 0.1
 value = 100.0
-fill_mode = 6
+fill_mode = 8
 radial_initial_angle = 180.0
-texture_progress = ExtResource("22_5ywmu")
+radial_fill_degrees = 268.8
+texture_progress = ExtResource("30_sisia")
 
 [node name="PercentLabel" type="Label" parent="InGameHud/UiViewport/HudRoot/ReverseStaminaBar" unique_id=32978495]
 modulate = Color(0, 1, 0.16666651, 0.6901961)
@@ -1254,3 +1271,89 @@ bus = &"PlayerSfx"
 layer = 20
 visible = false
 pause_action = null
+
+[node name="RetinalHud" type="CanvasLayer" parent="." unique_id=1565275768 node_paths=PackedStringArray("retinal_fly", "grapple_ready_organ", "stamina_helix", "fall_organ")]
+layer = 12
+visible = false
+script = ExtResource("49_xorak")
+retinal_fly = NodePath("RetinalFly")
+grapple_ready_organ = NodePath("GrappleReadyOrgan")
+stamina_helix = NodePath("StaminaHelix")
+fall_organ = NodePath("FallOrgan")
+
+[node name="RetinalFly" type="ColorRect" parent="RetinalHud" unique_id=907778322]
+material = ExtResource("50_0lgry")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -160.0
+offset_right = 160.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+script = ExtResource("51_h7iu2")
+membrane_max_offset_px = 25.0
+core_impulse_px_per_mouse_unit = 0.04
+core_spring_strength = 80.0
+core_damping = 31.3
+core_max_offset_px = 87.0
+shader_material = ExtResource("50_0lgry")
+
+[node name="GrappleReadyOrgan" type="ColorRect" parent="RetinalHud" unique_id=1981509414]
+material = ExtResource("52_vktc5")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -161.0
+offset_top = -265.0
+offset_right = 159.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+script = ExtResource("52_8sg4y")
+shader_material = ExtResource("52_vktc5")
+
+[node name="StaminaHelix" type="ColorRect" parent="RetinalHud" unique_id=1147234605]
+material = ExtResource("54_ohnrv")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -220.0
+offset_right = 340.0
+offset_bottom = 460.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+script = ExtResource("55_kaw54")
+shader_material = ExtResource("54_ohnrv")
+
+[node name="FallOrgan" type="ColorRect" parent="RetinalHud" unique_id=1378440167]
+material = ExtResource("56_1paru")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 506.0
+offset_top = 81.0
+offset_right = 946.0
+offset_bottom = 521.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+mouse_filter = 2
+script = ExtResource("56_kaw54")
+shader_material = ExtResource("56_1paru")

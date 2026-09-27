@@ -854,3 +854,13 @@ func get_max_target_distance_m() -> float:
 		return 0.0
 
 	return config.maximum_target_distance_m
+
+
+func is_ready(
+	current_time_s: float
+) -> bool:
+	return (
+		_has_valid_target
+		and not _is_active
+		and not is_on_cooldown(current_time_s)
+	)

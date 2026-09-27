@@ -18,6 +18,8 @@ var _grounding_horizontal_velocity: Vector3 = Vector3.ZERO
 var _grounding_start_y: float = 0.0
 var _is_active: bool = false
 
+var _has_pending_landing: bool = false
+
 
 func setup(
 	motor: MovementMotor
@@ -50,6 +52,7 @@ func start(
 ) -> void:
 	_remaining_time_s = config.duration_s
 	_is_active = true
+	_has_pending_landing = true
 
 	_grounding_start_y = (
 		context.body.global_position.y
@@ -208,8 +211,10 @@ func _get_max_jump_height_m(
 func _on_motor_landed(
 	_impact_speed_mps: float
 ) -> void:
-	if not _is_active:
+	if not _has_pending_landing:
 		return
+
+	_has_pending_landing = false
 
 	var body: CharacterBody3D = (
 		_motor.get_body()

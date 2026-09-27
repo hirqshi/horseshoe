@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://br16ar5kcovol"]
+
+[ext_resource type="Shader" uid="uid://cnbe5jc7lte58" path="res://ui/retinal_hud/organs/fall_organ.gdshader" id="1_sdfp4"]
+
+[resource]
+shader = ExtResource("1_sdfp4")
+shader_parameter/preview_enabled = true
+shader_parameter/preview_risk_ratio = 0.64
+shader_parameter/preview_is_lethal = false
+shader_parameter/risk_ratio = 0.0
+shader_parameter/is_lethal = false
+shader_parameter/safe_color = Color(0.8666667, 1, 0, 1)
+shader_parameter/warning_color = Color(0.7, 0.14, 1, 1)
+shader_parameter/lethal_color = Color(1, 0.1, 0.48, 1)
+shader_parameter/lethal_pulse_color = Color(1, 0.5, 0.08, 1)
+shader_parameter/outline_color = Color(1, 0, 0.4166665, 1)
+shader_parameter/base_radius = 0.32
+shader_parameter/risk_radius_bonus = 0.2
+shader_parameter/lobe_strength = 0.12
+shader_parameter/edge_softness = 0.165
+shader_parameter/noise_scale = 14.41
+shader_parameter/outline_noise_scale = 1.7149999999999999
+shader_parameter/outline_opacity = 4.91
+shader_parameter/idle_opacity = 0.195
+shader_parameter/lethal_pulse_frequency_hz = 3.2
+shader_parameter/lethal_pulse_radius = 0.06

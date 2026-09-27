@@ -12,6 +12,7 @@ extends Node
 @export_group("References")
 @export var world_container: Node3D
 @export var in_game_hud: InGameHud
+@export var retinal_hud: RetinalHud
 @export var player_death_controller: PlayerDeathController
 @export var pause_menu: PauseMenu
 
@@ -73,7 +74,13 @@ func _validate_persistent_references() -> bool:
 			"Game requires an InGameHud."
 		)
 		return false
-
+		
+	if retinal_hud == null:
+		push_error(
+			"Game requires a RetinalHud."
+		)
+		return false
+		
 	if player_death_controller == null:
 		push_error(
 			"Game requires a PlayerDeathController."
@@ -198,7 +205,11 @@ func _setup_gameplay_nodes() -> void:
 	in_game_hud.set_player(
 		player
 	)
-
+	
+	retinal_hud.set_player(
+		player
+	)
+	
 	player.look_delta_received.connect(
 		in_game_hud.register_look_delta
 	)
