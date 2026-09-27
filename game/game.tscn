@@ -270,7 +270,6 @@ ui_composite = NodePath("UiComposite")
 player_selfie = NodePath("UiViewport/HudRoot/PlayerSelfie")
 
 [node name="UiComposite" type="TextureRect" parent="InGameHud" unique_id=729480663]
-visible = false
 material = SubResource("ShaderMaterial_pxxsx")
 anchors_preset = 15
 anchor_right = 1.0

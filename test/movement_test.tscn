@@ -162,6 +162,22 @@ checkpoint_id = &"checkpoint_8df5ee06_1ad0bcfd_c6da2bac_8c2e1e52"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.490716, 1.6708884, 0.014582634)
 checkpoint_id = &"checkpoint_3cb63597_c1a7df44_76a03424_9fc42a4e"
 
+[node name="Checkpoint2" parent="Map/Checkpoints" unique_id=641772998 instance=ExtResource("1_3rtru")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.941233, 58.72834, -80.24947)
+checkpoint_id = &"checkpoint_64b842e2_b8d78bbb_6ebcc695_adec3ad3"
+
+[node name="Checkpoint3" parent="Map/Checkpoints" unique_id=2120302807 instance=ExtResource("1_3rtru")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.72858, 58.72834, -114.48687)
+checkpoint_id = &"checkpoint_238e8eda_633ee382_856201aa_1401a4d9"
+
+[node name="Checkpoint4" parent="Map/Checkpoints" unique_id=108703374 instance=ExtResource("1_3rtru")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.793911, 34.58805, -227.378)
+checkpoint_id = &"checkpoint_b2954328_2baa859f_6eeb8f93_ea49b642"
+
+[node name="Checkpoint5" parent="Map/Checkpoints" unique_id=319544576 instance=ExtResource("1_3rtru")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.40011, 58.331787, -232.22023)
+checkpoint_id = &"checkpoint_364a07e3_a984e73a_dc45eef9_c048d3f4"
+
 [node name="Map" type="Node3D" parent="Map" unique_id=1409757715]
 
 [node name="Test" type="Node3D" parent="Map/Map" unique_id=532018919]

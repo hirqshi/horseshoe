@@ -1,0 +1,409 @@
+[gd_scene format=3 uid="uid://cc302u1tmflwu"]
+
+[ext_resource type="Shader" uid="uid://bgmgekv0qveou" path="res://visuals/shaders/kali_fractal_godot4.gdshader" id="1_nm71k"]
+[ext_resource type="Shader" uid="uid://baneale3sih1w" path="res://visuals/shaders/plasma_twigl_godot4.gdshader" id="2_w52nx"]
+[ext_resource type="Shader" uid="uid://okabudreqp00" path="res://visuals/shaders/plasma_zozuar_godot4.gdshader" id="3_hqyof"]
+[ext_resource type="Shader" uid="uid://pq71re4uy82a" path="res://visuals/shaders/ink_bleed_godot4.gdshader" id="4_86dkh"]
+[ext_resource type="Shader" uid="uid://g5lx1jhoy3fl" path="res://visuals/shaders/voronoi_organic_godot4.gdshader" id="5_cndff"]
+[ext_resource type="Shader" uid="uid://4lbuc21xwh5h" path="res://visuals/shaders/moire_interference_godot4.gdshader" id="6_3b2hh"]
+[ext_resource type="Shader" uid="uid://c222si0b5hqfb" path="res://visuals/shaders/symmetric_blob_godot4.gdshader" id="7_3b2hh"]
+[ext_resource type="Script" uid="uid://bv5ngv2rltrlg" path="res://visuals/shaders/rorschach_feedback_setup.gd" id="8_2nns3"]
+[ext_resource type="Shader" uid="uid://c10axp0bcbpic" path="res://visuals/shaders/rorschach_feedback_godot4.gdshader" id="9_emgl5"]
+[ext_resource type="Script" uid="uid://bfceh4lsl32vp" path="res://visuals/shaders/growth_automaton_setup.gd" id="10_wk4xx"]
+[ext_resource type="Shader" uid="uid://c0arhjvepgd3b" path="res://visuals/shaders/growth_automaton_buffer.gdshader" id="11_pnrrb"]
+[ext_resource type="Shader" uid="uid://c0bx60ovjqexn" path="res://visuals/shaders/growth_automaton_image.gdshader" id="12_titr3"]
+[ext_resource type="Script" uid="uid://klxm6ovbtwbk" path="res://visuals/shaders/flowfield_particles_setup.gd" id="13_pnrrb"]
+[ext_resource type="Shader" uid="uid://b3tcj15yxesmt" path="res://visuals/shaders/point_sprite.gdshader" id="14_titr3"]
+[ext_resource type="Shader" uid="uid://dk8cs2npma6v3" path="res://visuals/shaders/hsv_density_colorize.gdshader" id="15_dwro7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6m30h"]
+shader = ExtResource("1_nm71k")
+shader_parameter/zoom_amount = 3.0
+shader_parameter/scale_amount = 0.04300000134398
+shader_parameter/max_iterations = 63
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nm71k"]
+shader = ExtResource("2_w52nx")
+shader_parameter/detail_count = 20.0
+shader_parameter/time_speed = 2.0
+shader_parameter/brightness = 0.2
+shader_parameter/structure_smoothness = 1.2
+shader_parameter/saturation = 0.2
+shader_parameter/pan_angle = 5.0
+shader_parameter/pan_speed_offset = 0.01
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hqyof"]
+shader = ExtResource("3_hqyof")
+shader_parameter/detail_count = 20.0
+shader_parameter/time_speed = 4.0
+shader_parameter/scale_start = 12.0
+shader_parameter/scale_growth = 1.2
+shader_parameter/tint_color = Color(4.586935, 5.3924317, 2.707442, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_86dkh"]
+shader = ExtResource("4_86dkh")
+shader_parameter/octave_count = 6
+shader_parameter/time_speed = 0.22000001045
+shader_parameter/grain_amount = 0.0450000021375
+shader_parameter/ink_color_1 = Color(0, 0, 0, 1)
+shader_parameter/ink_color_2 = Color(0.59050006, 1, 0.089999974, 1)
+shader_parameter/paper_color = Color(1, 1, 1, 1)
+shader_parameter/vignette_strength = 0.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3b2hh"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cndff"]
+noise = SubResource("FastNoiseLite_3b2hh")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1p2du"]
+shader = ExtResource("5_cndff")
+shader_parameter/organic_texture = SubResource("NoiseTexture2D_cndff")
+shader_parameter/zoom_amount = 13.7190006041525
+shader_parameter/time_speed = 0.5830000276925
+shader_parameter/organic_power = 1.0
+shader_parameter/voronoi_scale = 0.10200000414648
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4wfvs"]
+frequency = 0.0288
+offset = Vector3(196.85, 0, 0)
+fractal_type = 3
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_emgl5"]
+noise = SubResource("FastNoiseLite_4wfvs")
+seamless = true
+seamless_blend_skirt = 0.21
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2nns3"]
+shader = ExtResource("6_3b2hh")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_emgl5")
+shader_parameter/scroll_speed = 0.074000003515
+shader_parameter/tile_size = 0.34800001653
+shader_parameter/alpha_cutoff = 0.4570000217075
+shader_parameter/time_offset = 0.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2nns3"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3b2hh"]
+noise = SubResource("FastNoiseLite_2nns3")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cndff"]
+shader = ExtResource("7_3b2hh")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_3b2hh")
+shader_parameter/speed = 0.5
+shader_parameter/time_step = 0.2
+shader_parameter/center1 = 0.0
+shader_parameter/noise_influence1 = 0.30400001444
+shader_parameter/smooth1 = 0.0
+shader_parameter/center2 = 0.070000003325
+shader_parameter/noise_influence2 = 0.1030000048925
+shader_parameter/smooth2 = 0.25
+shader_parameter/noise_tiles = Vector4(0.2, 0.4, 0.5, 0.75)
+shader_parameter/noise_evolution = Vector4(0.25, -0.25, 0.1, -0.1)
+shader_parameter/noise_weights = Vector4(1, 0.5, 0.25, 0.1)
+shader_parameter/noise_radius_tiles = Vector4(0.1, 0.2, 0.5, 0.1)
+shader_parameter/noise_radius_evolution = Vector4(0.25, -0.25, 0.1, -0.1)
+shader_parameter/noise_radius_weight = 0.5
+shader_parameter/final_mix = 0.0
+shader_parameter/texture_tile = 0.7100000304651201
+shader_parameter/texture_influence = 0.0025
+shader_parameter/texture_add = 0.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lfved"]
+shader = ExtResource("9_emgl5")
+shader_parameter/time_speed = 5.8430002775425
+shader_parameter/stagger_power = 1.2350000111625
+shader_parameter/fold_freq = 4.3730002077175
+shader_parameter/offset_scale = 2.1470001019825
+shader_parameter/pulse_freq = 2.0
+shader_parameter/pulse_amp = 0.1270000060325
+shader_parameter/rot_speed = 2.0
+shader_parameter/base_radius = 0.8990000427025
+shader_parameter/radius_wobble = 0.5510000261725
+shader_parameter/wobble_freq = 2.3990001139525
+shader_parameter/small_radius = 0.1930000091675
+shader_parameter/spike_amount = 0.8470000402325
+shader_parameter/spike_threshold = 0.99
+shader_parameter/camera_dist = 4.310000157225
+shader_parameter/camera_bob_amp = 1.0
+shader_parameter/camera_bob_freq = 0.5
+shader_parameter/raymarch_steps = 10
+shader_parameter/far_distance = 5.4410002109475
+shader_parameter/rng_dither = 0.214000010165
+shader_parameter/color_freq = 4.794000227715
+shader_parameter/rim_power = 10.0
+shader_parameter/rim_intensity = 1.8200000864499999
+shader_parameter/vignette_range = 5.0
+shader_parameter/feedback_decay = 0.01
+shader_parameter/glitch_amount = 3.1830001511925
+shader_parameter/glitch_freq = 11.6670005541825
+shader_parameter/glitch_threshold = 0.5
+shader_parameter/warp_amount = 5.7970002753575
+shader_parameter/feedback_cell_min = 1.0
+shader_parameter/feedback_cell_max = 2.9710000936225
+shader_parameter/feedback_cell_time_freq = 10.2610004873975
+shader_parameter/feedback_time_freq = 8.118000385605
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7sqxl"]
+shader = ExtResource("11_pnrrb")
+shader_parameter/density = 6.0
+shader_parameter/search_radius = 3.0
+shader_parameter/angle_speed = 0.3
+shader_parameter/reset_interval = 4.0
+shader_parameter/reset_window = 0.1
+shader_parameter/start_speed = 0.0
+shader_parameter/seed_radius_px = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hflmc"]
+shader = ExtResource("11_pnrrb")
+shader_parameter/density = 6.0
+shader_parameter/search_radius = 3.0
+shader_parameter/angle_speed = 0.3
+shader_parameter/reset_interval = 4.0
+shader_parameter/reset_window = 0.1
+shader_parameter/start_speed = 0.0
+shader_parameter/seed_radius_px = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iif82"]
+shader = ExtResource("12_titr3")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pnrrb"]
+shader = ExtResource("14_titr3")
+shader_parameter/falloff_edge = 0.75
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3harf"]
+shader = ExtResource("14_titr3")
+shader_parameter/falloff_edge = 0.75
+
+[sub_resource type="QuadMesh" id="QuadMesh_lfved"]
+material = SubResource("ShaderMaterial_3harf")
+
+[sub_resource type="MultiMesh" id="MultiMesh_6m30h"]
+mesh = SubResource("QuadMesh_lfved")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kmbac"]
+shader = ExtResource("15_dwro7")
+shader_parameter/hue_density_scale = 0.55
+shader_parameter/hue_time_speed = 0.125
+shader_parameter/saturation = 0.9
+shader_parameter/value_scale = 1.2850000610375
+
+[node name="ShaderTest" type="CanvasLayer" unique_id=832980507]
+
+[node name="KaliFractal" type="ColorRect" parent="." unique_id=46303118]
+material = SubResource("ShaderMaterial_6m30h")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlasmaTwirl" type="ColorRect" parent="." unique_id=580131348]
+visible = false
+material = SubResource("ShaderMaterial_nm71k")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlasmaZozuar" type="ColorRect" parent="." unique_id=1297007839]
+visible = false
+material = SubResource("ShaderMaterial_hqyof")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InkBleedRorschach" type="ColorRect" parent="." unique_id=1752979530]
+visible = false
+material = SubResource("ShaderMaterial_86dkh")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VoronoiOrganic" type="ColorRect" parent="." unique_id=1327619228]
+visible = false
+material = SubResource("ShaderMaterial_1p2du")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Moire" type="ColorRect" parent="." unique_id=2084881055]
+visible = false
+material = SubResource("ShaderMaterial_2nns3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SymmetricBlob" type="ColorRect" parent="." unique_id=490101018]
+visible = false
+material = SubResource("ShaderMaterial_cndff")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RorschachFeedback" type="Control" parent="." unique_id=1058887849]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_2nns3")
+
+[node name="ContainerA" type="SubViewportContainer" parent="RorschachFeedback" unique_id=400694401]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="ViewportA" type="SubViewport" parent="RorschachFeedback/ContainerA" unique_id=1105339809]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="RectA" type="ColorRect" parent="RorschachFeedback/ContainerA/ViewportA" unique_id=2026270003]
+material = SubResource("ShaderMaterial_lfved")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ContainerB" type="SubViewportContainer" parent="RorschachFeedback" unique_id=752732245]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="ViewportB" type="SubViewport" parent="RorschachFeedback/ContainerB" unique_id=1191281507]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="RectB" type="ColorRect" parent="RorschachFeedback/ContainerB/ViewportB" unique_id=2098776421]
+material = SubResource("ShaderMaterial_lfved")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GrowthAutomaton" type="Control" parent="." unique_id=392023973]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_wk4xx")
+
+[node name="ContainerA" type="SubViewportContainer" parent="GrowthAutomaton" unique_id=461864194]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="ViewportA" type="SubViewport" parent="GrowthAutomaton/ContainerA" unique_id=242538982]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="RectA" type="ColorRect" parent="GrowthAutomaton/ContainerA/ViewportA" unique_id=112294375]
+material = SubResource("ShaderMaterial_7sqxl")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ContainerB" type="SubViewportContainer" parent="GrowthAutomaton" unique_id=1213240453]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="ViewportB" type="SubViewport" parent="GrowthAutomaton/ContainerB" unique_id=1852954031]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="RectB" type="ColorRect" parent="GrowthAutomaton/ContainerB/ViewportB" unique_id=1839452621]
+material = SubResource("ShaderMaterial_hflmc")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ImagePassRect" type="ColorRect" parent="GrowthAutomaton" unique_id=807774219]
+material = SubResource("ShaderMaterial_iif82")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FlowerfieldParticles" type="Control" parent="." unique_id=117113662]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_pnrrb")
+
+[node name="BufferContainer" type="SubViewportContainer" parent="FlowerfieldParticles" unique_id=1601446400]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="BufferViewport" type="SubViewport" parent="FlowerfieldParticles/BufferContainer" unique_id=1133598706]
+handle_input_locally = false
+use_hdr_2d = true
+size = Vector2i(1920, 1080)
+render_target_update_mode = 0
+
+[node name="Points" type="MultiMeshInstance2D" parent="FlowerfieldParticles/BufferContainer/BufferViewport" unique_id=510533759]
+material = SubResource("ShaderMaterial_pnrrb")
+multimesh = SubResource("MultiMesh_6m30h")
+
+[node name="ImagePassRect" type="ColorRect" parent="FlowerfieldParticles" unique_id=799276536]
+material = SubResource("ShaderMaterial_kmbac")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
